@@ -216,8 +216,8 @@ function BookingContent() {
     ]
       .filter(Boolean)
       .join('\n');
-    return `https://wa.me/5513999999999?text=${encodeURIComponent(msg)}`;
-    // TODO: substituir pelo WhatsApp real do DNA Baixada quando disponível
+    return `https://wa.me/5513997042065?text=${encodeURIComponent(msg)}`;
+    // WhatsApp oficial DNA Baixada
   }, [selectedRoteiro, form, precoFinal]);
 
   // ═══════════════════════════════════════════════════════════
