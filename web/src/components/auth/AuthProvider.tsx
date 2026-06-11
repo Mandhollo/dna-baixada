@@ -35,8 +35,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .single();
 
     if (error) {
-      console.error('Erro ao buscar perfil:', error.message);
-      setProfile(null);
+      console.warn('Perfil DB falhou, usando user_metadata como fallback:', error.message);
+      // RLS recursion fallback: build profile from user metadata
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const meta = user.user_metadata || {};
+        setProfile({
+          id: user.id,
+          nome: meta.nome || meta.full_name || user.email?.split('@')[0] || 'Usuário',
+          email: user.email ?? '',
+          telefone: meta.telefone || null,
+          foto_url: meta.avatar_url || meta.foto_url || null,
+          role: meta.role || 'passageiro',
+          pontos: meta.pontos || 0,
+          avaliacao_media: meta.avaliacao_media || null,
+          total_corridas: meta.total_corridas || 0,
+          created_at: user.created_at,
+          updated_at: user.updated_at || user.created_at,
+        } as unknown as Profile);
+      }
       return;
     }
     setProfile(data as Profile);
