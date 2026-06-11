@@ -6,18 +6,18 @@ import type { Corrida, CorridaTipo, CorridaStatus } from '@/lib/supabase';
  * GET /api/corridas
  * List corridas with optional query filters.
  * Query params: status, tipo, passageiro_id, motorista_id, limit, offset
+ *
+ * Note: Does NOT join with profiles to avoid RLS recursion.
+ * Fetches profiles separately after getting corridas.
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
+    // Query corridas without the profiles join (avoids RLS recursion on profiles)
     let query = supabase
       .from('corridas')
-      .select(`
-        *,
-        passageiro:profiles!passageiro_id(id, nome, foto_url, telefone),
-        motorista:profiles!motorista_id(id, nome, foto_url, telefone)
-      `)
+      .select('*')
       .order('created_at', { ascending: false });
 
     // Optional filters
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get('offset') ?? '0', 10);
     query = query.range(offset, offset + limit - 1);
 
-    const { data, error, count } = await query;
+    const { data, error } = await query;
 
     if (error) {
       return NextResponse.json(
@@ -46,7 +46,36 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ corridas: data as Corrida[], count });
+    // Fetch profiles separately for passageiro and motorista
+    const corridas = (data as Corrida[]) ?? [];
+    const profileIds = new Set<string>();
+    corridas.forEach((c) => {
+      if (c.passageiro_id) profileIds.add(c.passageiro_id);
+      if (c.motorista_id) profileIds.add(c.motorista_id);
+    });
+
+    let profilesMap: Record<string, { id: string; nome: string; foto_url: string | null; telefone: string | null }> = {};
+    if (profileIds.size > 0) {
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, nome, foto_url, telefone')
+        .in('id', Array.from(profileIds));
+
+      if (profiles) {
+        profiles.forEach((p: { id: string }) => {
+          profilesMap[p.id] = p as typeof profilesMap[string];
+        });
+      }
+    }
+
+    // Merge profiles into corridas
+    const result = corridas.map((c) => ({
+      ...c,
+      passageiro: c.passageiro_id ? profilesMap[c.passageiro_id] || null : null,
+      motorista: c.motorista_id ? profilesMap[c.motorista_id] || null : null,
+    }));
+
+    return NextResponse.json({ corridas: result, count: result.length });
   } catch (err) {
     console.error('[GET /api/corridas]', err);
     return NextResponse.json(
@@ -94,14 +123,11 @@ export async function POST(request: NextRequest) {
       passageiros: body.passageiros ?? 1,
     };
 
+    // Insert without profiles join to avoid RLS recursion
     const { data, error } = await supabase
       .from('corridas')
       .insert(insertData)
-      .select(`
-        *,
-        passageiro:profiles!passageiro_id(id, nome, foto_url, telefone),
-        motorista:profiles!motorista_id(id, nome, foto_url, telefone)
-      `)
+      .select('*')
       .single();
 
     if (error) {

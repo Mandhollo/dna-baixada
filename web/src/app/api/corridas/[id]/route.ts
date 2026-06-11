@@ -7,6 +7,20 @@ interface RouteContext {
 }
 
 /**
+ * Helper: fetch profiles by IDs to avoid RLS recursion from JOIN.
+ */
+async function fetchProfiles(ids: string[]) {
+  if (ids.length === 0) return {} as Record<string, { id: string; nome: string; foto_url: string | null; telefone: string | null }>;
+  const { data } = await supabase
+    .from('profiles')
+    .select('id, nome, foto_url, telefone')
+    .in('id', ids);
+  const map: Record<string, { id: string; nome: string; foto_url: string | null; telefone: string | null }> = {};
+  if (data) data.forEach((p: { id: string }) => { map[p.id] = p as typeof map[string]; });
+  return map;
+}
+
+/**
  * GET /api/corridas/[id]
  * Fetch a single corrida by ID.
  */
@@ -19,11 +33,7 @@ export async function GET(
 
     const { data, error } = await supabase
       .from('corridas')
-      .select(`
-        *,
-        passageiro:profiles!passageiro_id(id, nome, foto_url, telefone),
-        motorista:profiles!motorista_id(id, nome, foto_url, telefone)
-      `)
+      .select('*')
       .eq('id', id)
       .single();
 
@@ -41,7 +51,19 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ corrida: data as Corrida });
+    const corrida = data as Record<string, unknown>;
+    const profileIds: string[] = [];
+    if (corrida.passageiro_id) profileIds.push(corrida.passageiro_id as string);
+    if (corrida.motorista_id) profileIds.push(corrida.motorista_id as string);
+    const profilesMap = await fetchProfiles(profileIds);
+
+    const result = {
+      ...corrida,
+      passageiro: corrida.passageiro_id ? profilesMap[corrida.passageiro_id as string] || null : null,
+      motorista: corrida.motorista_id ? profilesMap[corrida.motorista_id as string] || null : null,
+    };
+
+    return NextResponse.json({ corrida: result as Corrida });
   } catch (err) {
     console.error('[GET /api/corridas/[id]]', err);
     return NextResponse.json(
@@ -117,11 +139,7 @@ export async function PATCH(
       .from('corridas')
       .update(updateData)
       .eq('id', id)
-      .select(`
-        *,
-        passageiro:profiles!passageiro_id(id, nome, foto_url, telefone),
-        motorista:profiles!motorista_id(id, nome, foto_url, telefone)
-      `)
+      .select('*')
       .single();
 
     if (error) {
@@ -139,7 +157,19 @@ export async function PATCH(
       );
     }
 
-    return NextResponse.json({ corrida: data as Corrida });
+    const corrida = data as Record<string, unknown>;
+    const profileIds: string[] = [];
+    if (corrida.passageiro_id) profileIds.push(corrida.passageiro_id as string);
+    if (corrida.motorista_id) profileIds.push(corrida.motorista_id as string);
+    const profilesMap = await fetchProfiles(profileIds);
+
+    const result = {
+      ...corrida,
+      passageiro: corrida.passageiro_id ? profilesMap[corrida.passageiro_id as string] || null : null,
+      motorista: corrida.motorista_id ? profilesMap[corrida.motorista_id as string] || null : null,
+    };
+
+    return NextResponse.json({ corrida: result as Corrida });
   } catch (err) {
     console.error('[PATCH /api/corridas/[id]]', err);
     return NextResponse.json(
