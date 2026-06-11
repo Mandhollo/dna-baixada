@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';

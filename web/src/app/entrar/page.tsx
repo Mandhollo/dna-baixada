@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';

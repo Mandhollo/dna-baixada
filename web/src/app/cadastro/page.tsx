@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { useState, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';

@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -493,7 +494,7 @@ export default function ParceirosPage() {
           viewport={{ once: true }}
           className="mb-6 text-xl font-extrabold text-[#0A2463]"
         >
-          Nossos Parceiros
+          Nossos Parceiros{' '}
           {!loading && (
             <span className="ml-2 text-sm font-normal text-gray-400">
               {filtered.length} resultado{filtered.length !== 1 ? 's' : ''}

@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -161,7 +162,7 @@ export default function EventosPage() {
               Agenda Cultural
             </span>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
-              Eventos na{' '}
+              Eventos na{'\u00A0'}
               <span className="bg-gradient-to-r from-[#F5A623] to-[#14A76C] bg-clip-text text-transparent">
                 Baixada Santista
               </span>

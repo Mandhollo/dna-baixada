@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { motion } from 'framer-motion';
 import { ArrowLeft, Shield, Lock, Eye, Database, Share2, Cookie, Mail, RefreshCw } from 'lucide-react';
@@ -129,7 +130,7 @@ export default function PrivacidadePage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            Política de{' '}
+            Política de{'\u00A0'}
             <span className="bg-gradient-to-r from-white/90 to-white/70 bg-clip-text text-transparent">
               Privacidade
             </span>

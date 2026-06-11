@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
@@ -106,7 +107,7 @@ export default function TurismoPage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            Turismo na{' '}
+            Turismo na{'\u00A0'}
             <span className="bg-gradient-to-r from-[#F5A623] to-[#14A76C] bg-clip-text text-transparent">
               Baixada Santista
             </span>

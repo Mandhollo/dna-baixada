@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -74,6 +75,7 @@ const stagger = {
 function SkeletonCard() {
   return (
     <div className="bg-white rounded-2xl p-6 shadow-sm animate-pulse">
+      <PageTitle title='Recompensas' />
       <div className="flex items-center justify-between mb-4">
         <div className="w-10 h-10 rounded-xl bg-gray-200" />
         <div className="w-16 h-5 rounded-full bg-gray-200" />

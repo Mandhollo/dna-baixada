@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -112,6 +113,7 @@ export default function AdminDashboardPage() {
       variants={staggerContainer}
       className="space-y-8"
     >
+      <PageTitle title='Administracao' />
       {/* ── Header ── */}
       <motion.div variants={fadeUp} custom={0} className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>

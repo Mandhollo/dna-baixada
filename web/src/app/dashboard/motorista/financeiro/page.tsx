@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
@@ -163,6 +164,7 @@ export default function FinanceiroPage() {
   if (authLoading || !profile) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background-secondary">
+      <PageTitle title='Financeiro' />
         <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
       </div>
     );

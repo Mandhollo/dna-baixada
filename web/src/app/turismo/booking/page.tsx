@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { Suspense, useEffect, useState, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -216,6 +217,7 @@ function BookingContent() {
       .filter(Boolean)
       .join('\n');
     return `https://wa.me/5513999999999?text=${encodeURIComponent(msg)}`;
+    // TODO: substituir pelo WhatsApp real do DNA Baixada quando disponível
   }, [selectedRoteiro, form, precoFinal]);
 
   // ═══════════════════════════════════════════════════════════

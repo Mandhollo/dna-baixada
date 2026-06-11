@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
@@ -131,6 +132,7 @@ export default function AdminConfigPage() {
 
   return (
     <div className="space-y-8">
+      <PageTitle title='Configuracoes' />
       {/* ═══ Header ═══ */}
       <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={0} className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
