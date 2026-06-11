@@ -18,6 +18,7 @@ import {
   Check,
   Loader2,
   AlertCircle,
+  Locate,
 } from 'lucide-react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { supabase, CORRIDA_TIPOS, calcularPrecoEstimado } from '@/lib/supabase';
@@ -115,6 +116,7 @@ export default function SolicitarCorridaPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [corridaId, setCorridaId] = useState<string | null>(null);
+  const [gettingLocation, setGettingLocation] = useState(false);
 
   // ── Auth guard ──
   useEffect(() => {
@@ -128,11 +130,66 @@ export default function SolicitarCorridaPage() {
     }
   }, [user, profile, loading, router]);
 
-  // ── Computed price ──
+  // ── Computed price (baseado em distância real se coords disponíveis) ──
+  const distanceKm = useMemo(() => {
+    if (!originCoord || !destCoord) return undefined;
+    // Haversine formula
+    const R = 6371;
+    const dLat = ((destCoord.lat - originCoord.lat) * Math.PI) / 180;
+    const dLon = ((destCoord.lng - originCoord.lng) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos((originCoord.lat * Math.PI) / 180) *
+        Math.cos((destCoord.lat * Math.PI) / 180) *
+        Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return Math.round(R * c * 10) / 10; // 1 decimal
+  }, [originCoord, destCoord]);
+
   const precoEstimado = useMemo(() => {
     if (!selectedTipo) return 0;
-    return calcularPrecoEstimado(selectedTipo, undefined, passageiros);
-  }, [selectedTipo, passageiros]);
+    return calcularPrecoEstimado(selectedTipo, distanceKm, passageiros);
+  }, [selectedTipo, distanceKm, passageiros]);
+
+  // ── Get real GPS location ──
+  const handleUseLocation = async () => {
+    if (!navigator.geolocation) {
+      setError('Seu navegador não suporta geolocalização');
+      return;
+    }
+    setGettingLocation(true);
+    setError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude: lat, longitude: lng } = position.coords;
+        setOriginCoord({ lat, lng });
+
+        // Reverse geocode to get address
+        try {
+          const resp = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=pt-BR&zoom=17`,
+            { headers: { 'User-Agent': 'DNA-Baixada/1.0' } }
+          );
+          const data = await resp.json();
+          const addr = data.display_name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+          setOrigem(addr);
+        } catch {
+          setOrigem(`${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+        }
+        setGettingLocation(false);
+      },
+      (err) => {
+        setGettingLocation(false);
+        if (err.code === 1) {
+          setError('Permissão de localização negada. Ative nas configurações.');
+        } else {
+          setError('Não foi possível obter sua localização.');
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  };
 
   // ── Step navigation ──
   const goNext = () => {
@@ -322,6 +379,9 @@ export default function SolicitarCorridaPage() {
                 formaPagamento={formaPagamento}
                 setFormaPagamento={setFormaPagamento}
                 precoEstimado={precoEstimado}
+                distanceKm={distanceKm}
+                onUseLocation={handleUseLocation}
+                gettingLocation={gettingLocation}
               />
             </motion.div>
           )}
@@ -520,6 +580,9 @@ function StepTwo({
   formaPagamento,
   setFormaPagamento,
   precoEstimado,
+  distanceKm,
+  onUseLocation,
+  gettingLocation,
 }: {
   origem: string;
   setOrigem: (v: string) => void;
@@ -536,6 +599,9 @@ function StepTwo({
   formaPagamento: FormaPagamento;
   setFormaPagamento: (v: FormaPagamento) => void;
   precoEstimado: number;
+  distanceKm?: number;
+  onUseLocation: () => void;
+  gettingLocation: boolean;
 }) {
   return (
     <div className="space-y-5">
@@ -571,6 +637,24 @@ function StepTwo({
           placeholder="Ex: Av. Ana Costa, 100 — Santos"
           className="w-full rounded-xl border border-border bg-surface-elevated px-4 py-3 text-sm text-foreground placeholder:text-foreground-muted/50 transition focus:border-secondary focus:ring-2 focus:ring-secondary/20 focus:outline-none"
         />
+        <button
+          type="button"
+          onClick={onUseLocation}
+          disabled={gettingLocation}
+          className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-secondary/10 px-3 py-1.5 text-xs font-semibold text-secondary transition hover:bg-secondary/20 disabled:opacity-50"
+        >
+          {gettingLocation ? (
+            <>
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              Localizando...
+            </>
+          ) : (
+            <>
+              <Locate className="h-3.5 w-3.5" />
+              Usar minha localização
+            </>
+          )}
+        </button>
       </motion.div>
 
 
@@ -647,7 +731,9 @@ function StepTwo({
           R$ {precoEstimado.toFixed(2).replace('.', ',')}
         </p>
         <p className="mt-0.5 text-xs text-foreground-muted">
-          Valor sujeito a alteração conforme trajeto real
+          {distanceKm
+            ? `Baseado em ${distanceKm} km de distância • Valor sujeito a alteração`
+            : 'Valor sujeito a alteração conforme trajeto real'}
         </p>
       </motion.div>
 

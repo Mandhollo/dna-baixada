@@ -757,21 +757,21 @@ export interface RelatorioFinanceiro {
 
 export function calcularPrecoEstimado(tipo: CorridaTipo, distanciaKm?: number, passageiros: number = 1): number {
   const BASE: Record<CorridaTipo, { fixo: number; km: number }> = {
-    urbana: { fixo: 15, km: 3.5 },
-    executivo: { fixo: 40, km: 5.0 },
-    transfer_aeroporto: { fixo: 450, km: 0 },
-    transfer_rodoviaria: { fixo: 80, km: 2.5 },
-    transfer_hotel: { fixo: 40, km: 3.0 },
-    transfer_cruzeiro: { fixo: 50, km: 3.0 },
-    city_tour: { fixo: 400, km: 0 },
-    passeio_turistico: { fixo: 200, km: 2.0 },
+    urbana: { fixo: 15, km: 3.50 },
+    executivo: { fixo: 40, km: 5.00 },
+    transfer_aeroporto: { fixo: 600, km: 0 },   // GRU R$600 fixo
+    transfer_rodoviaria: { fixo: 80, km: 2.50 },
+    transfer_hotel: { fixo: 40, km: 3.00 },
+    transfer_cruzeiro: { fixo: 50, km: 3.00 },
+    city_tour: { fixo: 400, km: 0 },             // R$400/3h fixo
+    passeio_turistico: { fixo: 200, km: 2.00 },
   };
 
   const config = BASE[tipo];
-  const distKm = distanciaKm ?? 10; // default 10km
+  const distKm = distanciaKm ?? 10; // default 10km se sem coords
   let preco = config.fixo + (config.km * distKm);
 
-  // Carro 6 lugares custa mais
+  // Carro 6 lugares custa mais (+30%)
   if (passageiros > 4) preco *= 1.3;
 
   return Math.round(preco * 100) / 100;
