@@ -1,10 +1,10 @@
-import { createClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
  * GET /api/auth/callback
  * Handles Supabase OAuth callback (e.g. Google OAuth).
- * Exchanges the `code` query param for a session, then redirects to /dashboard.
+ * Exchanges the `code` query param for a session, sets cookies, then redirects to /dashboard.
  */
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -13,14 +13,21 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     try {
-      const supabase = createClient(
+      const response = NextResponse.redirect(new URL(next, requestUrl.origin));
+
+      const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
         {
-          auth: {
-            autoRefreshToken: true,
-            persistSession: false, // server-side — don't persist here
-            detectSessionInUrl: false,
+          cookies: {
+            getAll() {
+              return request.cookies.getAll();
+            },
+            setAll(cookiesToSet) {
+              cookiesToSet.forEach(({ name, value, options }) => {
+                response.cookies.set(name, value, options);
+              });
+            },
           },
         },
       );
@@ -33,6 +40,8 @@ export async function GET(request: NextRequest) {
           new URL(`/entrar?error=${encodeURIComponent(error.message)}`, requestUrl.origin),
         );
       }
+
+      return response;
     } catch (err) {
       console.error('[auth/callback] Unexpected error:', err);
       return NextResponse.redirect(
@@ -41,6 +50,6 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Redirect to dashboard (or the `next` param) after successful exchange
-  return NextResponse.redirect(new URL(next, requestUrl.origin));
+  // No code — redirect to login
+  return NextResponse.redirect(new URL('/entrar', requestUrl.origin));
 }

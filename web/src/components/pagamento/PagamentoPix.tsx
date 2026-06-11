@@ -66,7 +66,7 @@ function gerarPixPayload(amount: number): string {
   const mai = tlv('26', gui + key);           // MAI under ID 26
 
   // Merchant Category Code
-  const mcc = tlv('52', '0000');
+  const mcc = tlv('52', '5411');
 
   // Transaction Currency (986 = BRL)
   const cur = tlv('53', '986');
