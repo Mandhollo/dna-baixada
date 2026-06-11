@@ -1,15 +1,26 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
 
-import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, FormEvent, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 export default function EntrarPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center"><div className="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" /></div>}>
+      <PageTitle title='Entrar' />
+      <EntrarForm />
+    </Suspense>
+  );
+}
+
+function EntrarForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect') || '/dashboard';
   const { signIn, signInWithGoogle } = useAuth();
   const { t } = useTranslation();
 
@@ -32,7 +43,7 @@ export default function EntrarPage() {
       return;
     }
 
-    router.push('/dashboard');
+    router.push(redirect);
   };
 
   return (
@@ -200,7 +211,7 @@ export default function EntrarPage() {
               type="button"
               onClick={async () => {
                 setLoading(true);
-                const { error: googleError } = await signInWithGoogle();
+                const { error: googleError } = await signInWithGoogle(redirect);
                 if (googleError) {
                   setError(googleError);
                   setLoading(false);

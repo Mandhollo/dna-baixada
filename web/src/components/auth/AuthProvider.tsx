@@ -10,11 +10,11 @@ interface AuthContextType {
   profile: Profile | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
-  signInWithGoogle: () => Promise<{ error: string | null }>;
+  signInWithGoogle: (redirectTo?: string) => Promise<{ error: string | null }>;
   signUp: (
     email: string,
     password: string,
-    metadata: { nome: string; telefone: string; role: string },
+    metadata: Record<string, string>,
   ) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -107,17 +107,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (
     email: string,
     password: string,
-    metadata: { nome: string; telefone: string; role: string },
+    metadata: Record<string, string>,
   ) => {
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: {
-          nome: metadata.nome,
-          telefone: metadata.telefone,
-          role: metadata.role,
-        },
+        data: metadata,
       },
     });
     if (error) {
@@ -126,12 +122,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error: null };
   };
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (redirectTo?: string) => {
+    const dest = redirectTo || '/dashboard';
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: typeof window !== 'undefined'
-          ? window.location.origin + '/dashboard'
+          ? window.location.origin + dest
           : undefined,
       },
     });

@@ -28,7 +28,7 @@ export default function DashboardPage() {
         router.replace('/dashboard/parceiro');
         break;
       case 'admin':
-        router.replace('/dashboard/admin');
+        router.replace('/admin');
         break;
       // 'passageiro' stays on this page — content rendered below
     }

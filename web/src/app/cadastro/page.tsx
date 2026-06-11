@@ -377,14 +377,37 @@ function StepForm({
     setLoading(true);
 
     try {
+      // Build metadata based on role
+      const metadata: Record<string, string> = {
+        nome: nome.trim(),
+        role: profileType as UserRole,
+        telefone,
+      };
+
+      if (profileType === 'motorista') {
+        metadata.cnh = cnh;
+        metadata.veiculo_modelo = veiculoModelo;
+        metadata.veiculo_placa = veiculoPlaca;
+        metadata.veiculo_cor = veiculoCor;
+        metadata.veiculo_ano = veiculoAno;
+        metadata.veiculo_lugares = veiculoLugares;
+      }
+
+      if (profileType === 'parceiro') {
+        metadata.cnpj = cnpj;
+        metadata.nome_fantasia = nomeFantasia;
+        metadata.razao_social = razaoSocial;
+        metadata.categoria = categoria;
+        metadata.endereco = endereco;
+        metadata.cidade = cidade;
+        metadata.tel_comercial = telComercial;
+        metadata.site = site;
+      }
+
       const { error: signUpError } = await signUp(
         email.trim(),
         senha,
-        {
-          nome: nome.trim(),
-          role: profileType as UserRole,
-          telefone: telefone,
-        },
+        metadata,
       );
 
       if (signUpError) {

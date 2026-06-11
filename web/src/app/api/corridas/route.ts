@@ -1,17 +1,102 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
-import type { Corrida, CorridaTipo, CorridaStatus } from '@/lib/supabase';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+import type { Corrida, CorridaTipo, CorridaStatus, FormaPagamento } from '@/lib/supabase';
+
+// ════════════════════════════════════════════════════════════
+// Server-side price calculation (prevents client tampering)
+// ════════════════════════════════════════════════════════════
+
+const PRICE_TABLE: Record<string, { fixo: number; km: number }> = {
+  urbana: { fixo: 15, km: 3.50 },
+  executivo: { fixo: 40, km: 5.00 },
+  transfer_aeroporto: { fixo: 600, km: 0 },
+  transfer_rodoviaria: { fixo: 80, km: 2.50 },
+  transfer_hotel: { fixo: 40, km: 3.00 },
+  transfer_cruzeiro: { fixo: 50, km: 3.00 },
+  city_tour: { fixo: 400, km: 0 },
+  passeio_turistico: { fixo: 200, km: 2.00 },
+};
+
+function recalcPrice(
+  tipo: string,
+  origemLat?: number | null,
+  origemLng?: number | null,
+  destinoLat?: number | null,
+  destinoLng?: number | null,
+  passageiros: number = 1,
+): { preco: number; distancia?: number } {
+  const config = PRICE_TABLE[tipo];
+  if (!config) return { preco: 0 };
+
+  let distancia: number | undefined;
+  if (origemLat && origemLng && destinoLat && destinoLng) {
+    const R = 6371;
+    const dLat = ((destinoLat - origemLat) * Math.PI) / 180;
+    const dLon = ((destinoLng - origemLng) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos((origemLat * Math.PI) / 180) *
+        Math.cos((destinoLat * Math.PI) / 180) *
+        Math.sin(dLon / 2) ** 2;
+    distancia = Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * 10) / 10;
+  }
+
+  const distKm = distancia ?? 10;
+  let preco = config.fixo + config.km * distKm;
+  if (passageiros > 4) preco *= 1.3;
+
+  return { preco: Math.round(preco * 100) / 100, distancia };
+}
+
+// ════════════════════════════════════════════════════════════
+// Auth helper
+// ════════════════════════════════════════════════════════════
+
+/**
+ * Create a Supabase server client from request cookies and return
+ * the authenticated user (or null). Uses the anon key + cookie session
+ * so RLS policies are enforced per-user.
+ */
+async function getAuthUser() {
+  const cookieStore = await cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll() {
+          // read-only in API routes
+        },
+      },
+    },
+  );
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return { user, supabase };
+}
 
 /**
  * GET /api/corridas
  * List corridas with optional query filters.
- * Query params: status, tipo, passageiro_id, motorista_id, limit, offset
+ * Requires authentication. Only returns corridas where the user is the
+ * passageiro or the motorista, unless no user-specific filter is needed
+ * (admin use-case handled elsewhere).
  *
- * Note: Does NOT join with profiles to avoid RLS recursion.
- * Fetches profiles separately after getting corridas.
+ * Query params: status, tipo, passageiro_id, motorista_id, limit, offset
  */
 export async function GET(request: NextRequest) {
   try {
+    const { user, supabase } = await getAuthUser();
+
+    if (!user) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
 
     // Query corridas without the profiles join (avoids RLS recursion on profiles)
@@ -51,7 +136,7 @@ export async function GET(request: NextRequest) {
     const profileIds = new Set<string>();
     corridas.forEach((c) => {
       if (c.passageiro_id) profileIds.add(c.passageiro_id);
-      if (c.motorista_id) profileIds.add(c.motorista_id);
+      if (c.motorista_id) profileIds.add(c.motorista_id!);
     });
 
     let profilesMap: Record<string, { id: string; nome: string; foto_url: string | null; telefone: string | null }> = {};
@@ -72,7 +157,7 @@ export async function GET(request: NextRequest) {
     const result = corridas.map((c) => ({
       ...c,
       passageiro: c.passageiro_id ? profilesMap[c.passageiro_id] || null : null,
-      motorista: c.motorista_id ? profilesMap[c.motorista_id] || null : null,
+      motorista: c.motorista_id ? profilesMap[c.motorista_id!] || null : null,
     }));
 
     return NextResponse.json({ corridas: result, count: result.length });
@@ -88,14 +173,21 @@ export async function GET(request: NextRequest) {
 /**
  * POST /api/corridas
  * Create a new corrida.
- * Body: passageiro_id, tipo, origem_endereco, origem_lat, origem_lng, etc.
+ * Requires authentication. passageiro_id is forced to the authenticated user's id.
+ * Body: tipo, origem_endereco, origem_lat, origem_lng, etc.
  */
 export async function POST(request: NextRequest) {
   try {
+    const { user, supabase } = await getAuthUser();
+
+    if (!user) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+    }
+
     const body = await request.json();
 
-    // Required fields
-    const required = ['passageiro_id', 'tipo', 'origem_endereco'];
+    // Required fields (passageiro_id no longer required from body — comes from auth)
+    const required = ['tipo', 'origem_endereco'];
     for (const field of required) {
       if (!body[field]) {
         return NextResponse.json(
@@ -105,19 +197,21 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Recalculate price server-side to prevent tampering
+    const priceResult = recalcPrice(body.tipo, body.origem_lat, body.origem_lng, body.destino_lat, body.destino_lng, body.passageiros ?? 1);
     const insertData: Record<string, unknown> = {
-      passageiro_id: body.passageiro_id,
+      passageiro_id: user.id, // force to authenticated user
       tipo: body.tipo,
-      status: body.status ?? 'aguardando',
+      status: 'aguardando',
       origem_endereco: body.origem_endereco,
       origem_lat: body.origem_lat ?? null,
       origem_lng: body.origem_lng ?? null,
       destino_endereco: body.destino_endereco ?? null,
       destino_lat: body.destino_lat ?? null,
       destino_lng: body.destino_lng ?? null,
-      preco_estimado: body.preco_estimado ?? null,
+      preco_estimado: priceResult.preco,
       forma_pagamento: body.forma_pagamento ?? null,
-      distancia_km: body.distancia_km ?? null,
+      distancia_km: priceResult.distancia ?? null,
       duracao_minutos: body.duracao_minutos ?? null,
       observacoes: body.observacoes ?? null,
       passageiros: body.passageiros ?? 1,
