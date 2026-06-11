@@ -82,6 +82,7 @@ const categoriaColors: Record<EventoCategoria, string> = {
 function Skeleton() {
   return (
     <div className="animate-pulse rounded-2xl bg-gray-100 overflow-hidden">
+        <PageTitle title='Eventos na Baixada' />
       <div className="h-44 bg-gray-200" />
       <div className="p-5 space-y-3">
         <div className="h-4 bg-gray-200 rounded w-1/3" />
@@ -162,9 +163,9 @@ export default function EventosPage() {
               Agenda Cultural
             </span>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
-              Eventos na{'\u00A0'}
+              Eventos na
               <span className="bg-gradient-to-r from-[#F5A623] to-[#14A76C] bg-clip-text text-transparent">
-                Baixada Santista
+                {' '}Baixada Santista
               </span>
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-white/80">

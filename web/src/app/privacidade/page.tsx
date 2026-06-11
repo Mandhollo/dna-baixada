@@ -109,6 +109,7 @@ const sections = [
 export default function PrivacidadePage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
+        <PageTitle title='Politica de Privacidade' />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#14A76C] via-[#11b85e] to-[#0d9450] py-28 px-6">
         <div className="absolute inset-0 opacity-10">
@@ -130,9 +131,9 @@ export default function PrivacidadePage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            Política de{'\u00A0'}
+            Política de
             <span className="bg-gradient-to-r from-white/90 to-white/70 bg-clip-text text-transparent">
-              Privacidade
+              {' '}Privacidade
             </span>
           </motion.h1>
           <motion.p

@@ -36,6 +36,7 @@ export default function RecuperarSenhaPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary via-primary-light to-secondary px-4 py-12">
+        <PageTitle title='Recuperar Senha' />
       {/* Decorative radial glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(245,166,35,.12),transparent_60%)]" />
 

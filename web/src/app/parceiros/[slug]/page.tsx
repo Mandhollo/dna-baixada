@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/seo/PageTitle';
 
 import { useEffect, useState, useCallback } from 'react';
 
@@ -69,6 +70,7 @@ function StarRating({ rating, total }: { rating: number; total: number }) {
 
   return (
     <div className="flex items-center gap-2">
+        <PageTitle title='Parceiro' />
       <div className="flex items-center gap-0.5">
         {[1, 2, 3, 4, 5].map((s) => (
           <Star

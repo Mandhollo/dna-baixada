@@ -100,6 +100,7 @@ const sections = [
 export default function TermosPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
+        <PageTitle title='Termos de Uso' />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#0A2463] py-28 px-6">
         <div className="absolute inset-0 opacity-10">
@@ -121,9 +122,9 @@ export default function TermosPage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            Termos de{'\u00A0'}
+            Termos de
             <span className="bg-gradient-to-r from-[#14A76C] to-[#F5A623] bg-clip-text text-transparent">
-              Uso
+              {' '}Uso
             </span>
           </motion.h1>
           <motion.p

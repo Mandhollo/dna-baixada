@@ -55,6 +55,7 @@ function StarRating({ value, total }: { value: number; total: number }) {
   const half = value - full >= 0.5;
   return (
     <div className="flex items-center gap-1">
+        <PageTitle title='Parceiros' />
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
@@ -494,9 +495,10 @@ export default function ParceirosPage() {
           viewport={{ once: true }}
           className="mb-6 text-xl font-extrabold text-[#0A2463]"
         >
-          Nossos Parceiros{' '}
+          Nossos Parceiros
           {!loading && (
             <span className="ml-2 text-sm font-normal text-gray-400">
+              {' '}
               {filtered.length} resultado{filtered.length !== 1 ? 's' : ''}
             </span>
           )}

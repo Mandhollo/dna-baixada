@@ -104,6 +104,7 @@ export default function ContatoPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
+        <PageTitle title='Contato' />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#14A76C] py-28 px-6">
         <div className="absolute inset-0 opacity-10">
@@ -125,9 +126,9 @@ export default function ContatoPage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            Entre em{' '}
+            Entre em
             <span className="bg-gradient-to-r from-[#14A76C] to-[#F5A623] bg-clip-text text-transparent">
-              Contato
+              {' '}Contato
             </span>
           </motion.h1>
           <motion.p

@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth/AuthProvider';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 import type { UserRole } from '@/lib/supabase';
 
 /* ─── colour tokens ─── */
@@ -28,8 +29,8 @@ type ProfileType = 'passageiro' | 'motorista' | 'parceiro';
 
 interface ProfileOption {
   type: ProfileType;
-  title: string;
-  desc: string;
+  titleKey: string;
+  descKey: string;
   icon: typeof User;
   color: string;
 }
@@ -37,22 +38,22 @@ interface ProfileOption {
 const PROFILE_OPTIONS: ProfileOption[] = [
   {
     type: 'passageiro',
-    title: 'Passageiro',
-    desc: 'Solicite corridas, city tours e mais',
+    titleKey: 'register.passageiro',
+    descKey: 'register.passageiro_desc',
     icon: User,
     color: SECONDARY,
   },
   {
     type: 'motorista',
-    title: 'Motorista Parceiro',
-    desc: 'Receba corridas e ganhe com a plataforma',
+    titleKey: 'register.motorista',
+    descKey: 'register.motorista_desc',
     icon: Car,
     color: PRIMARY,
   },
   {
     type: 'parceiro',
-    title: 'Parceiro Comercial',
-    desc: 'Divulgue seu negócio na Baixada',
+    titleKey: 'register.parceiro',
+    descKey: 'register.parceiro_desc',
     icon: Store,
     color: ACCENT,
   },
@@ -226,6 +227,8 @@ function StepSelectType({
   selected: ProfileType | null;
   onSelect: (t: ProfileType) => void;
 }) {
+  const { t } = useTranslation();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -235,10 +238,10 @@ function StepSelectType({
     >
       <div className="text-center mb-8">
         <h2 className="text-2xl sm:text-3xl font-extrabold" style={{ color: PRIMARY }}>
-          Como deseja se cadastrar?
+          {t('register.como_cadastrar')}
         </h2>
         <p className="mt-2 text-gray-500 text-sm">
-          Escolha o tipo de perfil que melhor combina com você
+          {t('register.escolha_perfil')}
         </p>
       </div>
 
@@ -284,9 +287,9 @@ function StepSelectType({
 
               <div>
                 <h3 className="font-bold text-base" style={{ color: PRIMARY }}>
-                  {opt.title}
+                  {t(opt.titleKey)}
                 </h3>
-                <p className="mt-1 text-xs text-gray-500 leading-relaxed">{opt.desc}</p>
+                <p className="mt-1 text-xs text-gray-500 leading-relaxed">{t(opt.descKey)}</p>
               </div>
             </motion.button>
           );
@@ -308,6 +311,7 @@ function StepForm({
 }) {
   const router = useRouter();
   const { signUp } = useAuth();
+  const { t } = useTranslation();
 
   /* common fields */
   const [nome, setNome] = useState('');
@@ -344,11 +348,11 @@ function StepForm({
 
   const senhaError =
     touched && senha && senha.length < 6
-      ? 'Mínimo de 6 caracteres'
+      ? t('register.min_caracteres')
       : undefined;
   const confirmError =
     touched && confirmSenha && confirmSenha !== senha
-      ? 'As senhas não coincidem'
+      ? t('register.senhas_nao_coincidem')
       : undefined;
 
   async function handleSubmit(e: FormEvent) {
@@ -397,7 +401,7 @@ function StepForm({
     }
   }
 
-  const profileLabel = PROFILE_OPTIONS.find((o) => o.type === profileType)?.title ?? '';
+  const profileLabel = t(PROFILE_OPTIONS.find((o) => o.type === profileType)?.titleKey ?? '');
 
   return (
     <motion.div
@@ -414,13 +418,13 @@ function StepForm({
           onClick={onBack}
           className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#0A2463] transition mb-4"
         >
-          <ArrowLeft size={16} /> Voltar
+          <ArrowLeft size={16} /> {t('common.voltar')}
         </button>
         <h2 className="text-2xl sm:text-3xl font-extrabold" style={{ color: PRIMARY }}>
-          Criar conta — {profileLabel}
+          {t('register.criar_conta_tipo')} {profileLabel}
         </h2>
         <p className="mt-1 text-sm text-gray-500">
-          Preencha seus dados abaixo para começar
+          {t('register.preencha_dados')}
         </p>
       </div>
 
@@ -433,9 +437,9 @@ function StepForm({
         >
           <CheckCircle size={48} className="text-[#14A76C]" />
           <h3 className="text-lg font-bold" style={{ color: PRIMARY }}>
-            Conta criada com sucesso!
+            {t('register.conta_criada')}
           </h3>
-          <p className="text-sm text-gray-500">Redirecionando...</p>
+          <p className="text-sm text-gray-500">{t('register.redirecionando')}</p>
         </motion.div>
       )}
 
@@ -459,41 +463,41 @@ function StepForm({
               className="text-xs font-bold uppercase tracking-wider"
               style={{ color: SECONDARY }}
             >
-              Dados Pessoais
+              {t('register.dados_pessoais')}
             </h3>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
                 <FormField
-                  label="Nome Completo"
+                  label={t('register.nome_completo')}
                   value={nome}
                   onChange={setNome}
                   placeholder="Seu nome completo"
                 />
               </div>
               <FormField
-                label="E-mail"
+                label={t('login.email')}
                 type="email"
                 value={email}
                 onChange={setEmail}
                 placeholder="seu@email.com"
               />
               <FormField
-                label="Telefone"
+                label={t('register.telefone')}
                 type="tel"
                 value={telefone}
                 onChange={(v) => setTelefone(maskPhone(v))}
                 placeholder="(XX) XXXXX-XXXX"
               />
               <FormField
-                label="Senha"
+                label={t('login.senha')}
                 type="password"
                 value={senha}
                 onChange={setSenha}
-                placeholder="Mínimo 6 caracteres"
+                placeholder={t('register.min_caracteres')}
                 error={senhaError}
               />
               <FormField
-                label="Confirmar Senha"
+                label={t('register.confirmar_senha')}
                 type="password"
                 value={confirmSenha}
                 onChange={setConfirmSenha}
@@ -515,35 +519,35 @@ function StepForm({
                 className="text-xs font-bold uppercase tracking-wider"
                 style={{ color: PRIMARY }}
               >
-                Dados do Veículo
+                {t('register.dados_veiculo')}
               </h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
-                  label="Número da CNH"
+                  label={t('register.cnh')}
                   value={cnh}
                   onChange={setCnh}
-                  placeholder="Número da CNH"
+                  placeholder={t('register.cnh')}
                 />
                 <FormField
-                  label="Modelo do Veículo"
+                  label={t('register.modelo_veiculo')}
                   value={veiculoModelo}
                   onChange={setVeiculoModelo}
                   placeholder="Ex: Toyota Corolla"
                 />
                 <FormField
-                  label="Placa do Veículo"
+                  label={t('register.placa_veiculo')}
                   value={veiculoPlaca}
                   onChange={(v) => setVeiculoPlaca(maskPlaca(v))}
                   placeholder="XXX-XXXX"
                 />
                 <FormField
-                  label="Cor do Veículo"
+                  label={t('register.cor_veiculo')}
                   value={veiculoCor}
                   onChange={setVeiculoCor}
                   placeholder="Ex: Prata"
                 />
                 <FormField
-                  label="Ano do Veículo"
+                  label={t('register.ano_veiculo')}
                   type="number"
                   value={veiculoAno}
                   onChange={setVeiculoAno}
@@ -552,15 +556,15 @@ function StepForm({
                   max="2030"
                 />
                 <FormSelect
-                  label="Quantidade de Lugares"
+                  label={t('register.lugares')}
                   value={veiculoLugares}
                   onChange={setVeiculoLugares}
                   options={[
-                    { value: '4', label: '4 lugares' },
-                    { value: '6', label: '6 lugares' },
-                    { value: '7', label: '7 lugares' },
+                    { value: '4', label: `4 ${t('register.x_lugares')}` },
+                    { value: '6', label: `6 ${t('register.x_lugares')}` },
+                    { value: '7', label: `7 ${t('register.x_lugares')}` },
                   ]}
-                  placeholder="Selecione..."
+                  placeholder={t('register.selecione')}
                 />
               </div>
             </motion.div>
@@ -578,29 +582,29 @@ function StepForm({
                 className="text-xs font-bold uppercase tracking-wider"
                 style={{ color: ACCENT }}
               >
-                Dados do Estabelecimento
+                {t('register.dados_estabelecimento')}
               </h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
-                  label="CNPJ"
+                  label={t('register.cnpj')}
                   value={cnpj}
                   onChange={(v) => setCnpj(maskCNPJ(v))}
                   placeholder="XX.XXX.XXX/XXXX-XX"
                 />
                 <FormField
-                  label="Nome Fantasia"
+                  label={t('register.nome_fantasia')}
                   value={nomeFantasia}
                   onChange={setNomeFantasia}
                   placeholder="Nome fantasia do negócio"
                 />
                 <FormField
-                  label="Razão Social"
+                  label={t('register.razao_social')}
                   value={razaoSocial}
                   onChange={setRazaoSocial}
                   placeholder="Razão social"
                 />
                 <FormSelect
-                  label="Categoria"
+                  label={t('register.categoria')}
                   value={categoria}
                   onChange={setCategoria}
                   options={CATEGORIAS}
@@ -608,28 +612,28 @@ function StepForm({
                 />
                 <div className="sm:col-span-2">
                   <FormField
-                    label="Endereço"
+                    label={t('register.endereco')}
                     value={endereco}
                     onChange={setEndereco}
                     placeholder="Endereço completo"
                   />
                 </div>
                 <FormSelect
-                  label="Cidade"
+                  label={t('register.cidade')}
                   value={cidade}
                   onChange={setCidade}
                   options={CIDADES.map((c) => ({ value: c, label: c }))}
                   placeholder="Selecione a cidade..."
                 />
                 <FormField
-                  label="Telefone Comercial"
+                  label={t('register.tel_comercial')}
                   type="tel"
                   value={telComercial}
                   onChange={(v) => setTelComercial(maskPhone(v))}
                   placeholder="(XX) XXXXX-XXXX"
                 />
                 <FormField
-                  label="Site (opcional)"
+                  label={t('register.site_opcional')}
                   type="url"
                   value={site}
                   onChange={setSite}
@@ -650,22 +654,22 @@ function StepForm({
             {loading ? (
               <span className="inline-flex items-center gap-2">
                 <Loader2 size={18} className="animate-spin" />
-                Criando conta...
+                {t('register.criando_conta')}
               </span>
             ) : (
-              'Criar Conta'
+              t('register.criar_conta')
             )}
           </button>
 
           {/* Login link */}
           <p className="text-center text-sm text-gray-500">
-            Já tem conta?{' '}
+            {t('register.ja_tem_conta')}{' '}
             <a
               href="/entrar"
               className="font-semibold hover:underline"
               style={{ color: SECONDARY }}
             >
-              Entrar
+              {t('common.entrar')}
             </a>
           </p>
         </form>
@@ -678,6 +682,7 @@ function StepForm({
    PAGE
    ═══════════════════════════════════════════════════════════ */
 export default function CadastroPage() {
+  const { t } = useTranslation();
   const [selectedType, setSelectedType] = useState<ProfileType | null>(null);
   const [step, setStep] = useState<1 | 2>(1);
 
@@ -693,6 +698,7 @@ export default function CadastroPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-12">
+        <PageTitle title={t('register.page_title')} />
       {/* Gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0A2463] via-[#0d2d6e] to-[#14A76C]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(245,166,35,.12),transparent_55%)]" />

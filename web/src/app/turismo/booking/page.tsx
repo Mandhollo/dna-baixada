@@ -23,6 +23,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { supabase, type Roteiro, type PontoTuristico, ROTEIRO_TIPO_LABELS, formatarBRL } from '@/lib/supabase';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 // ─── Animation variants ────────────────────────────────────
 const fadeUp = {
@@ -46,6 +47,7 @@ function Skeleton({ className = '' }: { className?: string }) {
 function RoteiroCardSkeleton() {
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+        <PageTitle title='Reservar City Tour' />
       <div className="flex items-start justify-between">
         <Skeleton className="h-6 w-40" />
         <Skeleton className="h-6 w-20 rounded-full" />
@@ -78,6 +80,7 @@ function TipoIcon({ tipo }: { tipo: string }) {
 
 // ─── Main Component ────────────────────────────────────────
 function BookingContent() {
+  const { t } = useTranslation();
   const searchParams = useSearchParams();
   const pontoSlug = searchParams.get('ponto');
 
@@ -116,14 +119,14 @@ function BookingContent() {
         setRoteiros(roteirosRes.data ?? []);
         setPontos(pontosRes.data ?? []);
       } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : 'Erro ao carregar dados';
+        const msg = err instanceof Error ? err.message : t('booking.erro_carregar');
         setError(msg);
       } finally {
         setLoading(false);
       }
     }
     load();
-  }, []);
+  }, [t]);
 
   // ─── Pre-select roteiro if ?ponto=slug ────────────────
   useEffect(() => {
@@ -233,10 +236,10 @@ function BookingContent() {
             className="flex items-center gap-1 text-sm font-medium text-[#0A2463] hover:text-[#14A76C] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            Voltar
+            {t('common.voltar')}
           </a>
           <div className="flex-1 text-center">
-            <h1 className="text-lg font-bold text-[#0A2463]">Reservar City Tour</h1>
+            <h1 className="text-lg font-bold text-[#0A2463]">{t('booking.reservar_city_tour')}</h1>
           </div>
           <div className="w-20" /> {/* spacer */}
         </div>
@@ -252,7 +255,7 @@ function BookingContent() {
           >
             <MapPin className="w-6 h-6 text-[#14A76C] shrink-0" />
             <p className="text-sm text-[#0A2463]">
-              Mostrando roteiros que incluem{' '}
+              {t('booking.mostrando_roteiros')}{' '}
               <span className="font-bold">
                 {pontos.find((p) => p.slug === pontoSlug)?.nome ?? pontoSlug}
               </span>
@@ -270,8 +273,8 @@ function BookingContent() {
 
         {/* ════════════ Step 1: Escolher Roteiro ════════════ */}
         <section>
-          <h2 className="text-xl font-bold text-[#0A2463] mb-1">Escolha seu roteiro</h2>
-          <p className="text-sm text-gray-500 mb-4">Selecione o passeio ideal para você</p>
+          <h2 className="text-xl font-bold text-[#0A2463] mb-1">{t('booking.escolha_roteiro')}</h2>
+          <p className="text-sm text-gray-500 mb-4">{t('booking.selecione_passeio')}</p>
 
           {loading ? (
             <div className="space-y-4">
@@ -328,12 +331,12 @@ function BookingContent() {
                           <h3 className="font-bold text-[#0A2463] text-base">{roteiro.nome}</h3>
                           {highlights && (
                             <span className="text-xs font-semibold bg-[#F5A623]/15 text-[#F5A623] px-2 py-0.5 rounded-full">
-                              Inclui seu ponto
+                              {t('booking.inclui_seu_ponto')}
                             </span>
                           )}
                           {roteiro.destaque && (
                             <span className="text-xs font-semibold bg-[#14A76C]/15 text-[#14A76C] px-2 py-0.5 rounded-full">
-                              Destaque
+                              {t('turismo.destaque')}
                             </span>
                           )}
                         </div>
@@ -345,7 +348,7 @@ function BookingContent() {
                           </span>
                           <span className="flex items-center gap-1">
                             <MapPin className="w-4 h-4" />
-                            {roteiroPontos.length} pontos
+                            {roteiroPontos.length} {t('booking.pontos_count')}
                           </span>
                           <span className="font-bold text-[#14A76C]">
                             {formatarBRL(roteiro.preco_base)}
@@ -388,7 +391,7 @@ function BookingContent() {
                             {/* Pontos turísticos */}
                             <div>
                               <h4 className="text-sm font-semibold text-[#0A2463] mb-2">
-                                Pontos incluídos
+                                {t('booking.pontos_incluidos')}
                               </h4>
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 {roteiroPontos.map((ponto) => (
@@ -429,7 +432,7 @@ function BookingContent() {
                               {roteiro.inclui?.length > 0 && (
                                 <div>
                                   <h4 className="text-sm font-semibold text-[#14A76C] mb-2">
-                                    Inclui
+                                    {t('booking.inclui')}
                                   </h4>
                                   <ul className="space-y-1">
                                     {roteiro.inclui.map((item) => (
@@ -447,7 +450,7 @@ function BookingContent() {
                               {roteiro.nao_inclui?.length > 0 && (
                                 <div>
                                   <h4 className="text-sm font-semibold text-[#E84855] mb-2">
-                                    Não inclui
+                                    {t('booking.nao_inclui')}
                                   </h4>
                                   <ul className="space-y-1">
                                     {roteiro.nao_inclui.map((item) => (
@@ -467,7 +470,7 @@ function BookingContent() {
                             {/* Observações */}
                             {roteiro.observacoes && (
                               <div className="rounded-xl bg-[#0A2463]/5 p-3 text-sm text-gray-600">
-                                <strong className="text-[#0A2463]">Observações:</strong>{' '}
+                                <strong className="text-[#0A2463]">{t('booking.observacoes_label')}</strong>{' '}
                                 {roteiro.observacoes}
                               </div>
                             )}
@@ -475,13 +478,13 @@ function BookingContent() {
                             {/* Price info */}
                             <div className="rounded-xl bg-gradient-to-r from-[#0A2463]/5 to-[#14A76C]/5 p-4 flex items-center justify-between">
                               <div>
-                                <p className="text-sm text-gray-500">A partir de</p>
+                                <p className="text-sm text-gray-500">{t('booking.a_partir_de')}</p>
                                 <p className="text-2xl font-bold text-[#0A2463]">
                                   {formatarBRL(roteiro.preco_base)}
                                 </p>
                                 {roteiro.preco_6lugares && (
                                   <p className="text-xs text-gray-400 mt-0.5">
-                                    Grupo (+4 passageiros): {formatarBRL(roteiro.preco_6lugares)}
+                                    {t('booking.grupo_preco')}: {formatarBRL(roteiro.preco_6lugares)}
                                   </p>
                                 )}
                               </div>
@@ -494,7 +497,7 @@ function BookingContent() {
                                     : 'bg-[#0A2463] text-white hover:bg-[#0d2d73] shadow-md'
                                 }`}
                               >
-                                {isSelected ? '✓ Selecionado' : 'Selecionar'}
+                                {isSelected ? t('booking.selecionado') : t('booking.selecionar')}
                               </button>
                             </div>
                           </div>
@@ -520,9 +523,9 @@ function BookingContent() {
             >
               {/* Form header */}
               <div className="bg-gradient-to-r from-[#0A2463] to-[#14A76C] p-5">
-                <h2 className="text-lg font-bold text-white">Dados da reserva</h2>
+                <h2 className="text-lg font-bold text-white">{t('booking.dados_reserva')}</h2>
                 <p className="text-sm text-white/70 mt-1">
-                  Roteiro: <strong>{selectedRoteiro.nome}</strong> · {selectedRoteiro.duracao_horas}h
+                  {t('booking.roteiro_label')}: <strong>{selectedRoteiro.nome}</strong> · {selectedRoteiro.duracao_horas}h
                 </p>
               </div>
 
@@ -531,13 +534,13 @@ function BookingContent() {
                 <div>
                   <label className="block text-sm font-medium text-[#0A2463] mb-1.5">
                     <User className="w-4 h-4 inline mr-1" />
-                    Nome completo
+                    {t('booking.nome_completo')}
                   </label>
                   <input
                     type="text"
                     value={form.nome}
                     onChange={(e) => handleFormChange('nome', e.target.value)}
-                    placeholder="Seu nome"
+                    placeholder={t('booking.seu_nome')}
                     className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#14A76C]/40 focus:border-[#14A76C] transition-colors"
                   />
                 </div>
@@ -546,7 +549,7 @@ function BookingContent() {
                 <div>
                   <label className="block text-sm font-medium text-[#0A2463] mb-1.5">
                     <Phone className="w-4 h-4 inline mr-1" />
-                    WhatsApp
+                    {t('booking.whatsapp')}
                   </label>
                   <input
                     type="tel"
@@ -562,7 +565,7 @@ function BookingContent() {
                   <div>
                     <label className="block text-sm font-medium text-[#0A2463] mb-1.5">
                       <Calendar className="w-4 h-4 inline mr-1" />
-                      Data
+                      {t('booking.data')}
                     </label>
                     <input
                       type="date"
@@ -575,7 +578,7 @@ function BookingContent() {
                   <div>
                     <label className="block text-sm font-medium text-[#0A2463] mb-1.5">
                       <Clock className="w-4 h-4 inline mr-1" />
-                      Horário
+                      {t('booking.horario')}
                     </label>
                     <input
                       type="time"
@@ -590,7 +593,7 @@ function BookingContent() {
                 <div>
                   <label className="block text-sm font-medium text-[#0A2463] mb-1.5">
                     <Users className="w-4 h-4 inline mr-1" />
-                    Número de passageiros
+                    {t('booking.numero_passageiros')}
                   </label>
                   <div className="flex items-center gap-3">
                     <button
@@ -612,7 +615,7 @@ function BookingContent() {
                     </button>
                     {form.passageiros > 4 && selectedRoteiro.preco_6lugares && (
                       <span className="text-xs text-[#F5A623] font-medium ml-2">
-                        Preço grupo aplicado
+                        {t('booking.preco_grupo_aplicado')}
                       </span>
                     )}
                   </div>
@@ -622,12 +625,12 @@ function BookingContent() {
                 <div>
                   <label className="block text-sm font-medium text-[#0A2463] mb-1.5">
                     <MessageSquare className="w-4 h-4 inline mr-1" />
-                    Observações (opcional)
+                    {t('booking.observacoes_opcional')}
                   </label>
                   <textarea
                     value={form.observacoes}
                     onChange={(e) => handleFormChange('observacoes', e.target.value)}
-                    placeholder="Alguma solicitação especial?"
+                    placeholder={t('booking.solicitacao_especial')}
                     rows={3}
                     className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#14A76C]/40 focus:border-[#14A76C] transition-colors resize-none"
                   />
@@ -637,16 +640,16 @@ function BookingContent() {
                 <div className="rounded-2xl bg-gradient-to-r from-[#0A2463] to-[#14A76C] p-5 text-white">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-white/70">Valor total</p>
+                      <p className="text-sm text-white/70">{t('booking.valor_total')}</p>
                       <p className="text-3xl font-extrabold">{formatarBRL(precoFinal)}</p>
                       {form.passageiros > 4 && selectedRoteiro.preco_6lugares && (
                         <p className="text-xs text-white/60 mt-1">
-                          Tarifa grupo (até 6 lugares) · {form.passageiros} passageiros
+                          {t('booking.tarifa_grupo')} · {form.passageiros} {t('booking.passageiros_plural')}
                         </p>
                       )}
                       {form.passageiros <= 4 && (
                         <p className="text-xs text-white/60 mt-1">
-                          Tarifa base · {form.passageiros} passageiro{form.passageiros > 1 ? 's' : ''}
+                          {t('booking.tarifa_base')} · {form.passageiros} {form.passageiros > 1 ? t('booking.passageiros_plural') : t('booking.passageiro')}
                         </p>
                       )}
                     </div>
@@ -667,7 +670,7 @@ function BookingContent() {
                     }`}
                   >
                     <Calendar className="w-5 h-5" />
-                    Confirmar Reserva
+                    {t('booking.confirmar')}
                   </button>
                 ) : (
                   <motion.div
@@ -678,9 +681,9 @@ function BookingContent() {
                     {/* Success */}
                     <div className="rounded-xl bg-[#14A76C]/10 border border-[#14A76C]/20 p-4 text-center">
                       <Check className="w-8 h-8 text-[#14A76C] mx-auto mb-2" />
-                      <p className="font-bold text-[#0A2463]">Reserva confirmada!</p>
+                      <p className="font-bold text-[#0A2463]">{t('booking.reserva_confirmada')}</p>
                       <p className="text-sm text-gray-500 mt-1">
-                        Finalize pelo WhatsApp para garantir seu horário.
+                        {t('booking.finalize_whatsapp')}
                       </p>
                     </div>
 
@@ -692,7 +695,7 @@ function BookingContent() {
                       className="w-full py-4 rounded-xl font-bold text-base bg-[#25D366] text-white hover:bg-[#1fb855] transition-colors shadow-lg flex items-center justify-center gap-2"
                     >
                       <Phone className="w-5 h-5" />
-                      Enviar pelo WhatsApp
+                      {t('booking.enviar_whatsapp')}
                     </a>
 
                     <button
@@ -700,7 +703,7 @@ function BookingContent() {
                       onClick={() => setSubmitted(false)}
                       className="w-full py-3 rounded-xl text-sm text-gray-500 hover:text-gray-700 transition-colors"
                     >
-                      Voltar e editar
+                      {t('booking.voltar_editar')}
                     </button>
                   </motion.div>
                 )}

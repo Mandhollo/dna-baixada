@@ -75,6 +75,7 @@ const STATUS_CONFIG: Record<CruzeiroStatus, { label: string; color: string; bg: 
 function Skeleton() {
   return (
     <div className="animate-pulse rounded-2xl bg-gray-100 overflow-hidden">
+        <PageTitle title='Cruzeiros em Santos' />
       <div className="h-44 bg-gray-200" />
       <div className="p-5 space-y-3">
         <div className="h-4 bg-gray-200 rounded w-1/3" />
@@ -168,9 +169,9 @@ export default function CruzeirosPage() {
               Terminal Concais
             </span>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
-              Cruzeiros em{'\u00A0'}
+              Cruzeiros em
               <span className="bg-gradient-to-r from-[#F5A623] to-[#14A76C] bg-clip-text text-transparent">
-                Santos
+                {' '}Santos
               </span>
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-white/80">

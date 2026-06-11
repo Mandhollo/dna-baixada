@@ -6,10 +6,12 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useAuth } from '@/components/auth/AuthProvider';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 export default function EntrarPage() {
   const router = useRouter();
   const { signIn, signInWithGoogle } = useAuth();
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,6 +37,7 @@ export default function EntrarPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-primary via-primary-dark to-primary">
+        <PageTitle title={t('login.page_title')} />
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-accent/10 blur-3xl" />
@@ -73,7 +76,7 @@ export default function EntrarPage() {
             </div>
             <h1 className="text-2xl font-bold text-foreground">DNA Baixada</h1>
             <p className="text-foreground-secondary text-sm mt-1">
-              Entre na sua conta
+              {t('login.entre_conta')}
             </p>
           </motion.div>
 
@@ -97,7 +100,7 @@ export default function EntrarPage() {
               transition={{ delay: 0.2, duration: 0.4 }}
             >
               <label htmlFor="email" className="block text-sm font-medium text-foreground-secondary mb-1.5">
-                E-mail
+                {t('login.email')}
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground-muted" />
@@ -120,7 +123,7 @@ export default function EntrarPage() {
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               <label htmlFor="password" className="block text-sm font-medium text-foreground-secondary mb-1.5">
-                Senha
+                {t('login.senha')}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground-muted" />
@@ -137,7 +140,7 @@ export default function EntrarPage() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground-muted hover:text-foreground transition-colors"
-                  aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                  aria-label={showPassword ? t('login.ocultar_senha') : t('login.mostrar_senha')}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -150,7 +153,7 @@ export default function EntrarPage() {
                 href="/recuperar-senha"
                 className="text-sm text-secondary hover:text-secondary-light transition-colors animated-underline"
               >
-                Esqueceu a senha?
+                {t('login.esqueceu_senha')}
               </a>
             </div>
 
@@ -168,10 +171,10 @@ export default function EntrarPage() {
                 {loading ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Entrando...
+                    {t('login.entrando')}
                   </>
                 ) : (
-                  'Entrar'
+                  t('login.entrar')
                 )}
               </button>
             </motion.div>
@@ -183,7 +186,7 @@ export default function EntrarPage() {
               <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-surface-elevated px-3 text-foreground-muted">ou</span>
+              <span className="bg-surface-elevated px-3 text-foreground-muted">{t('common.ou')}</span>
             </div>
           </div>
 
@@ -224,7 +227,7 @@ export default function EntrarPage() {
                   fill="#EA4335"
                 />
               </svg>
-              Entrar com Google
+              {t('login.google')}
             </button>
           </motion.div>
 
@@ -235,12 +238,12 @@ export default function EntrarPage() {
             transition={{ delay: 0.6, duration: 0.4 }}
             className="mt-6 text-center text-sm text-foreground-secondary"
           >
-            Não tem conta?{' '}
+            {t('login.sem_conta')}{' '}
             <a
               href="/cadastro"
               className="font-semibold text-secondary hover:text-secondary-light transition-colors animated-underline"
             >
-              Cadastre-se
+              {t('login.cadastrar')}
             </a>
           </motion.p>
         </div>

@@ -443,6 +443,7 @@ function ComingSoon() {
 export default function Home() {
   return (
     <>
+      <PageTitle title='DNA Baixada — Mobilidade, Turismo e Impacto Social' />
       <Hero />
       <ComoFunciona />
       <Servicos />

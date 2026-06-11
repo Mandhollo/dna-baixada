@@ -142,7 +142,7 @@ const usefulLinks = [
 ];
 
 export default function AjudaPage() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openQuestion, setOpenQuestion] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('Todas');
 
@@ -157,6 +157,7 @@ export default function AjudaPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
+        <PageTitle title='Central de Ajuda' />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#F5A623] via-[#e6971a] to-[#0A2463] py-28 px-6">
         <div className="absolute inset-0 opacity-10">
@@ -178,9 +179,9 @@ export default function AjudaPage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            Central de{'\u00A0'}
+            Central de
             <span className="bg-gradient-to-r from-[#14A76C] to-white bg-clip-text text-transparent">
-              Ajuda
+              {' '}Ajuda
             </span>
           </motion.h1>
           <motion.p
@@ -246,7 +247,10 @@ export default function AjudaPage() {
               type="text"
               placeholder="Buscar perguntas..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setOpenQuestion(null);
+              }}
               className="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#14A76C]/40 focus:border-[#14A76C] transition-all"
             />
           </motion.div>
@@ -262,7 +266,10 @@ export default function AjudaPage() {
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => {
+                  setActiveCategory(cat);
+                  setOpenQuestion(null);
+                }}
                 className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                   activeCategory === cat
                     ? 'bg-[#0A2463] text-white shadow-md'
@@ -291,7 +298,7 @@ export default function AjudaPage() {
             ) : (
               filtered.map((item, i) => {
                 const Icon = item.icon;
-                const isOpen = openIndex === i;
+                const isOpen = openQuestion === item.question;
                 return (
                   <motion.div
                     key={item.question}
@@ -300,7 +307,7 @@ export default function AjudaPage() {
                     className="border border-gray-100 rounded-2xl overflow-hidden hover:border-[#14A76C]/30 transition-colors"
                   >
                     <button
-                      onClick={() => setOpenIndex(isOpen ? null : i)}
+                      onClick={() => setOpenQuestion(isOpen ? null : item.question)}
                       className="w-full flex items-center gap-4 p-5 text-left bg-white hover:bg-gray-50/50 transition-colors"
                     >
                       <div className="w-10 h-10 rounded-xl bg-[#14A76C]/10 flex items-center justify-center shrink-0">

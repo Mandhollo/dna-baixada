@@ -2,6 +2,7 @@
 import PageTitle from '@/components/seo/PageTitle';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   MapPin, Compass, Users, Heart, Mountain, Calendar, ArrowRight,
@@ -9,6 +10,7 @@ import {
   Ship, Sparkles, Clock, Banknote, ChevronRight,
 } from 'lucide-react';
 import { supabase, type PontoTuristico, type Roteiro, type Cruzeiro, PONTO_CATEGORIA_LABELS, ROTEIRO_TIPO_LABELS, formatarBRL } from '@/lib/supabase';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -60,6 +62,7 @@ const roteiroIcons: Record<string, React.ReactNode> = {
 };
 
 export default function TurismoPage() {
+  const { t } = useTranslation();
   const [pontos, setPontos] = useState<PontoTuristico[]>([]);
   const [roteiros, setRoteiros] = useState<Roteiro[]>([]);
   const [cruzeiros, setCruzeiros] = useState<Cruzeiro[]>([]);
@@ -86,6 +89,7 @@ export default function TurismoPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
+        <PageTitle title={t('turismo.page_title')} />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#14A76C] py-28 px-6">
         <div className="absolute inset-0 opacity-10">
@@ -99,7 +103,7 @@ export default function TurismoPage() {
             transition={{ duration: 0.5 }}
             className="inline-block text-sm font-semibold tracking-widest uppercase text-[#F5A623] mb-4"
           >
-            Descubra a região
+            {t('turismo.descubra_regiao')}
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -107,9 +111,9 @@ export default function TurismoPage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            Turismo na{'\u00A0'}
+            {t('turismo.hero_titulo_1')}
             <span className="bg-gradient-to-r from-[#F5A623] to-[#14A76C] bg-clip-text text-transparent">
-              Baixada Santista
+              {' '}{t('turismo.hero_titulo_2')}
             </span>
           </motion.h1>
           <motion.p
@@ -118,8 +122,7 @@ export default function TurismoPage() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="mt-6 max-w-2xl mx-auto text-lg text-white/80"
           >
-            Praias paradisíacas, história rica e experiências inesquecíveis. Conheça os melhores
-            pontos turísticos da região com quem mais a conhece.
+            {t('turismo.hero_descricao')}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -128,10 +131,10 @@ export default function TurismoPage() {
             className="mt-8 flex flex-wrap justify-center gap-3"
           >
             <a href="/turismo/booking" className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-[#e6951c] text-[#0A2463] font-bold px-6 py-3 rounded-full transition shadow-lg">
-              <Calendar size={18} /> Agendar City Tour
+              <Calendar size={18} /> {t('turismo.agendar_city_tour')}
             </a>
             <a href="/turismo/cruzeiros" className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-full transition border border-white/20">
-              <Ship size={18} /> Cruzeiros
+              <Ship size={18} /> {t('turismo.cruzeiros')}
             </a>
           </motion.div>
         </div>
@@ -142,7 +145,7 @@ export default function TurismoPage() {
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="text-center mb-14">
             <motion.h2 variants={fadeUp} custom={0} className="text-3xl md:text-4xl font-bold text-[#0A2463]">
-              Pontos Turísticos
+              {t('turismo.pontos_turisticos')}
             </motion.h2>
             <motion.div variants={fadeUp} custom={1} className="mt-3 w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] mx-auto rounded-full" />
           </motion.div>
@@ -163,47 +166,51 @@ export default function TurismoPage() {
           ) : (
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={stagger} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {pontos.map((ponto, i) => (
-                <motion.a
+                <Link
                   key={ponto.id}
                   href={`/turismo/${ponto.slug}`}
-                  variants={fadeUp}
-                  custom={i}
-                  className="group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-white"
+                  className="block"
                 >
-                  <div className={`relative h-44 bg-gradient-to-br ${categoriaGrad[ponto.categoria] ?? 'from-[#0A2463] to-[#14A76C]'} flex items-center justify-center`}>
-                    <div className="text-white/50 group-hover:scale-110 transition-transform">
-                      {categoriaIcon[ponto.categoria] ?? <MapPin size={48} />}
+                  <motion.div
+                    variants={fadeUp}
+                    custom={i}
+                    className="group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-white cursor-pointer"
+                  >
+                    <div className={`relative h-44 bg-gradient-to-br ${categoriaGrad[ponto.categoria] ?? 'from-[#0A2463] to-[#14A76C]'} flex items-center justify-center`}>
+                      <div className="text-white/50 group-hover:scale-110 transition-transform">
+                        {categoriaIcon[ponto.categoria] ?? <MapPin size={48} />}
+                      </div>
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                      {/* Badges */}
+                      <div className="absolute top-3 left-3 flex gap-2">
+                        {ponto.destaque && (
+                          <span className="bg-[#F5A623] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{t('turismo.destaque')}</span>
+                        )}
+                        {ponto.gratuito && (
+                          <span className="bg-[#14A76C] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{t('turismo.gratis')}</span>
+                        )}
+                      </div>
+                      <div className="absolute bottom-3 right-3 bg-white/20 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-full">
+                        {PONTO_CATEGORIA_LABELS[ponto.categoria]?.label ?? ponto.categoria}
+                      </div>
                     </div>
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                    {/* Badges */}
-                    <div className="absolute top-3 left-3 flex gap-2">
-                      {ponto.destaque && (
-                        <span className="bg-[#F5A623] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Destaque</span>
-                      )}
-                      {ponto.gratuito && (
-                        <span className="bg-[#14A76C] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Grátis</span>
-                      )}
+                    <div className="p-5">
+                      <h3 className="text-lg font-bold text-[#0A2463] mb-1 group-hover:text-[#14A76C] transition-colors">
+                        {ponto.nome}
+                      </h3>
+                      <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
+                        {ponto.descricao_curta}
+                      </p>
+                      <div className="mt-3 flex items-center justify-between text-xs text-gray-400">
+                        <span className="flex items-center gap-1"><MapPin size={12} /> {ponto.cidade}</span>
+                        <span className="flex items-center gap-1"><Clock size={12} /> {ponto.tempo_visita_minutos ?? '?'} {t('turismo.min')}</span>
+                        {!ponto.gratuito && ponto.preco_entrada > 0 && (
+                          <span className="flex items-center gap-1"><Banknote size={12} /> {formatarBRL(ponto.preco_entrada)}</span>
+                        )}
+                      </div>
                     </div>
-                    <div className="absolute bottom-3 right-3 bg-white/20 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-full">
-                      {PONTO_CATEGORIA_LABELS[ponto.categoria]?.label ?? ponto.categoria}
-                    </div>
-                  </div>
-                  <div className="p-5">
-                    <h3 className="text-lg font-bold text-[#0A2463] mb-1 group-hover:text-[#14A76C] transition-colors">
-                      {ponto.nome}
-                    </h3>
-                    <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
-                      {ponto.descricao_curta}
-                    </p>
-                    <div className="mt-3 flex items-center justify-between text-xs text-gray-400">
-                      <span className="flex items-center gap-1"><MapPin size={12} /> {ponto.cidade}</span>
-                      <span className="flex items-center gap-1"><Clock size={12} /> {ponto.tempo_visita_minutos ?? '?'} min</span>
-                      {!ponto.gratuito && ponto.preco_entrada > 0 && (
-                        <span className="flex items-center gap-1"><Banknote size={12} /> {formatarBRL(ponto.preco_entrada)}</span>
-                      )}
-                    </div>
-                  </div>
-                </motion.a>
+                  </motion.div>
+                </Link>
               ))}
             </motion.div>
           )}
@@ -215,10 +222,10 @@ export default function TurismoPage() {
         <div className="max-w-5xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="text-center mb-14">
             <motion.h2 variants={fadeUp} custom={0} className="text-3xl md:text-4xl font-bold text-[#0A2463]">
-              Roteiros Sugeridos
+              {t('turismo.roteiros_sugeridos')}
             </motion.h2>
             <motion.p variants={fadeUp} custom={1} className="mt-3 text-gray-500">
-              Escolha o estilo de passeio perfeito para você
+              {t('turismo.escolha_estilo')}
             </motion.p>
           </motion.div>
 
@@ -255,7 +262,7 @@ export default function TurismoPage() {
                     <div className="mt-4 flex items-center justify-center gap-4 text-sm">
                       <span className="text-gray-500 flex items-center gap-1"><Clock size={14} /> {roteiro.duracao_horas}h</span>
                       <span className="font-bold text-[#14A76C] flex items-center gap-1"><Banknote size={14} /> {formatarBRL(roteiro.preco_base)}</span>
-                      <span className="text-xs text-gray-400">{roteiro.pontos_ids.length} pontos</span>
+                      <span className="text-xs text-gray-400">{roteiro.pontos_ids.length} {t('turismo.pontos')}</span>
                     </div>
                   </motion.a>
                 );
@@ -275,19 +282,17 @@ export default function TurismoPage() {
               </div>
             </motion.div>
             <motion.div variants={fadeUp} custom={1}>
-              <span className="text-sm font-semibold tracking-widest uppercase text-[#14A76C]">Exclusivo</span>
-              <h2 className="text-3xl font-bold text-[#0A2463] mt-2 mb-4">City Tours com DNA</h2>
+              <span className="text-sm font-semibold tracking-widest uppercase text-[#14A76C]">{t('turismo.exclusivo')}</span>
+              <h2 className="text-3xl font-bold text-[#0A2463] mt-2 mb-4">{t('turismo.city_tours_dna')}</h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Nossos city tours são guiados por condutores que conhecem cada detalhe da Baixada
-                Santista. Roteiros personalizados com paradas nos principais pontos turísticos,
-                cultura local e gastronomia regional.
+                {t('turismo.city_tours_desc')}
               </p>
               <ul className="space-y-3 mb-6">
                 {[
-                  'Motoristas-guia locais certificados',
-                  'Roteiros personalizáveis',
-                  'Veículos confortáveis e com ar-condicionado',
-                  'Saída de qualquer ponto da Baixada',
+                  t('turismo.motoristas_guia'),
+                  t('turismo.roteiros_personalizaveis'),
+                  t('turismo.veiculos_confortaveis'),
+                  t('turismo.saida_qualquer_ponto'),
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2 text-gray-600">
                     <MapPin className="w-5 h-5 text-[#14A76C] shrink-0 mt-0.5" />
@@ -296,7 +301,7 @@ export default function TurismoPage() {
                 ))}
               </ul>
               <a href="/turismo/booking" className="inline-flex items-center gap-2 bg-[#0A2463] hover:bg-[#0d2d73] text-white font-bold px-6 py-3 rounded-full transition">
-                Agendar City Tour <ArrowRight size={18} />
+                {t('turismo.agendar_city_tour')} <ArrowRight size={18} />
               </a>
             </motion.div>
           </motion.div>
@@ -309,8 +314,8 @@ export default function TurismoPage() {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10">
               <Ship className="w-10 h-10 text-[#F5A623] mx-auto mb-4" />
-              <h2 className="text-3xl font-bold text-white">Próximos Cruzeiros</h2>
-              <p className="mt-2 text-white/60">Chegando no Concais — Santos</p>
+              <h2 className="text-3xl font-bold text-white">{t('turismo.proximos_cruzeiros')}</h2>
+              <p className="mt-2 text-white/60">{t('turismo.chegando_concais')}</p>
             </div>
             <div className="grid sm:grid-cols-3 gap-6">
               {proxCruzeiros.map((c) => (
@@ -319,18 +324,18 @@ export default function TurismoPage() {
                   <p className="text-sm text-white/60">{c.companhia}</p>
                   <div className="mt-3 space-y-1 text-sm">
                     <p className="flex items-center gap-2"><Calendar size={14} className="text-[#F5A623]" /> {new Date(c.data_chegada + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}</p>
-                    <p className="text-white/50">Chegada {c.hora_chegada.slice(0,5)} · Saída {c.hora_saida.slice(0,5)}</p>
-                    {c.passageiros && <p className="text-white/50">~{c.passageiros} passageiros</p>}
+                    <p className="text-white/50">{t('turismo.chegada')} {c.hora_chegada.slice(0,5)} · {t('turismo.saida')} {c.hora_saida.slice(0,5)}</p>
+                    {c.passageiros && <p className="text-white/50">~{c.passageiros} {t('turismo.passageiros')}</p>}
                   </div>
                   <a href="/corrida/solicitar?tipo=transfer_cruzeiro" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#F5A623] hover:underline">
-                    Reservar Transfer <ChevronRight size={12} />
+                    {t('turismo.reservar_transfer')} <ChevronRight size={12} />
                   </a>
                 </div>
               ))}
             </div>
             <div className="text-center mt-8">
               <a href="/turismo/cruzeiros" className="inline-flex items-center gap-2 text-white/80 hover:text-white font-semibold transition">
-                Ver todos os cruzeiros <ArrowRight size={16} />
+                {t('turismo.ver_todos_cruzeiros')} <ArrowRight size={16} />
               </a>
             </div>
           </div>
@@ -341,23 +346,23 @@ export default function TurismoPage() {
       <section className="py-20 px-6 bg-white">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-[#0A2463]">Explore Mais</h2>
+            <h2 className="text-3xl font-bold text-[#0A2463]">{t('turismo.explore_mais')}</h2>
           </div>
           <div className="grid sm:grid-cols-3 gap-6">
             <a href="/turismo/eventos" className="group rounded-2xl border border-gray-100 p-6 text-center shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
               <Calendar className="w-10 h-10 mx-auto text-[#F5A623] group-hover:scale-110 transition-transform" />
-              <h3 className="mt-3 font-bold text-[#0A2463]">Eventos</h3>
-              <p className="mt-1 text-sm text-gray-500">Shows, feiras e festivais</p>
+              <h3 className="mt-3 font-bold text-[#0A2463]">{t('turismo.eventos')}</h3>
+              <p className="mt-1 text-sm text-gray-500">{t('turismo.shows_feiras')}</p>
             </a>
             <a href="/turismo/cruzeiros" className="group rounded-2xl border border-gray-100 p-6 text-center shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
               <Ship className="w-10 h-10 mx-auto text-[#0A2463] group-hover:scale-110 transition-transform" />
-              <h3 className="mt-3 font-bold text-[#0A2463]">Cruzeiros</h3>
-              <p className="mt-1 text-sm text-gray-500">Calendário de navios</p>
+              <h3 className="mt-3 font-bold text-[#0A2463]">{t('turismo.cruzeiros')}</h3>
+              <p className="mt-1 text-sm text-gray-500">{t('turismo.calendario_navios')}</p>
             </a>
             <a href="/turismo/booking" className="group rounded-2xl border border-gray-100 p-6 text-center shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
               <Compass className="w-10 h-10 mx-auto text-[#14A76C] group-hover:scale-110 transition-transform" />
-              <h3 className="mt-3 font-bold text-[#0A2463]">City Tours</h3>
-              <p className="mt-1 text-sm text-gray-500">Agende seu passeio</p>
+              <h3 className="mt-3 font-bold text-[#0A2463]">{t('turismo.city_tours')}</h3>
+              <p className="mt-1 text-sm text-gray-500">{t('turismo.agende_seu_passeio')}</p>
             </a>
           </div>
         </div>
@@ -367,12 +372,12 @@ export default function TurismoPage() {
       <section className="py-20 px-6 bg-gradient-to-r from-[#0A2463] to-[#14A76C]">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="max-w-3xl mx-auto text-center">
           <Calendar className="w-12 h-12 text-[#F5A623] mx-auto mb-6" />
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Agende seu City Tour</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t('turismo.agende_city_tour_cta')}</h2>
           <p className="text-white/80 mb-8 max-w-xl mx-auto">
-            Viva a Baixada Santista como nunca antes. Agende um city tour exclusivo com nossos condutores locais.
+            {t('turismo.viva_baixada')}
           </p>
           <a href="/turismo/booking" className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-[#e6951c] text-[#0A2463] font-bold px-8 py-4 rounded-full transition-colors shadow-lg">
-            Agendar City Tour <ArrowRight size={18} />
+            {t('turismo.agendar_city_tour')} <ArrowRight size={18} />
           </a>
         </motion.div>
       </section>
