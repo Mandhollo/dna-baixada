@@ -264,7 +264,12 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+}
+
+/* Ensure spaces in headings render correctly (fixes font-extrabold collapse) */
+h1, h2, h3, h4 {
+  word-spacing: 0.02em;
+  letter-spacing: normal;
 }
 
 body {

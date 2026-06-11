@@ -8,7 +8,7 @@ import { useAuth } from '@/components/auth/AuthProvider';
 
 export default function EntrarPage() {
   const router = useRouter();
-  const { signIn } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -194,7 +194,16 @@ export default function EntrarPage() {
           >
             <button
               type="button"
-              className="w-full py-3 px-4 rounded-lg font-medium border border-border bg-background hover:bg-background-secondary transition-all flex items-center justify-center gap-3 text-foreground"
+              onClick={async () => {
+                setLoading(true);
+                const { error: googleError } = await signInWithGoogle();
+                if (googleError) {
+                  setError(googleError);
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+              className="w-full py-3 px-4 rounded-lg font-medium border border-border bg-background hover:bg-background-secondary transition-all flex items-center justify-center gap-3 text-foreground disabled:opacity-60"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path

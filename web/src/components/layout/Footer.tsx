@@ -72,21 +72,27 @@ export default function Footer() {
             {/* Social icons */}
             <div className="mt-6 flex items-center gap-3">
               <a
-                href="#"
+                href="https://instagram.com/contato.dnabaixada"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Instagram"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-[#F5A623] hover:text-[#0A2463]"
               >
                 <InstagramIcon className="h-4 w-4" />
               </a>
               <a
-                href="#"
+                href="https://www.facebook.com/profile.php?id=61590532599404"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Facebook"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-[#F5A623] hover:text-[#0A2463]"
               >
                 <FacebookIcon className="h-4 w-4" />
               </a>
               <a
-                href="#"
+                href="https://x.com/dna_baixada"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="X / Twitter"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-[#F5A623] hover:text-[#0A2463]"
               >

@@ -378,8 +378,8 @@ export default function AjudaPage() {
               {
                 icon: MessageCircle,
                 label: 'WhatsApp',
-                value: '(13) 9XXXX-XXXX',
-                href: 'https://wa.me/5513XXXXXXXX',
+                value: '(13) 99764-4646',
+                href: 'https://wa.me/5513997644646',
                 color: '#14A76C',
                 desc: 'Resposta rápida',
               },

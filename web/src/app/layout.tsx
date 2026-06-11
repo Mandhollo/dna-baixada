@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import InstallBanner from "@/components/pwa/InstallBanner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -38,6 +39,22 @@ export const metadata: Metadata = {
   authors: [{ name: "DNA Baixada" }],
   creator: "DNA Baixada",
   publisher: "DNA Baixada",
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/icons/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon.ico", sizes: "32x32" },
+    ],
+    apple: [
+      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "DNA Baixada",
+  },
   robots: {
     index: true,
     follow: true,
@@ -64,11 +81,25 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js');
+                });
+              }
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <AuthProvider>
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <InstallBanner />
         </AuthProvider>
       </body>
     </html>

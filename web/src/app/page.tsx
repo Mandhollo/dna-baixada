@@ -5,7 +5,7 @@ import {
   Car, Crown, Plane, Ship, Map, Palmtree, Building2, Bus,
   MapPin, Star, Users, Gift, Heart, Target, TrendingUp,
   Award, HandHeart, Phone, Shield, CheckCircle, ChevronRight,
-  Mail, ArrowRight,
+  Mail, ArrowRight, Download,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -58,10 +58,10 @@ function Hero() {
         {/* CTAs */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
           className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-          <a href="#corrida" className="inline-flex items-center gap-2 rounded-full bg-[#F5A623] px-8 py-3.5 font-bold text-[#0A2463] shadow-lg shadow-[#F5A623]/30 transition hover:brightness-110">
+          <a href="/corrida/solicitar" className="inline-flex items-center gap-2 rounded-full bg-[#F5A623] px-8 py-3.5 font-bold text-[#0A2463] shadow-lg shadow-[#F5A623]/30 transition hover:brightness-110">
             <Car size={18} /> Solicitar Corrida
           </a>
-          <a href="#motorista" className="inline-flex items-center gap-2 rounded-full border-2 border-white/30 px-8 py-3.5 font-bold text-white transition hover:bg-white/10">
+          <a href="/cadastro" className="inline-flex items-center gap-2 rounded-full border-2 border-white/30 px-8 py-3.5 font-bold text-white transition hover:bg-white/10">
             Sou Motorista <ArrowRight size={16} />
           </a>
         </motion.div>
@@ -177,7 +177,7 @@ function Motoristas() {
               </motion.li>
             ))}
           </ul>
-          <a href="#cadastro" className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#14A76C] px-7 py-3 font-bold text-white shadow-lg shadow-[#14A76C]/25 transition hover:brightness-110">
+          <a href="/cadastro" className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#14A76C] px-7 py-3 font-bold text-white shadow-lg shadow-[#14A76C]/25 transition hover:brightness-110">
             Cadastre-se como Motorista <ArrowRight size={16} />
           </a>
         </motion.div>
@@ -356,6 +356,25 @@ function Baixada() {
    9. CTA FINAL
    ════════════════════════════════════════════════════════ */
 function CtaFinal() {
+  const [installing, setInstalling] = useState(false);
+
+  const handleInstall = async () => {
+    setInstalling(true);
+    const promptEvent = (window as any).deferredInstallPrompt;
+    if (promptEvent) {
+      promptEvent.prompt();
+      await promptEvent.userChoice;
+      (window as any).deferredInstallPrompt = null;
+    } else {
+      alert(
+        'Para instalar:\n\n' +
+        '📱 Android: Menu (⋮) → "Adicionar à tela inicial"\n\n' +
+        '🍎 iPhone: Compartilhar (↑) → "Adicionar à Tela de Início"'
+      );
+    }
+    setInstalling(false);
+  };
+
   return (
     <section className="relative py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-[#0A2463] to-[#14A76C]" />
@@ -364,14 +383,15 @@ function CtaFinal() {
         <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
           className="text-3xl font-extrabold sm:text-4xl">Pronto para se conectar com a Baixada?</motion.h2>
         <motion.p variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-          className="mt-4 text-white/70">Baixe o app e comece agora mesmo.</motion.p>
+          className="mt-4 text-white/70">Instale o app no seu celular e comece agora mesmo.</motion.p>
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
           className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-          <a href="#app" className="inline-flex items-center gap-2 rounded-full bg-[#F5A623] px-8 py-3.5 font-bold text-[#0A2463] shadow-lg transition hover:brightness-110">
-            <Phone size={18} /> Baixar App Passageiro
-          </a>
-          <a href="#motorista" className="inline-flex items-center gap-2 rounded-full border-2 border-white/30 px-8 py-3.5 font-bold text-white transition hover:bg-white/10">
-            Baixar App Motorista
+          <button onClick={handleInstall} disabled={installing}
+            className="inline-flex items-center gap-2 rounded-full bg-[#F5A623] px-8 py-3.5 font-bold text-[#0A2463] shadow-lg transition hover:brightness-110">
+            <Download size={18} /> {installing ? 'Instalando...' : 'Instalar App'}
+          </button>
+          <a href="/cadastro" className="inline-flex items-center gap-2 rounded-full border-2 border-white/30 px-8 py-3.5 font-bold text-white transition hover:bg-white/10">
+            Sou Motorista <ArrowRight size={16} />
           </a>
         </motion.div>
         {/* Trust badges */}
