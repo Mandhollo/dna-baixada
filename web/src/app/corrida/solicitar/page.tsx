@@ -22,6 +22,20 @@ import { useAuth } from '@/components/auth/AuthProvider';
 import { supabase, CORRIDA_TIPOS, calcularPrecoEstimado } from '@/lib/supabase';
 import type { CorridaTipo, FormaPagamento } from '@/lib/supabase';
 import PagamentoPix from '@/components/pagamento/PagamentoPix';
+import dynamic from 'next/dynamic';
+import type { LatLng } from '@/components/maps/RouteMap';
+
+const RouteMap = dynamic(() => import('@/components/maps/RouteMap'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-72 items-center justify-center rounded-2xl border border-border bg-surface-elevated">
+      <div className="flex flex-col items-center gap-2">
+        <div className="h-8 w-8 animate-spin rounded-full border-3 border-secondary/20 border-t-secondary" />
+        <span className="text-xs text-foreground-muted">Carregando mapa...</span>
+      </div>
+    </div>
+  ),
+});
 
 // ════════════════════════════════════════════════════════════
 // Animation variants
@@ -90,6 +104,8 @@ export default function SolicitarCorridaPage() {
   const [selectedTipo, setSelectedTipo] = useState<CorridaTipo | null>(null);
   const [origem, setOrigem] = useState('');
   const [destino, setDestino] = useState('');
+  const [originCoord, setOriginCoord] = useState<LatLng | null>(null);
+  const [destCoord, setDestCoord] = useState<LatLng | null>(null);
   const [passageiros, setPassageiros] = useState(1);
   const [observacoes, setObservacoes] = useState('');
   const [formaPagamento, setFormaPagamento] = useState<FormaPagamento>('pix');
@@ -287,6 +303,16 @@ export default function SolicitarCorridaPage() {
                 setOrigem={setOrigem}
                 destino={destino}
                 setDestino={setDestino}
+                originCoord={originCoord}
+                destCoord={destCoord}
+                onOriginChange={(lat: number, lng: number, addr: string) => {
+                  setOriginCoord({ lat, lng });
+                  setOrigem(addr);
+                }}
+                onDestChange={(lat: number, lng: number, addr: string) => {
+                  setDestCoord({ lat, lng });
+                  setDestino(addr);
+                }}
                 passageiros={passageiros}
                 setPassageiros={setPassageiros}
                 observacoes={observacoes}
@@ -481,6 +507,10 @@ function StepTwo({
   setOrigem,
   destino,
   setDestino,
+  originCoord,
+  destCoord,
+  onOriginChange,
+  onDestChange,
   passageiros,
   setPassageiros,
   observacoes,
@@ -493,6 +523,10 @@ function StepTwo({
   setOrigem: (v: string) => void;
   destino: string;
   setDestino: (v: string) => void;
+  originCoord: LatLng | null;
+  destCoord: LatLng | null;
+  onOriginChange: (lat: number, lng: number, address: string) => void;
+  onDestChange: (lat: number, lng: number, address: string) => void;
   passageiros: number;
   setPassageiros: (v: number) => void;
   observacoes: string;
@@ -512,6 +546,16 @@ function StepTwo({
         </p>
       </motion.div>
 
+      {/* ── Interactive Map ── */}
+      <motion.div {...fadeUp} transition={{ delay: 0.08 }}>
+        <RouteMap
+          origin={originCoord}
+          destination={destCoord}
+          onOriginChange={onOriginChange}
+          onDestChange={onDestChange}
+        />
+      </motion.div>
+
       {/* ── Origem ── */}
       <motion.div {...fadeUp} transition={{ delay: 0.1 }}>
         <label className="mb-1.5 flex items-center gap-2 text-sm font-semibold text-foreground-secondary">
@@ -526,6 +570,7 @@ function StepTwo({
           className="w-full rounded-xl border border-border bg-surface-elevated px-4 py-3 text-sm text-foreground placeholder:text-foreground-muted/50 transition focus:border-secondary focus:ring-2 focus:ring-secondary/20 focus:outline-none"
         />
       </motion.div>
+
 
       {/* ── Destino ── */}
       <motion.div {...fadeUp} transition={{ delay: 0.15 }}>

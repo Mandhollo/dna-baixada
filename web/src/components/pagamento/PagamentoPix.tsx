@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { supabase, formatarBRL } from '@/lib/supabase';
 import type { FormaPagamento } from '@/lib/supabase';
+import { QRCodeSVG } from 'qrcode.react';
 
 // ════════════════════════════════════════════════════════════
 // Props
@@ -45,16 +46,68 @@ const scaleIn = {
 };
 
 // ════════════════════════════════════════════════════════════
-// Simulated Pix payload
+// PIX EMV payload generator
 // ════════════════════════════════════════════════════════════
 
-function gerarPixSimulado(): string {
-  return (
-    '00020126580014br.gov.bcb.pix0136' +
-    'a1b2c3d4-e5f6-7890-abcd-ef1234567890' +
-    '0215DNABAIXADA5204000053039865802BR59' +
-    '13DNA BAIXADA6009SAO PAULO62070503***63041234'
-  );
+const PIX_KEY = 'dna.baixada@pagamento.com.br';
+const PIX_MERCHANT = 'DNA BAIXADA';
+
+function tlv(id: string, value: string): string {
+  return id + value.length.toString().padStart(2, '0') + value;
+}
+
+function gerarPixPayload(amount: number): string {
+  // Payload Format Indicator
+  const pfi = tlv('00', '01');
+
+  // Merchant Account Information (GUI + PIX key)
+  const gui = tlv('00', 'br.gov.bcb.pix');   // GUI
+  const key = tlv('01', PIX_KEY);             // PIX key
+  const mai = tlv('26', gui + key);           // MAI under ID 26
+
+  // Merchant Category Code
+  const mcc = tlv('52', '0000');
+
+  // Transaction Currency (986 = BRL)
+  const cur = tlv('53', '986');
+
+  // Transaction Amount
+  const amt = tlv('54', amount.toFixed(2));
+
+  // Country Code
+  const ccy = tlv('58', 'BR');
+
+  // Merchant Name
+  const name = tlv('59', PIX_MERCHANT);
+
+  // Merchant City
+  const city = tlv('60', 'SAO PAULO');
+
+  // Additional Data Field Template
+  const addData = tlv('05', '***');
+  const adft = tlv('62', addData);
+
+  const payloadWithoutCrc = pfi + mai + mcc + cur + amt + ccy + name + city + adft + '6304';
+
+  // CRC16 calculation
+  const crc = crc16CCITT(payloadWithoutCrc);
+  return payloadWithoutCrc + crc.toUpperCase();
+}
+
+function crc16CCITT(str: string): string {
+  let crc = 0xFFFF;
+  for (let i = 0; i < str.length; i++) {
+    crc ^= str.charCodeAt(i) << 8;
+    for (let j = 0; j < 8; j++) {
+      if (crc & 0x8000) {
+        crc = (crc << 1) ^ 0x1021;
+      } else {
+        crc = crc << 1;
+      }
+      crc &= 0xFFFF;
+    }
+  }
+  return crc.toString(16).padStart(4, '0');
 }
 
 // ════════════════════════════════════════════════════════════
@@ -89,7 +142,7 @@ export default function PagamentoPix({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const pixCode = gerarPixSimulado();
+  const pixCode = gerarPixPayload(valor);
 
   // ── Copiar codigo Pix ──
   const handleCopy = useCallback(async () => {
@@ -284,14 +337,32 @@ export default function PagamentoPix({
           >
             {pagamentoStatus === 'aguardando' && (
               <>
-                {/* QR Code placeholder */}
+                {/* QR Code */}
                 <div className="flex flex-col items-center rounded-2xl border border-border bg-surface-elevated p-6">
-                  <div className="flex h-48 w-48 items-center justify-center rounded-xl border-2 border-dashed border-border bg-white">
-                    <QrCode className="h-20 w-20 text-primary/20" />
+                  <div className="rounded-xl bg-white p-3 shadow-sm">
+                    <QRCodeSVG
+                      value={pixCode}
+                      size={200}
+                      level="M"
+                      bgColor="#FFFFFF"
+                      fgColor="#1a1a2e"
+                      includeMargin={false}
+                    />
                   </div>
-                  <p className="mt-3 text-xs text-foreground-muted">
-                    Escaneie o QR Code para pagar
-                  </p>
+                  <div className="mt-3 flex items-center gap-1.5">
+                    <Lock className="h-3 w-3 text-secondary" />
+                    <p className="text-xs font-medium text-foreground-muted">
+                      Escaneie o QR Code para pagar com Pix
+                    </p>
+                  </div>
+                  <div className="mt-2 text-center">
+                    <p className="text-xs text-foreground-muted/60">
+                      Chave: {PIX_KEY}
+                    </p>
+                    <p className="mt-0.5 text-lg font-bold text-secondary">
+                      {formatarBRL(valor)}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Botao copiar */}
