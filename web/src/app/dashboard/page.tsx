@@ -135,7 +135,7 @@ function PassageiroDashboard() {
           <h2 className="mb-4 text-sm font-bold uppercase tracking-wider text-foreground-muted">
             Ações Rápidas
           </h2>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <ActionCard
               title="Solicitar Corrida"
               description="Peça uma corrida agora"
@@ -156,6 +156,13 @@ function PassageiroDashboard() {
               icon="✈️"
               href="/corrida/solicitar"
               variant="accent"
+            />
+            <ActionCard
+              title="Minhas Corridas"
+              description="Histórico de corridas"
+              icon="📋"
+              href="/dashboard/corridas"
+              variant="secondary"
             />
           </div>
         </section>

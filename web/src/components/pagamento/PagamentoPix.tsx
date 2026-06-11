@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   QrCode,
@@ -46,71 +46,6 @@ const scaleIn = {
 };
 
 // ════════════════════════════════════════════════════════════
-// PIX EMV payload generator
-// ════════════════════════════════════════════════════════════
-
-const PIX_KEY = 'dna.baixada@pagamento.com.br';
-const PIX_MERCHANT = 'DNA BAIXADA';
-
-function tlv(id: string, value: string): string {
-  return id + value.length.toString().padStart(2, '0') + value;
-}
-
-function gerarPixPayload(amount: number): string {
-  // Payload Format Indicator
-  const pfi = tlv('00', '01');
-
-  // Merchant Account Information (GUI + PIX key)
-  const gui = tlv('00', 'br.gov.bcb.pix');   // GUI
-  const key = tlv('01', PIX_KEY);             // PIX key
-  const mai = tlv('26', gui + key);           // MAI under ID 26
-
-  // Merchant Category Code
-  const mcc = tlv('52', '5411');
-
-  // Transaction Currency (986 = BRL)
-  const cur = tlv('53', '986');
-
-  // Transaction Amount
-  const amt = tlv('54', amount.toFixed(2));
-
-  // Country Code
-  const ccy = tlv('58', 'BR');
-
-  // Merchant Name
-  const name = tlv('59', PIX_MERCHANT);
-
-  // Merchant City
-  const city = tlv('60', 'SAO PAULO');
-
-  // Additional Data Field Template
-  const addData = tlv('05', '***');
-  const adft = tlv('62', addData);
-
-  const payloadWithoutCrc = pfi + mai + mcc + cur + amt + ccy + name + city + adft + '6304';
-
-  // CRC16 calculation
-  const crc = crc16CCITT(payloadWithoutCrc);
-  return payloadWithoutCrc + crc.toUpperCase();
-}
-
-function crc16CCITT(str: string): string {
-  let crc = 0xFFFF;
-  for (let i = 0; i < str.length; i++) {
-    crc ^= str.charCodeAt(i) << 8;
-    for (let j = 0; j < 8; j++) {
-      if (crc & 0x8000) {
-        crc = (crc << 1) ^ 0x1021;
-      } else {
-        crc = crc << 1;
-      }
-      crc &= 0xFFFF;
-    }
-  }
-  return crc.toString(16).padStart(4, '0');
-}
-
-// ════════════════════════════════════════════════════════════
 // Tab config
 // ════════════════════════════════════════════════════════════
 
@@ -121,6 +56,18 @@ const TABS: { value: TabPagamento; label: string; icon: React.ReactNode }[] = [
   { value: 'dinheiro', label: 'Dinheiro', icon: <Banknote className="h-4 w-4" /> },
   { value: 'cartao', label: 'Cartao', icon: <CreditCard className="h-4 w-4" /> },
 ];
+
+// ════════════════════════════════════════════════════════════
+// API response types
+// ════════════════════════════════════════════════════════════
+
+interface PixPaymentData {
+  qr_code: string | null;
+  copy_paste: string;
+  payment_id: number;
+  transacao_id: string;
+  amount: number;
+}
 
 // ════════════════════════════════════════════════════════════
 // Component
@@ -135,25 +82,34 @@ export default function PagamentoPix({
   const [activeTab, setActiveTab] = useState<TabPagamento>('pix');
   const [copied, setCopied] = useState(false);
   const [pagamentoStatus, setPagamentoStatus] = useState<
-    'aguardando' | 'verificando' | 'confirmado' | 'falhou'
+    'carregando' | 'aguardando' | 'verificando' | 'confirmado' | 'falhou'
   >('aguardando');
-  const [transacaoId, setTransacaoId] = useState<string | null>(null);
+  const [pixData, setPixData] = useState<PixPaymentData | null>(null);
   const [troco, setTroco] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const pixCode = gerarPixPayload(valor);
+  // ── Cleanup polling on unmount ──
+  useEffect(() => {
+    return () => {
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
+      }
+    };
+  }, []);
 
   // ── Copiar codigo Pix ──
   const handleCopy = useCallback(async () => {
+    const code = pixData?.copy_paste ?? '';
+    if (!code) return;
     try {
-      await navigator.clipboard.writeText(pixCode);
+      await navigator.clipboard.writeText(code);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      // Fallback
       const ta = document.createElement('textarea');
-      ta.value = pixCode;
+      ta.value = code;
       document.body.appendChild(ta);
       ta.select();
       document.execCommand('copy');
@@ -161,111 +117,148 @@ export default function PagamentoPix({
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     }
-  }, [pixCode]);
+  }, [pixData]);
 
-  // ── Criar transacao no Supabase ──
-  const criarTransacao = useCallback(
-    async (formaPagamento: FormaPagamento) => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-        if (!user) {
-          setError('Usuario nao autenticado.');
-          setLoading(false);
-          return null;
-        }
-
-        const { data, error: insertError } = await supabase
-          .from('transacoes')
-          .insert({
-            corrida_id: corridaId,
-            usuario_id: user.id,
-            tipo: 'pagamento_corrida',
-            status: 'pendente',
-            valor_bruto: valor,
-            taxa_plataforma: 0,
-            valor_liquido: valor,
-            forma_pagamento: formaPagamento,
-            pix_qrcode: formaPagamento === 'pix' ? pixCode : null,
-            pix_copiaecola: formaPagamento === 'pix' ? pixCode : null,
-            descricao: `Pagamento corrida ${corridaId.substring(0, 8)}`,
-          })
-          .select('id')
-          .single();
-
-        if (insertError) {
-          setError(insertError.message);
-          setLoading(false);
-          return null;
-        }
-
-        setTransacaoId(data.id);
-        setLoading(false);
-        return data.id;
-      } catch {
-        setError('Erro ao criar transacao.');
-        setLoading(false);
-        return null;
-      }
-    },
-    [corridaId, valor, pixCode]
-  );
-
-  // ── Simular polling de pagamento Pix ──
-  const iniciarPollingPix = useCallback(
-    (txId: string) => {
+  // ── Polling: check payment status ──
+  const iniciarPolling = useCallback(
+    (paymentId: number) => {
       setPagamentoStatus('verificando');
 
-      // Simular verificacao apos 3 segundos
-      setTimeout(async () => {
-        try {
-          // Atualizar transacao como concluida
-          const { error: updateError } = await supabase
-            .from('transacoes')
-            .update({
-              status: 'concluido',
-              pix_pago_em: new Date().toISOString(),
-            })
-            .eq('id', txId);
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
+      }
 
-          if (updateError) {
-            setPagamentoStatus('falhou');
-            return;
-          }
+      let attempts = 0;
+      const MAX_ATTEMPTS = 120; // 10 minutos com intervalo de 5s
 
-          setPagamentoStatus('confirmado');
-          // Chamar callback apos animacao de sucesso
-          setTimeout(() => {
-            onPagamentoConfirmado();
-          }, 1800);
-        } catch {
+      pollingRef.current = setInterval(async () => {
+        attempts++;
+
+        if (attempts > MAX_ATTEMPTS) {
+          if (pollingRef.current) clearInterval(pollingRef.current);
           setPagamentoStatus('falhou');
+          setError('Tempo esgotado. Tente novamente.');
+          return;
         }
-      }, 3000);
+
+        try {
+          const res = await fetch(`/api/pagamento/status/${paymentId}`);
+          if (!res.ok) return;
+
+          const data = await res.json();
+
+          if (data.status === 'approved') {
+            if (pollingRef.current) clearInterval(pollingRef.current);
+            setPagamentoStatus('confirmado');
+            setTimeout(() => {
+              onPagamentoConfirmado();
+            }, 1800);
+          }
+        } catch {
+          // Silently retry on network error
+        }
+      }, 5000);
     },
     [onPagamentoConfirmado]
   );
 
-  // ── Confirmar pagamento Pix ──
+  // ── Criar pagamento PIX via API ──
   const handleConfirmarPix = async () => {
-    const txId = await criarTransacao('pix');
-    if (txId) {
-      iniciarPollingPix(txId);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        setError('Usuário não autenticado.');
+        setLoading(false);
+        return;
+      }
+
+      // Fetch user profile for CPF and nome
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('nome, telefone')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      const res = await fetch('/api/pagamento/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          corrida_id: corridaId,
+          email: user.email,
+          cpf: user.user_metadata?.cpf ?? '00000000000',
+          nome: profile?.nome ?? undefined,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error ?? 'Erro ao criar pagamento');
+        setLoading(false);
+        return;
+      }
+
+      setPixData(data);
+
+      // Start polling for payment confirmation
+      iniciarPolling(data.payment_id);
+    } catch {
+      setError('Erro ao conectar com o gateway de pagamento.');
+    } finally {
+      setLoading(false);
     }
   };
 
   // ── Confirmar pagamento em dinheiro ──
   const handleConfirmarDinheiro = async () => {
-    const txId = await criarTransacao('dinheiro');
-    if (txId) {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        setError('Usuário não autenticado.');
+        setLoading(false);
+        return;
+      }
+
+      const { data, error: insertError } = await supabase
+        .from('transacoes')
+        .insert({
+          corrida_id: corridaId,
+          usuario_id: user.id,
+          tipo: 'pagamento_corrida',
+          status: 'pendente',
+          valor_bruto: valor,
+          taxa_plataforma: 0,
+          valor_liquido: valor,
+          forma_pagamento: 'dinheiro',
+          descricao: `Pagamento corrida ${corridaId.substring(0, 8)} (dinheiro)`,
+        })
+        .select('id')
+        .single();
+
+      if (insertError) {
+        setError(insertError.message);
+        setLoading(false);
+        return;
+      }
+
       setPagamentoStatus('confirmado');
       setTimeout(() => {
         onPagamentoConfirmado();
       }, 1500);
+    } catch {
+      setError('Erro ao criar transação.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -277,6 +270,11 @@ export default function PagamentoPix({
   // ════════════════════════════════════════════════════════════
   // Render
   // ════════════════════════════════════════════════════════════
+
+  // QR code content: use real copy_paste string or fallback
+  const qrCodeValue = pixData?.copy_paste ?? '';
+  // If MP returns a base64 image, we use it; otherwise we render QRCodeSVG from the copy_paste string
+  const hasBase64Qr = pixData?.qr_code && pixData.qr_code.length > 100;
 
   return (
     <div className="space-y-5">
@@ -335,19 +333,65 @@ export default function PagamentoPix({
             transition={{ duration: 0.25 }}
             className="space-y-4"
           >
-            {pagamentoStatus === 'aguardando' && (
+            {pagamentoStatus === 'aguardando' && !pixData && (
+              <>
+                {/* Botao gerar QR Code */}
+                <div className="flex flex-col items-center rounded-2xl border border-border bg-surface-elevated p-6">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary/10">
+                    <QrCode className="h-8 w-8 text-secondary" />
+                  </div>
+                  <div className="mt-3 text-center">
+                    <p className="text-sm font-semibold text-foreground-secondary">
+                      Pagamento via PIX
+                    </p>
+                    <p className="mt-1 text-xs text-foreground-muted">
+                      Clique abaixo para gerar o QR Code
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleConfirmarPix}
+                  disabled={loading}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-secondary px-6 py-3.5 text-sm font-bold text-white shadow-lg transition hover:bg-secondary/90 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Gerando QR Code...
+                    </>
+                  ) : (
+                    <>
+                      <QrCode className="h-4 w-4" />
+                      Gerar QR Code Pix
+                    </>
+                  )}
+                </button>
+              </>
+            )}
+
+            {pagamentoStatus === 'aguardando' && pixData && (
               <>
                 {/* QR Code */}
                 <div className="flex flex-col items-center rounded-2xl border border-border bg-surface-elevated p-6">
                   <div className="rounded-xl bg-white p-3 shadow-sm">
-                    <QRCodeSVG
-                      value={pixCode}
-                      size={200}
-                      level="M"
-                      bgColor="#FFFFFF"
-                      fgColor="#1a1a2e"
-                      includeMargin={false}
-                    />
+                    {hasBase64Qr ? (
+                      <img
+                        src={`data:image/png;base64,${pixData.qr_code!}`}
+                        alt="QR Code PIX"
+                        width={200}
+                        height={200}
+                      />
+                    ) : (
+                      <QRCodeSVG
+                        value={qrCodeValue}
+                        size={200}
+                        level="M"
+                        bgColor="#FFFFFF"
+                        fgColor="#1a1a2e"
+                        includeMargin={false}
+                      />
+                    )}
                   </div>
                   <div className="mt-3 flex items-center gap-1.5">
                     <Lock className="h-3 w-3 text-secondary" />
@@ -356,10 +400,7 @@ export default function PagamentoPix({
                     </p>
                   </div>
                   <div className="mt-2 text-center">
-                    <p className="text-xs text-foreground-muted/60">
-                      Chave: {PIX_KEY}
-                    </p>
-                    <p className="mt-0.5 text-lg font-bold text-secondary">
+                    <p className="text-lg font-bold text-secondary">
                       {formatarBRL(valor)}
                     </p>
                   </div>
@@ -373,19 +414,19 @@ export default function PagamentoPix({
                   {copied ? (
                     <>
                       <Check className="h-4 w-4 text-secondary" />
-                      Codigo copiado!
+                      Código copiado!
                     </>
                   ) : (
                     <>
                       <Copy className="h-4 w-4" />
-                      Copiar Codigo Pix
+                      Copiar Código Pix
                     </>
                   )}
                 </button>
 
-                {/* Botao confirmar pagamento */}
+                {/* Botao confirmar manualmente (fallback) */}
                 <button
-                  onClick={handleConfirmarPix}
+                  onClick={() => iniciarPolling(pixData.payment_id)}
                   disabled={loading}
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-secondary px-6 py-3.5 text-sm font-bold text-white shadow-lg transition hover:bg-secondary/90 disabled:cursor-not-allowed disabled:opacity-60"
                 >
@@ -397,7 +438,7 @@ export default function PagamentoPix({
                   ) : (
                     <>
                       <Check className="h-4 w-4" />
-                      Ja fiz o pagamento Pix
+                      Já fiz o pagamento Pix
                     </>
                   )}
                 </button>
@@ -417,7 +458,7 @@ export default function PagamentoPix({
                     Verificando pagamento
                   </p>
                   <p className="mt-1 text-sm text-foreground-muted">
-                    Aguardando confirmacao...
+                    Aguardando confirmação do PIX...
                   </p>
                 </div>
               </motion.div>
@@ -459,14 +500,18 @@ export default function PagamentoPix({
                 </div>
                 <div className="text-center">
                   <p className="text-base font-bold text-accent2">
-                    Pagamento nao detectado
+                    Pagamento não detectado
                   </p>
                   <p className="mt-1 text-sm text-foreground-muted">
                     Tente novamente ou escolha outra forma de pagamento
                   </p>
                 </div>
                 <button
-                  onClick={() => setPagamentoStatus('aguardando')}
+                  onClick={() => {
+                    setPixData(null);
+                    setPagamentoStatus('aguardando');
+                    setError(null);
+                  }}
                   className="rounded-xl border border-border bg-surface-elevated px-5 py-2.5 text-sm font-semibold text-foreground-secondary transition hover:bg-background-tertiary"
                 >
                   Tentar novamente
@@ -483,7 +528,7 @@ export default function PagamentoPix({
             transition={{ duration: 0.25 }}
             className="space-y-4"
           >
-            {pagamentoStatus === 'aguardando' ? (
+            {pagamentoStatus === 'aguardando' || pagamentoStatus === 'carregando' ? (
               <>
                 <div className="rounded-2xl border border-border bg-surface-elevated p-5">
                   <label className="mb-1.5 flex items-center gap-2 text-sm font-semibold text-foreground-secondary">
@@ -494,7 +539,7 @@ export default function PagamentoPix({
                     type="number"
                     value={troco}
                     onChange={(e) => setTroco(e.target.value)}
-                    placeholder="Ex: 50,00 (deixe vazio se nao precisa)"
+                    placeholder="Ex: 50,00 (deixe vazio se não precisa)"
                     className="w-full rounded-xl border border-border bg-background-secondary px-4 py-3 text-sm text-foreground placeholder:text-foreground-muted/50 transition focus:border-secondary focus:ring-2 focus:ring-secondary/20 focus:outline-none"
                   />
                   {troco && Number(troco) > valor && (
@@ -512,7 +557,7 @@ export default function PagamentoPix({
                 </div>
 
                 <p className="text-center text-xs text-foreground-muted">
-                  O pagamento sera feito diretamente ao motorista
+                  O pagamento será feito diretamente ao motorista
                 </p>
 
                 <button
@@ -576,7 +621,7 @@ export default function PagamentoPix({
                 Em breve
               </p>
               <p className="mt-1 text-sm text-foreground-muted">
-                Pagamento com cartao de credito estara disponivel em breve
+                Pagamento com cartão de crédito estará disponível em breve
               </p>
             </div>
           </motion.div>

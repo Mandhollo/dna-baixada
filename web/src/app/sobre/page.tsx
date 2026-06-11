@@ -255,9 +255,9 @@ export default function SobrePage() {
             className="grid sm:grid-cols-2 md:grid-cols-3 gap-8"
           >
             {[
-              { name: 'Fundador(a)', role: 'CEO & Fundador(a)' },
-              { name: 'Co-fundador(a)', role: 'Diretor(a) de Operações' },
-              { name: 'Líder Técnico(a)', role: 'CTO' },
+              { name: 'Anderson N. Oliveira', role: 'CEO & Fundador' },
+              { name: 'Equipe DNA Baixada', role: 'Diretor de Operações' },
+              { name: 'Equipe Técnica', role: 'CTO' },
             ].map((member, i) => (
               <motion.div
                 key={member.role}

@@ -5,18 +5,22 @@ import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
 import MobileNav from './MobileNav';
+import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
+import NotificationBell from '@/components/notifications/NotificationBell';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
-const navLinks = [
-  { label: 'Início', href: '/' },
-  { label: 'Corridas', href: '/corrida/solicitar' },
-  { label: 'Turismo', href: '/turismo' },
-  { label: 'Parceiros', href: '/parceiros' },
-  { label: 'DNA Social', href: '/social' },
-  { label: 'Recompensas', href: '/recompensas' },
+const navKeys = [
+  { key: 'nav.inicio', href: '/' },
+  { key: 'nav.corridas', href: '/corrida/solicitar' },
+  { key: 'nav.turismo', href: '/turismo' },
+  { key: 'nav.parceiros', href: '/parceiros' },
+  { key: 'nav.social', href: '/social' },
+  { key: 'nav.recompensas', href: '/recompensas' },
 ];
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -39,32 +43,38 @@ export default function Header() {
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 md:flex">
-            {navLinks.map((link) => (
+            {navKeys.map((link) => (
               <Link
-                key={link.label}
+                key={link.key}
                 href={link.href}
                 className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white"
               >
-                {link.label}
+                {t(link.key)}
               </Link>
             ))}
+            <LanguageSwitcher />
+            <NotificationBell />
             <Link
               href="/entrar"
               className="ml-3 inline-flex items-center rounded-full bg-[#F5A623] px-5 py-2 text-sm font-bold text-[#0A2463] shadow-lg shadow-[#F5A623]/25 transition-all hover:bg-[#e6951a] hover:shadow-[#F5A623]/40"
             >
-              Entrar
+              {t('common.entrar')}
             </Link>
           </nav>
 
-          {/* Mobile hamburger */}
-          <button
-            type="button"
-            onClick={() => setMobileOpen(true)}
-            className="inline-flex items-center justify-center rounded-lg p-2 text-white transition-colors hover:bg-white/10 md:hidden"
-            aria-label="Abrir menu"
-          >
-            <Menu className="h-6 w-6" />
-          </button>
+          {/* Mobile: language + hamburger */}
+          <div className="flex items-center gap-1 md:hidden">
+            <NotificationBell />
+            <LanguageSwitcher />
+            <button
+              type="button"
+              onClick={() => setMobileOpen(true)}
+              className="inline-flex items-center justify-center rounded-lg p-2 text-white transition-colors hover:bg-white/10"
+              aria-label="Abrir menu"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
         </div>
       </motion.header>
 

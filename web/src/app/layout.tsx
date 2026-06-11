@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { LanguageProvider } from "@/components/i18n/LanguageProvider";
 import InstallBanner from "@/components/pwa/InstallBanner";
 import "./globals.css";
 
@@ -39,6 +40,22 @@ export const metadata: Metadata = {
   authors: [{ name: "DNA Baixada" }],
   creator: "DNA Baixada",
   publisher: "DNA Baixada",
+  metadataBase: new URL("https://dna-baixada.vercel.app"),
+  openGraph: {
+    title: "DNA Baixada — Mobilidade, Turismo e Impacto Social",
+    description: "Plataforma regional de mobilidade, turismo e impacto social na Baixada Santista.",
+    url: "https://dna-baixada.vercel.app",
+    siteName: "DNA Baixada",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "DNA Baixada" }],
+    type: "website",
+    locale: "pt_BR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DNA Baixada — Mobilidade, Turismo e Impacto Social",
+    description: "Plataforma regional de mobilidade, turismo e impacto social na Baixada Santista.",
+    images: ["/og-image.png"],
+  },
   manifest: "/manifest.json",
   icons: {
     icon: [
@@ -60,20 +77,7 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-video-preview": -1, "max-image-preview": "large", "max-snippet": -1 },
   },
-  openGraph: {
-    type: "website",
-    locale: "pt_BR",
-    siteName: "DNA Baixada",
-    title: "DNA Baixada — Mobilidade, Turismo e Impacto Social",
-    description: "Corridas, city tours, transfer e turismo na Baixada Santista. Cada corrida transforma vidas.",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "DNA Baixada — Mobilidade, Turismo e Impacto Social",
-    description: "Corridas, city tours, transfer e turismo na Baixada Santista.",
-  },
-  alternates: { canonical: "https://dnabaixada.com.br" },
-  metadataBase: new URL("https://dnabaixada.com.br"),
+  alternates: { canonical: "https://dna-baixada.vercel.app" },
 };
 
 export default function RootLayout({
@@ -95,12 +99,14 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <AuthProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <InstallBanner />
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <InstallBanner />
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -22,10 +22,37 @@ import {
   User,
   Phone,
   AlertTriangle,
+  Crosshair,
+  Timer,
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { supabase, CORRIDA_STATUS_LABELS, CORRIDA_TIPOS } from '@/lib/supabase';
 import type { Corrida, MensagemChat, Profile } from '@/lib/supabase';
 import { useAuth } from '@/components/auth/AuthProvider';
+
+// Dynamic import for LiveTrackMap to avoid SSR issues with Leaflet
+const LiveTrackMap = dynamic(
+  () => import('@/components/maps/LiveTrackMap'),
+  { ssr: false, loading: () => (
+    <div className="flex h-72 items-center justify-center rounded-2xl border border-border bg-surface-elevated sm:h-80">
+      <div className="flex flex-col items-center gap-2">
+        <div className="h-8 w-8 animate-spin rounded-full border-3 border-primary/20 border-t-primary" />
+        <p className="text-xs text-foreground-muted">Carregando mapa...</p>
+      </div>
+    </div>
+  )},
+);
+
+// ── Live Location State ──
+interface DriverLocation {
+  lat: number;
+  lng: number;
+  heading: number;
+  speed: number;
+  timestamp: string;
+  progress: number;
+  etaMinutes: number;
+}
 
 // ════════════════════════════════════════════════════════════
 // Formatters
@@ -90,6 +117,10 @@ export default function CorridaAtivaPage() {
 
   // Action loading states
   const [actionLoading, setActionLoading] = useState(false);
+
+  // Live tracking state
+  const [driverLocation, setDriverLocation] = useState<DriverLocation | null>(null);
+  const [trackingError, setTrackingError] = useState<string | null>(null);
 
   // ── Load initial data ──
   useEffect(() => {
@@ -216,6 +247,47 @@ export default function CorridaAtivaPage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [mensagens]);
+
+  // ── Poll driver location for live tracking ──
+  useEffect(() => {
+    if (!id || !corrida) return;
+
+    const isActive =
+      corrida.status === 'em_andamento' || corrida.status === 'aceita';
+
+    if (!isActive) return;
+
+    let cancelled = false;
+
+    async function fetchLocation() {
+      if (cancelled) return;
+      try {
+        const res = await fetch(`/api/corridas/${id}/location`);
+        if (!res.ok) {
+          setTrackingError('Erro ao obter localização');
+          return;
+        }
+        const data = await res.json();
+        if (data.lat != null && data.lng != null) {
+          setDriverLocation(data);
+          setTrackingError(null);
+        }
+      } catch {
+        setTrackingError('Sem conexão com rastreamento');
+      }
+    }
+
+    // Fetch immediately
+    fetchLocation();
+
+    // Poll every 5 seconds
+    const interval = setInterval(fetchLocation, 5000);
+
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [id, corrida]);
 
   // ── Send message ──
   const handleSendMessage = useCallback(async () => {
@@ -488,6 +560,94 @@ export default function CorridaAtivaPage() {
             </p>
           )}
         </motion.div>
+
+        {/* ════════ Live Tracking Map ════════ */}
+        {corrida.origem_lat != null &&
+          corrida.origem_lng != null &&
+          corrida.destino_lat != null &&
+          corrida.destino_lng != null &&
+          (corrida.status === 'em_andamento' ||
+            corrida.status === 'aceita') && (
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.4 }}
+              className="mb-4 rounded-2xl border border-border bg-surface-elevated p-4 shadow-sm"
+            >
+              <h3 className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-foreground-muted">
+                <Crosshair className="h-4 w-4 text-yellow-500" />
+                Rastrear Motorista
+              </h3>
+
+              <LiveTrackMap
+                origin={{
+                  lat: corrida.origem_lat,
+                  lng: corrida.origem_lng,
+                }}
+                destination={{
+                  lat: corrida.destino_lat!,
+                  lng: corrida.destino_lng!,
+                }}
+                driverLocation={
+                  driverLocation
+                    ? { lat: driverLocation.lat, lng: driverLocation.lng }
+                    : null
+                }
+                status={corrida.status}
+                etaMinutes={driverLocation?.etaMinutes ?? null}
+              />
+
+              {/* Tracking info bar */}
+              <div className="mt-3 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  {corrida.status === 'em_andamento' && (
+                    <>
+                      <span className="relative flex h-2 w-2">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+                        <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+                      </span>
+                      <span className="text-xs font-medium text-foreground-secondary">
+                        Motorista em movimento
+                      </span>
+                    </>
+                  )}
+                  {corrida.status === 'aceita' && (
+                    <>
+                      <span className="relative flex h-2 w-2">
+                        <span className="relative inline-flex h-2 w-2 rounded-full bg-yellow-500" />
+                      </span>
+                      <span className="text-xs font-medium text-foreground-secondary">
+                        Motorista a caminho do ponto de partida
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                {driverLocation && corrida.status === 'em_andamento' && (
+                  <div className="flex items-center gap-3">
+                    {driverLocation.etaMinutes != null && (
+                      <span className="flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
+                        <Timer className="h-3 w-3" />
+                        ~{driverLocation.etaMinutes} min
+                      </span>
+                    )}
+                    {driverLocation.speed > 0 && (
+                      <span className="text-xs text-foreground-muted">
+                        {driverLocation.speed.toFixed(0)} km/h
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {trackingError && (
+                <p className="mt-2 flex items-center gap-1 text-xs text-accent2">
+                  <AlertTriangle className="h-3 w-3" />
+                  {trackingError}
+                </p>
+              )}
+            </motion.div>
+          )}
 
         {/* ════════ Driver Info ════════ */}
         {motoristaData && (

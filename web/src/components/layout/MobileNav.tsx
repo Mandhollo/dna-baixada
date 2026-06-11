@@ -3,24 +3,27 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 interface MobileNavProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const navLinks = [
-  { label: 'Início', href: '/' },
-  { label: 'Solicitar Corrida', href: '/corrida/solicitar' },
-  { label: 'Turismo', href: '/turismo' },
-  { label: 'Parceiros', href: '/parceiros' },
-  { label: 'DNA Social', href: '/social' },
-  { label: 'Recompensas', href: '/recompensas' },
-  { label: 'Sobre', href: '/sobre' },
-  { label: 'Ajuda', href: '/ajuda' },
+const navKeys = [
+  { key: 'nav.inicio', href: '/' },
+  { key: 'nav.solicitar_corrida', href: '/corrida/solicitar' },
+  { key: 'nav.turismo', href: '/turismo' },
+  { key: 'nav.parceiros', href: '/parceiros' },
+  { key: 'nav.social', href: '/social' },
+  { key: 'nav.recompensas', href: '/recompensas' },
+  { key: 'nav.sobre', href: '/sobre' },
+  { key: 'nav.ajuda', href: '/ajuda' },
 ];
 
 export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
+  const { t } = useTranslation();
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -58,9 +61,9 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
 
             {/* Links */}
             <div className="flex flex-1 flex-col gap-1 px-4">
-              {navLinks.map((link, index) => (
+              {navKeys.map((link, index) => (
                 <motion.div
-                  key={link.label}
+                  key={link.key}
                   initial={{ opacity: 0, x: 24 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{
@@ -74,7 +77,7 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
                     onClick={onClose}
                     className="block rounded-lg px-4 py-3 text-lg font-medium text-white/90 transition-colors hover:bg-white/10 hover:text-white"
                   >
-                    {link.label}
+                    {t(link.key)}
                   </Link>
                 </motion.div>
               ))}
@@ -89,7 +92,7 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
                   onClick={onClose}
                   className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#F5A623] px-6 py-3 text-base font-bold text-[#0A2463] shadow-lg shadow-[#F5A623]/25 transition-all hover:bg-[#e6951a]"
                 >
-                  Entrar
+                  {t('common.entrar')}
                 </Link>
               </motion.div>
             </div>
