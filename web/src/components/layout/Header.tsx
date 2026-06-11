@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Menu } from 'lucide-react';
+import { Menu, LogOut, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import MobileNav from './MobileNav';
 import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
 import NotificationBell from '@/components/notifications/NotificationBell';
 import { useTranslation } from '@/components/i18n/LanguageProvider';
+import { useAuth } from '@/components/auth/AuthProvider';
 
 const navKeys = [
   { key: 'nav.inicio', href: '/' },
@@ -21,6 +22,8 @@ const navKeys = [
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { t } = useTranslation();
+  const { user, profile, signOut } = useAuth();
+  const isLoggedIn = !!user;
 
   return (
     <>
@@ -54,12 +57,32 @@ export default function Header() {
             ))}
             <LanguageSwitcher />
             <NotificationBell />
-            <Link
-              href="/entrar"
-              className="ml-3 inline-flex items-center rounded-full bg-[#F5A623] px-5 py-2 text-sm font-bold text-[#0A2463] shadow-lg shadow-[#F5A623]/25 transition-all hover:bg-[#e6951a] hover:shadow-[#F5A623]/40"
-            >
-              {t('common.entrar')}
-            </Link>
+
+            {isLoggedIn ? (
+              <div className="ml-3 flex items-center gap-2">
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-[#14A76C] px-4 py-2 text-sm font-bold text-white shadow-lg shadow-[#14A76C]/25 transition-all hover:bg-[#0f8a56] hover:shadow-[#14A76C]/40"
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  {profile?.nome?.split(' ')[0] || 'Painel'}
+                </Link>
+                <button
+                  onClick={signOut}
+                  className="inline-flex items-center justify-center rounded-full p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                  title="Sair"
+                >
+                  <LogOut className="h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/entrar"
+                className="ml-3 inline-flex items-center rounded-full bg-[#F5A623] px-5 py-2 text-sm font-bold text-[#0A2463] shadow-lg shadow-[#F5A623]/25 transition-all hover:bg-[#e6951a] hover:shadow-[#F5A623]/40"
+              >
+                {t('common.entrar')}
+              </Link>
+            )}
           </nav>
 
           {/* Mobile: language + hamburger */}

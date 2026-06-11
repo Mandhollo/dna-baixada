@@ -1,9 +1,10 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, LogOut, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/components/i18n/LanguageProvider';
+import { useAuth } from '@/components/auth/AuthProvider';
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -23,6 +24,8 @@ const navKeys = [
 
 export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
   const { t } = useTranslation();
+  const { user, profile, signOut } = useAuth();
+  const isLoggedIn = !!user;
 
   return (
     <AnimatePresence>
@@ -59,8 +62,16 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
               </button>
             </div>
 
+            {/* User greeting if logged in */}
+            {isLoggedIn && (
+              <div className="mx-4 mb-3 rounded-xl bg-white/10 px-4 py-3">
+                <p className="text-sm text-white/60">Olá,</p>
+                <p className="text-base font-bold text-white">{profile?.nome?.split(' ')[0] || 'Usuário'}</p>
+              </div>
+            )}
+
             {/* Links */}
-            <div className="flex flex-1 flex-col gap-1 px-4">
+            <div className="flex flex-1 flex-col gap-1 px-4 overflow-y-auto">
               {navKeys.map((link, index) => (
                 <motion.div
                   key={link.key}
@@ -86,14 +97,35 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.4 }}
+                className="mt-4 space-y-2"
               >
-                <Link
-                  href="/entrar"
-                  onClick={onClose}
-                  className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#F5A623] px-6 py-3 text-base font-bold text-[#0A2463] shadow-lg shadow-[#F5A623]/25 transition-all hover:bg-[#e6951a]"
-                >
-                  {t('common.entrar')}
-                </Link>
+                {isLoggedIn ? (
+                  <>
+                    <Link
+                      href="/dashboard"
+                      onClick={onClose}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#14A76C] px-6 py-3 text-base font-bold text-white shadow-lg shadow-[#14A76C]/25 transition-all hover:bg-[#0f8a56]"
+                    >
+                      <LayoutDashboard className="h-4 w-4" />
+                      Painel
+                    </Link>
+                    <button
+                      onClick={() => { signOut(); onClose(); }}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white/10 px-6 py-3 text-base font-medium text-white/80 transition-all hover:bg-white/20 hover:text-white"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Sair
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    href="/entrar"
+                    onClick={onClose}
+                    className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#F5A623] px-6 py-3 text-base font-bold text-[#0A2463] shadow-lg shadow-[#F5A623]/25 transition-all hover:bg-[#e6951a]"
+                  >
+                    {t('common.entrar')}
+                  </Link>
+                )}
               </motion.div>
             </div>
           </motion.nav>

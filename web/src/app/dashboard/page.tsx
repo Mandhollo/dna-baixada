@@ -98,18 +98,21 @@ function PassageiroDashboard() {
       {/* ── Top bar ── */}
       <header className="sticky top-0 z-30 bg-primary text-white shadow-lg">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-widest text-accent">
-              DNA Baixada
+          <a href="/" className="flex items-center gap-2">
+            <span className="text-lg font-extrabold tracking-tight text-accent">DNA</span>
+            <span className="text-lg font-semibold text-white">Baixada</span>
+          </a>
+          <div className="flex items-center gap-3">
+            <p className="hidden sm:block text-sm text-white/70">
+              Olá, <span className="font-semibold text-white">{firstName}</span>
             </p>
-            <h1 className="text-lg font-bold sm:text-xl">Olá, {firstName}!</h1>
+            <button
+              onClick={signOut}
+              className="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold transition hover:bg-white/20"
+            >
+              Sair
+            </button>
           </div>
-          <button
-            onClick={signOut}
-            className="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold transition hover:bg-white/20"
-          >
-            Sair
-          </button>
         </div>
       </header>
 
