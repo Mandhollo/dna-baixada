@@ -302,9 +302,9 @@ export default function RankingSocialPage() {
               Leaderboard
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight">
-              Ranking
+              Ranking{' '}
               <span className="bg-gradient-to-r from-[#F5A623] to-[#14A76C] bg-clip-text text-transparent">
-                {' '}DNA Social
+                DNA Social
               </span>
             </h1>
             <p className="mt-4 max-w-xl mx-auto text-lg text-white/80">

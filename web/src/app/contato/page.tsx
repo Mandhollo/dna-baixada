@@ -126,9 +126,9 @@ export default function ContatoPage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            Entre em
+            Entre em{' '}
             <span className="bg-gradient-to-r from-[#14A76C] to-[#F5A623] bg-clip-text text-transparent">
-              {' '}Contato
+              Contato
             </span>
           </motion.h1>
           <motion.p
