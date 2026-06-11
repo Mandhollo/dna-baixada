@@ -90,7 +90,7 @@ export default function Footer() {
                 <FacebookIcon className="h-4 w-4" />
               </a>
               <a
-                href="https://x.com/DnaBaixada"
+                href="https://x.com/dnabaixada"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="X / Twitter"
