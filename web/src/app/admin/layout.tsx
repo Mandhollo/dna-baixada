@@ -15,12 +15,16 @@ import {
   Menu,
   X,
   ChevronRight,
+  Car,
+  UserCheck,
 } from 'lucide-react';
 import { useAuth } from '@/components/auth/AuthProvider';
 
 /* ─── sidebar nav items ─── */
 const NAV_ITEMS = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { label: 'Corridas', href: '/admin/corridas', icon: Car },
+  { label: 'Motoristas', href: '/admin/motoristas', icon: UserCheck },
   { label: 'Usuários', href: '/admin/usuarios', icon: Users },
   { label: 'Parceiros', href: '/admin/parceiros', icon: Store },
   { label: 'Relatórios', href: '/admin/relatorios', icon: BarChart3 },
