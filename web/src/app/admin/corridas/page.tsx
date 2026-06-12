@@ -41,6 +41,17 @@ export default function AdminCorridas() {
   const [filtroStatus, setFiltroStatus] = useState('todas');
   const [busca, setBusca] = useState('');
   const [corridaSelecionada, setCorridaSelecionada] = useState<Corrida | null>(null);
+  const [cancelando, setCancelando] = useState(false);
+
+  const cancelarCorrida = async (id: string) => {
+    setCancelando(true);
+    const { error } = await supabase.from('corridas').update({ status: 'cancelada' }).eq('id', id);
+    if (!error) {
+      setCorridas(prev => prev.map(c => c.id === id ? { ...c, status: 'cancelada' } : c));
+      setCorridaSelecionada(null);
+    }
+    setCancelando(false);
+  };
 
   const loadCorridas = useCallback(async () => {
     let q = supabase.from('corridas').select('*').order('created_at', { ascending: false });
@@ -173,6 +184,16 @@ export default function AdminCorridas() {
                 </div>
               ))}
             </div>
+            {/* Botão cancelar corrida */}
+            {!['finalizada', 'cancelada'].includes(corridaSelecionada.status) && (
+              <button
+                onClick={() => cancelarCorrida(corridaSelecionada.id)}
+                disabled={cancelando}
+                className="mt-4 w-full rounded-xl bg-red-500 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-red-600 disabled:opacity-50"
+              >
+                {cancelando ? 'Cancelando…' : 'Cancelar Corrida'}
+              </button>
+            )}
           </div>
         </div>
       )}
