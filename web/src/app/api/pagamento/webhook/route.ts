@@ -6,15 +6,29 @@ import { checkPaymentStatus } from '@/lib/payment';
  * POST /api/pagamento/webhook
  *
  * Webhook endpoint for Mercado Pago payment notifications.
- * When a PIX payment is approved, updates the transação and corrida
- * in Supabase and creates notifications for motoristas.
- *
- * Mercado Pago sends:
- *  { action: "payment.updated", data: { id: "<payment_id>" } }
+ * Validates webhook signature when MERCADOPAGO_WEBHOOK_SECRET is set.
+ * Falls back to API verification (checkPaymentStatus) in dev/sandbox.
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    // ── Verify webhook signature (if secret configured) ──
+    const WEBHOOK_SECRET = process.env.MERCADOPAGO_WEBHOOK_SECRET;
+    const rawBody = await request.text();
+    const signature = request.headers.get('x-signature') || '';
+
+    if (WEBHOOK_SECRET && signature) {
+      const crypto = await import('crypto');
+      const expected = crypto
+        .createHmac('sha256', WEBHOOK_SECRET)
+        .update(rawBody)
+        .digest('hex');
+      if (signature !== `sha256=${expected}`) {
+        console.warn('[webhook] Invalid signature');
+        return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+      }
+    }
+
+    const body = JSON.parse(rawBody);
 
     // Mercado Pago webhook payloads
     const action = body.action ?? body.type;
@@ -29,7 +43,6 @@ export async function POST(request: NextRequest) {
     ];
 
     if (!relevantActions.includes(action) || !paymentId) {
-      // Acknowledge but ignore
       return NextResponse.json({ received: true });
     }
 
@@ -38,11 +51,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid payment ID' }, { status: 400 });
     }
 
-    // ── Check payment status with Mercado Pago ──
+    // ── Verify with Mercado Pago API (always do this for security) ──
     const mpStatus = await checkPaymentStatus(mpPaymentId);
 
     if (mpStatus.status !== 'approved') {
-      // Not approved yet — just acknowledge
       return NextResponse.json({ received: true, status: mpStatus.status });
     }
 
@@ -55,10 +67,7 @@ export async function POST(request: NextRequest) {
       .maybeSingle();
 
     if (txError || !tx) {
-      console.error(
-        '[webhook] Transação não encontrada para payment_id:',
-        mpPaymentId
-      );
+      console.error('[webhook] Transação não encontrada para payment_id:', mpPaymentId);
       return NextResponse.json({ received: true });
     }
 
@@ -70,7 +79,7 @@ export async function POST(request: NextRequest) {
     const now = new Date().toISOString();
 
     // ── Update transação ──
-    await supabase
+    const { error: updateTxError } = await supabase
       .from('transacoes')
       .update({
         status: 'concluido',
@@ -83,16 +92,23 @@ export async function POST(request: NextRequest) {
       })
       .eq('id', tx.id);
 
+    if (updateTxError) {
+      console.error('[webhook] Erro ao atualizar transação:', updateTxError.message);
+    }
+
     // ── Update corrida ──
     if (tx.corrida_id) {
-      await supabase
+      const { error: corrError } = await supabase
         .from('corridas')
         .update({ status: 'aguardando' })
         .eq('id', tx.corrida_id);
 
+      if (corrError) {
+        console.error('[webhook] Erro ao atualizar corrida:', corrError.message);
+      }
+
       // ── Create notifications for available motoristas ──
       try {
-        // Fetch corrida details for notification
         const { data: corrida } = await supabase
           .from('corridas')
           .select('id, origem_endereco, destino_endereco, tipo')
@@ -100,7 +116,6 @@ export async function POST(request: NextRequest) {
           .single();
 
         if (corrida) {
-          // Find available motoristas
           const { data: motoristas } = await supabase
             .from('motoristas')
             .select('id')
@@ -122,62 +137,17 @@ export async function POST(request: NextRequest) {
               },
             }));
 
-            // Insert in batches to avoid payload too large
             const BATCH_SIZE = 50;
             for (let i = 0; i < notifications.length; i += BATCH_SIZE) {
               const batch = notifications.slice(i, i + BATCH_SIZE);
-              await supabase.from('notificacoes').insert(batch);
-            }
-
-            // ── Send push notifications to subscribed motoristas ──
-            try {
-              const motoristaIds = motoristas.map((m) => m.id);
-
-              const { data: pushSubs } = await supabase
-                .from('push_subscriptions')
-                .select('endpoint, p256dh, auth_key')
-                .in('usuario_id', motoristaIds);
-
-              if (pushSubs && pushSubs.length > 0) {
-                // Trigger push via service worker (requires VAPID private key on server).
-                // For now, log the count — real push delivery needs a push service worker
-                // and VAPID signing (web-push library).
-                console.info(
-                  `[webhook] ${pushSubs.length} push subscriptions found for motoristas. ` +
-                  'Configure VAPID keys + web-push to deliver real push.',
-                );
-
-                // Store push payloads for later delivery (or use web-push directly)
-                await supabase.from('push_queue').upsert(
-                  pushSubs.map((sub) => ({
-                    endpoint: sub.endpoint,
-                    p256dh: sub.p256dh,
-                    auth_key: sub.auth_key,
-                    payload: JSON.stringify({
-                      title: '🚗 Nova corrida disponível!',
-                      body: `Corrida paga via PIX — ${corrida.origem_endereco}${corrida.destino_endereco ? ` → ${corrida.destino_endereco}` : ''}`,
-                      data: {
-                        link: `/motorista/corrida/${corrida.id}`,
-                        corrida_id: corrida.id,
-                      },
-                    }),
-                    status: 'pending',
-                    created_at: new Date().toISOString(),
-                  })),
-                  { onConflict: 'endpoint' },
-                ).then(({ error: qErr }) => {
-                  if (qErr) {
-                    console.warn('[webhook] push_queue write skipped (table may not exist):', qErr.message);
-                  }
-                });
+              const { error: notifError } = await supabase.from('notificacoes').insert(batch);
+              if (notifError) {
+                console.error('[webhook] Erro ao inserir notificações:', notifError.message);
               }
-            } catch (pushErr) {
-              console.warn('[webhook] Push notification step skipped:', pushErr);
             }
           }
         }
       } catch (notifErr) {
-        // Don't fail the webhook if notification creation fails
         console.error('[webhook] Error creating notifications:', notifErr);
       }
     }
