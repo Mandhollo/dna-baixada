@@ -67,6 +67,7 @@ const TIPO_ICON: Record<CorridaTipo, React.ElementType> = {
 const STATUS_ICON: Record<CorridaStatus, React.ElementType> = {
   aguardando: Clock,
   aceita: Navigation,
+  motorista_chegou: MapPin,
   em_andamento: Loader2,
   finalizada: CheckCircle2,
   cancelada: XCircle,

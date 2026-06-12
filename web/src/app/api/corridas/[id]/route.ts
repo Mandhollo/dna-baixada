@@ -172,6 +172,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     const validStatuses: CorridaStatus[] = [
       'aguardando',
       'aceita',
+      'motorista_chegou',
       'em_andamento',
       'finalizada',
       'cancelada',

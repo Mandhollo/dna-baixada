@@ -55,7 +55,6 @@ function StarRating({ value, total }: { value: number; total: number }) {
   const half = value - full >= 0.5;
   return (
     <div className="flex items-center gap-1">
-        <PageTitle title='Parceiros' />
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
@@ -395,6 +394,7 @@ export default function ParceirosPage() {
 
   return (
     <>
+      <PageTitle title='Parceiros' />
       <Hero />
 
       {/* ═══ SEARCH + FILTERS ═══ */}

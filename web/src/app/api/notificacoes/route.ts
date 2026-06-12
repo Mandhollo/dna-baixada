@@ -113,6 +113,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
     }
 
+    // Verify admin role
+    const { data: userProfile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (!userProfile || userProfile.role !== 'admin') {
+      return NextResponse.json({ error: 'Apenas administradores podem criar notificações' }, { status: 403 });
+    }
+
     const body = await request.json();
 
     const required = ['usuario_id', 'titulo', 'mensagem', 'tipo'];

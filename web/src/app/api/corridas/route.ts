@@ -112,11 +112,32 @@ export async function GET(request: NextRequest) {
     const tipo = searchParams.get('tipo') as CorridaTipo | null;
     if (tipo) query = query.eq('tipo', tipo);
 
+    // Security: filter by user unless admin. If passageiro_id/motorista_id
+    // are provided, ensure they match the authenticated user.
     const passageiroId = searchParams.get('passageiro_id');
+    const motoristaId = searchParams.get('motorista_id');
+
+    // Check if user is admin (via profiles table)
+    const { data: userProfile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+    const isAdmin = userProfile?.role === 'admin';
+
+    if (!isAdmin) {
+      // Non-admin: only see their own corridas
+      if (passageiroId && passageiroId !== user.id && motoristaId && motoristaId !== user.id) {
+        return NextResponse.json({ error: 'Não autorizado' }, { status: 403 });
+      }
+      // Force filter to only this user's corridas
+      query = query.or(`passageiro_id.eq.${user.id},motorista_id.eq.${user.id}`);
+    }
+
     if (passageiroId) query = query.eq('passageiro_id', passageiroId);
 
-    const motoristaId = searchParams.get('motorista_id');
-    if (motoristaId) query = query.eq('motorista_id', motoristaId);
+    const motoristaIdFilter = searchParams.get('motorista_id');
+    if (motoristaIdFilter) query = query.eq('motorista_id', motoristaIdFilter);
 
     const limit = parseInt(searchParams.get('limit') ?? '50', 10);
     const offset = parseInt(searchParams.get('offset') ?? '0', 10);

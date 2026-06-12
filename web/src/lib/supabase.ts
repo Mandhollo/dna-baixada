@@ -11,7 +11,7 @@ export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
 
 export type UserRole = 'passageiro' | 'motorista' | 'parceiro' | 'admin';
 export type MotoristaStatus = 'pendente' | 'aprovado' | 'rejeitado' | 'suspenso';
-export type CorridaStatus = 'aguardando' | 'aceita' | 'em_andamento' | 'finalizada' | 'cancelada';
+export type CorridaStatus = 'aguardando' | 'aceita' | 'motorista_chegou' | 'em_andamento' | 'finalizada' | 'cancelada';
 export type CorridaTipo = 'urbana' | 'executivo' | 'transfer_aeroporto' | 'transfer_rodoviaria' | 'transfer_hotel' | 'transfer_cruzeiro' | 'city_tour' | 'passeio_turistico';
 export type FormaPagamento = 'pix' | 'dinheiro' | 'cartao';
 
@@ -137,6 +137,7 @@ export const CORRIDA_TIPOS: { value: CorridaTipo; label: string; icon: string; d
 export const CORRIDA_STATUS_LABELS: Record<CorridaStatus, { label: string; color: string; bg: string }> = {
   aguardando: { label: 'Aguardando motorista', color: 'text-accent-dark', bg: 'bg-accent/10' },
   aceita: { label: 'Motorista a caminho', color: 'text-secondary', bg: 'bg-secondary/10' },
+  motorista_chegou: { label: 'Motorista chegou', color: 'text-secondary', bg: 'bg-secondary/10' },
   em_andamento: { label: 'Em andamento', color: 'text-primary', bg: 'bg-primary/10' },
   finalizada: { label: 'Finalizada', color: 'text-foreground-muted', bg: 'bg-background-tertiary' },
   cancelada: { label: 'Cancelada', color: 'text-accent2', bg: 'bg-accent2/10' },
