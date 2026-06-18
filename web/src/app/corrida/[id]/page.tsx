@@ -315,44 +315,43 @@ export default function CorridaAtivaPage() {
     setSendingMsg(false);
   }, [newMessage, user, id, sendingMsg]);
 
-  // ── Driver actions ──
+  // ── Driver actions (via API PATCH for server-side validation) ──
   const handleAceitar = useCallback(async () => {
     if (!user || actionLoading) return;
     setActionLoading(true);
-    await supabase
-      .from('corridas')
-      .update({
-        motorista_id: user.id,
-        status: 'aceita',
-        aceita_em: new Date().toISOString(),
-      })
-      .eq('id', id);
+    try {
+      await fetch(`/api/corridas/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ motorista_id: user.id, status: 'aceita', aceita_em: new Date().toISOString() }),
+      });
+    } catch { /* silent */ }
     setActionLoading(false);
   }, [user, id, actionLoading]);
 
   const handleIniciar = useCallback(async () => {
     if (actionLoading) return;
     setActionLoading(true);
-    await supabase
-      .from('corridas')
-      .update({
-        status: 'em_andamento',
-        iniciada_em: new Date().toISOString(),
-      })
-      .eq('id', id);
+    try {
+      await fetch(`/api/corridas/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'em_andamento', iniciada_em: new Date().toISOString() }),
+      });
+    } catch { /* silent */ }
     setActionLoading(false);
   }, [id, actionLoading]);
 
   const handleFinalizar = useCallback(async () => {
     if (actionLoading) return;
     setActionLoading(true);
-    await supabase
-      .from('corridas')
-      .update({
-        status: 'finalizada',
-        finalizada_em: new Date().toISOString(),
-      })
-      .eq('id', id);
+    try {
+      await fetch(`/api/corridas/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'finalizada', finalizada_em: new Date().toISOString() }),
+      });
+    } catch { /* silent */ }
     setActionLoading(false);
   }, [id, actionLoading]);
 
@@ -360,14 +359,13 @@ export default function CorridaAtivaPage() {
   const handleCancelar = useCallback(async () => {
     if (!user || actionLoading) return;
     setActionLoading(true);
-    await supabase
-      .from('corridas')
-      .update({
-        status: 'cancelada',
-        cancelado_por: user.id,
-        motivo_cancelamento: 'Cancelado pelo passageiro',
-      })
-      .eq('id', id);
+    try {
+      await fetch(`/api/corridas/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'cancelada', cancelado_por: user.id, motivo_cancelamento: 'Cancelado pelo passageiro' }),
+      });
+    } catch { /* silent */ }
     setActionLoading(false);
   }, [user, id, actionLoading]);
 

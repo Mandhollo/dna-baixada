@@ -187,23 +187,41 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       );
     }
 
-    // Build update payload from allowed fields
+    // Build update payload — restrict fields by role
     const updateData: Record<string, unknown> = {};
-    const allowedFields = [
+
+    // Fields that ANY corrida participant can set
+    const commonFields = [
       'status',
+      'observacoes',
+      'destino_endereco',
+      'destino_lat',
+      'destino_lng',
+    ];
+
+    // Fields that ONLY motorista can set
+    const motoristaOnlyFields = [
       'motorista_id',
       'preco_final',
       'forma_pagamento',
       'distancia_km',
       'duracao_minutos',
-      'observacoes',
       'passageiros',
+      'aceita_em',
+      'iniciada_em',
+      'finalizada_em',
+    ];
+
+    // Fields that passageiro can set (cancel)
+    const passageiroOnlyFields = [
       'cancelado_por',
       'motivo_cancelamento',
-      'destino_endereco',
-      'destino_lat',
-      'destino_lng',
     ];
+
+    // Restrict: passageiro cannot set motorista-only fields
+    const allowedFields = isMotorista
+      ? [...commonFields, ...motoristaOnlyFields, ...passageiroOnlyFields]
+      : [...commonFields, ...passageiroOnlyFields];
 
     for (const field of allowedFields) {
       if (body[field] !== undefined) {

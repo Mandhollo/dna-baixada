@@ -11,11 +11,16 @@ import { checkPaymentStatus } from '@/lib/payment';
  */
 export async function POST(request: NextRequest) {
   try {
-    // ── Verify webhook signature (if secret configured) ──
+    // ── Verify webhook signature ──
     const WEBHOOK_SECRET = process.env.MERCADOPAGO_WEBHOOK_SECRET;
     const rawBody = await request.text();
     const signature = request.headers.get('x-signature') || '';
 
+    // If secret is configured, signature is REQUIRED — no bypass
+    if (WEBHOOK_SECRET && !signature) {
+      console.warn('[webhook] Missing signature header');
+      return NextResponse.json({ error: 'Missing signature' }, { status: 401 });
+    }
     if (WEBHOOK_SECRET && signature) {
       const crypto = await import('crypto');
       const expected = crypto
