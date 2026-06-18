@@ -55,6 +55,23 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
+  // Admin routes: verify the user is actually an admin
+  const isAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/');
+  if (isAdminRoute && user) {
+    const { data: userProfile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (!userProfile || userProfile.role !== 'admin') {
+      // Not an admin → redirect to their dashboard
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = '/dashboard';
+      return NextResponse.redirect(redirectUrl);
+    }
+  }
+
   // Auth route + logged in user → redirect to dashboard
   if (isAuthRoute && user) {
     const redirectUrl = request.nextUrl.clone();
