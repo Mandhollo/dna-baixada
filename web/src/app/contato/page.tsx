@@ -201,7 +201,7 @@ export default function ContatoPage() {
                     <h3 className="text-2xl font-bold text-primary mb-2">
                       Mensagem enviada!
                     </h3>
-                    <p className="text-gray-500 max-w-sm mb-6">
+                    <p className="text-foreground-muted max-w-sm mb-6">
                       Obrigado pelo contato, <strong>{formData.nome}</strong>! Vamos responder
                       o mais breve possível.
                     </p>
@@ -240,10 +240,10 @@ export default function ContatoPage() {
                         value={formData.nome}
                         onChange={handleChange}
                         placeholder="Seu nome"
-                        className={`w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all ${
+                        className={`w-full px-4 py-3 rounded-xl border bg-surface-elevated text-foreground placeholder:text-foreground-muted focus:outline-none focus:ring-2 transition-all ${
                           errors.nome
                             ? 'border-red-400 focus:ring-red-300/40'
-                            : 'border-gray-200 focus:ring-secondary/40 focus:border-secondary'
+                            : 'border-border focus:ring-secondary/40 focus:border-secondary'
                         }`}
                       />
                       {errors.nome && (
@@ -267,10 +267,10 @@ export default function ContatoPage() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="seuemail@exemplo.com"
-                        className={`w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all ${
+                        className={`w-full px-4 py-3 rounded-xl border bg-surface-elevated text-foreground placeholder:text-foreground-muted focus:outline-none focus:ring-2 transition-all ${
                           errors.email
                             ? 'border-red-400 focus:ring-red-300/40'
-                            : 'border-gray-200 focus:ring-secondary/40 focus:border-secondary'
+                            : 'border-border focus:ring-secondary/40 focus:border-secondary'
                         }`}
                       />
                       {errors.email && (
@@ -292,11 +292,11 @@ export default function ContatoPage() {
                         required
                         value={formData.assunto}
                         onChange={handleChange}
-                        className={`w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 transition-all appearance-none ${
+                        className={`w-full px-4 py-3 rounded-xl border bg-surface-elevated text-foreground focus:outline-none focus:ring-2 transition-all appearance-none ${
                           errors.assunto
                             ? 'border-red-400 focus:ring-red-300/40'
-                            : 'border-gray-200 focus:ring-secondary/40 focus:border-secondary'
-                        } ${!formData.assunto ? 'text-gray-400' : ''}`}
+                            : 'border-border focus:ring-secondary/40 focus:border-secondary'
+                        } ${!formData.assunto ? 'text-foreground-muted' : ''}`}
                       >
                         {assuntoOptions.map((opt) => (
                           <option key={opt.value} value={opt.value}>
@@ -325,10 +325,10 @@ export default function ContatoPage() {
                         value={formData.mensagem}
                         onChange={handleChange}
                         placeholder="Escreva sua mensagem aqui..."
-                        className={`w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all resize-none ${
+                        className={`w-full px-4 py-3 rounded-xl border bg-surface-elevated text-foreground placeholder:text-foreground-muted focus:outline-none focus:ring-2 transition-all resize-none ${
                           errors.mensagem
                             ? 'border-red-400 focus:ring-red-300/40'
-                            : 'border-gray-200 focus:ring-secondary/40 focus:border-secondary'
+                            : 'border-border focus:ring-secondary/40 focus:border-secondary'
                         }`}
                       />
                       {errors.mensagem && (
@@ -369,7 +369,7 @@ export default function ContatoPage() {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.4 }}
-                      className="flex items-start gap-4 bg-gray-50 rounded-2xl p-5 hover:shadow-md transition-shadow"
+                      className="flex items-start gap-4 bg-surface-elevated rounded-2xl p-5 hover:shadow-md transition-shadow"
                     >
                       <div
                         className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
@@ -387,11 +387,11 @@ export default function ContatoPage() {
                                 rel: 'noopener noreferrer',
                                 className: 'text-secondary font-semibold hover:underline',
                               }
-                            : { className: 'text-gray-700 font-semibold' })}
+                            : { className: 'text-foreground font-semibold' })}
                         >
                           {item.value}
                         </Wrapper>
-                        <p className="text-sm text-gray-400 mt-0.5">{item.desc}</p>
+                        <p className="text-sm text-foreground-muted mt-0.5">{item.desc}</p>
                       </div>
                     </motion.div>
                   );
@@ -410,7 +410,7 @@ export default function ContatoPage() {
                   <MessageSquare className="w-5 h-5 text-secondary" />
                   <span className="font-bold text-primary text-sm">Dica rápida</span>
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-foreground-secondary leading-relaxed">
                   Para respostas mais rápidas, escolha o assunto que melhor se encaixa na sua
                   necessidade. Assim direcionamos sua mensagem ao time certo!
                 </p>

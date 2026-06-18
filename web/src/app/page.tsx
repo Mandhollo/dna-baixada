@@ -42,14 +42,14 @@ function Hero() {
 
       <div className="relative z-10 mx-auto max-w-5xl px-6 py-32 text-center text-white">
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
-          className="mb-4 text-sm font-semibold uppercase tracking-[.25em] text-[#F5A623]">
+          className="mb-4 text-sm font-semibold uppercase tracking-[.25em] text-accent">
           Baixada Santista
         </motion.p>
 
         <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
           className="text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
           Mobilidade. Turismo.<br />
-          <span className="text-[#F5A623]">Impacto Social.</span>
+          <span className="text-accent">Impacto Social.</span>
         </motion.h1>
 
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.55 }}
@@ -60,7 +60,7 @@ function Hero() {
         {/* CTAs */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
           className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-          <Link href="/corrida/solicitar" className="inline-flex items-center gap-2 rounded-full bg-[#F5A623] px-8 py-3.5 font-bold text-primary shadow-lg shadow-[#F5A623]/30 transition hover:brightness-110">
+          <Link href="/corrida/solicitar" className="inline-flex items-center gap-2 rounded-full bg-accent px-8 py-3.5 font-bold text-primary shadow-lg shadow-accent/30 transition hover:brightness-110">
             <Car size={18} /> Solicitar Corrida
           </Link>
           <Link href="/cadastro" className="inline-flex items-center gap-2 rounded-full border-2 border-white/30 px-8 py-3.5 font-bold text-white transition hover:bg-white/10">
@@ -73,7 +73,7 @@ function Hero() {
           className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {stats.map((s) => (
             <div key={s.label} className="rounded-2xl bg-white/10 backdrop-blur-sm px-5 py-4">
-              <p className="text-2xl font-extrabold text-[#F5A623]">{s.value}</p>
+              <p className="text-2xl font-extrabold text-accent">{s.value}</p>
               <p className="text-sm text-white/70">{s.label}</p>
             </div>
           ))}
@@ -139,7 +139,7 @@ function Servicos() {
           {items.map((it, i) => (
             <motion.div key={it.title} variants={fadeUp} custom={i}
               className="group relative rounded-2xl bg-white p-6 shadow-sm transition hover:-translate-y-1.5 hover:shadow-xl">
-              {it.tag && <span className="absolute top-3 right-3 rounded-full bg-[#F5A623]/15 px-3 py-0.5 text-[10px] font-bold uppercase text-[#F5A623]">{it.tag}</span>}
+              {it.tag && <span className="absolute top-3 right-3 rounded-full bg-accent/15 px-3 py-0.5 text-[10px] font-bold uppercase text-accent">{it.tag}</span>}
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition group-hover:bg-primary group-hover:text-white">
                 <it.icon size={22} />
               </div>
@@ -248,11 +248,11 @@ function Social() {
   ];
   return (
     <section className="relative py-20 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-light to-[#E84855]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-light to-accent2" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(245,166,35,.12),transparent_60%)]" />
       <div className="relative z-10 mx-auto max-w-5xl px-6 text-center text-white">
         <motion.span variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-          className="text-sm font-bold uppercase tracking-widest text-[#F5A623]">Impacto Social</motion.span>
+          className="text-sm font-bold uppercase tracking-widest text-accent">Impacto Social</motion.span>
         <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
           className="mt-2 text-3xl font-extrabold">DNA Social</motion.h2>
         <motion.p variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
@@ -264,7 +264,7 @@ function Social() {
           {stats.map((s, i) => (
             <motion.div key={s.label} variants={fadeUp} custom={i}
               className="rounded-2xl bg-white/10 backdrop-blur-sm p-6">
-              <p className="text-2xl font-extrabold text-[#F5A623]">{s.value}</p>
+              <p className="text-2xl font-extrabold text-accent">{s.value}</p>
               <p className="mt-1 text-sm text-white/70">{s.label}</p>
             </motion.div>
           ))}
@@ -389,7 +389,7 @@ function CtaFinal() {
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
           className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <button onClick={handleInstall} disabled={installing}
-            className="inline-flex items-center gap-2 rounded-full bg-[#F5A623] px-8 py-3.5 font-bold text-primary shadow-lg transition hover:brightness-110">
+            className="inline-flex items-center gap-2 rounded-full bg-accent px-8 py-3.5 font-bold text-primary shadow-lg transition hover:brightness-110">
             <Download size={18} /> {installing ? 'Instalando...' : 'Instalar App'}
           </button>
           <Link href="/cadastro" className="inline-flex items-center gap-2 rounded-full border-2 border-white/30 px-8 py-3.5 font-bold text-white transition hover:bg-white/10">
@@ -417,8 +417,8 @@ function ComingSoon() {
     <section className="py-20 bg-white">
       <div className="mx-auto max-w-xl px-6 text-center">
         <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#F5A623]/15">
-            <Mail size={28} className="text-[#F5A623]" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/15">
+            <Mail size={28} className="text-accent" />
           </div>
           <h2 className="mt-6 text-3xl font-extrabold text-primary">Em Breve</h2>
           <p className="mt-3 text-gray-500">Cadastre-se e seja o primeiro a saber quando o app estiver no ar.</p>
