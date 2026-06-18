@@ -40,6 +40,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     setLocaleState(detectLocale());
   }, []);
 
+  // Keep <html lang="..."> in sync with selected locale for SEO and a11y
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
+
   const setLocale = useCallback((newLocale: Locale) => {
     setLocaleState(newLocale);
     try {

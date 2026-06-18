@@ -109,7 +109,7 @@ export default function NotificationBell() {
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4.5 min-w-[18px] items-center justify-center rounded-full bg-[#F5A623] px-1 text-[10px] font-bold leading-none text-[#0A2463]">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4.5 min-w-[18px] items-center justify-center rounded-full bg-[#F5A623] px-1 text-[10px] font-bold leading-none text-primary">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -119,7 +119,7 @@ export default function NotificationBell() {
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="absolute right-0 top-full mt-2 w-80 overflow-hidden rounded-xl border border-white/10 bg-[#0d2d73]/95 shadow-2xl shadow-black/40 backdrop-blur-xl sm:w-96"
+          className="absolute right-0 top-full mt-2 w-80 overflow-hidden rounded-xl border border-white/10 bg-primary-light/95 shadow-2xl shadow-black/40 backdrop-blur-xl sm:w-96"
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">

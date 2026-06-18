@@ -48,7 +48,7 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring' as const, damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 z-[60] flex h-full w-full max-w-xs flex-col bg-[#0A2463] shadow-2xl"
+            className="fixed right-0 top-0 z-[60] flex h-full w-full max-w-xs flex-col bg-primary shadow-2xl"
           >
             {/* Close button */}
             <div className="flex h-16 items-center justify-end px-4">
@@ -104,7 +104,7 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
                     <Link
                       href="/dashboard"
                       onClick={onClose}
-                      className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#14A76C] px-6 py-3 text-base font-bold text-white shadow-lg shadow-[#14A76C]/25 transition-all hover:bg-[#0f8a56]"
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-secondary px-6 py-3 text-base font-bold text-white shadow-lg shadow-secondary/25 transition-all hover:bg-[#0f8a56]"
                     >
                       <LayoutDashboard className="h-4 w-4" />
                       Painel
@@ -121,7 +121,7 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
                   <Link
                     href="/entrar"
                     onClick={onClose}
-                    className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#F5A623] px-6 py-3 text-base font-bold text-[#0A2463] shadow-lg shadow-[#F5A623]/25 transition-all hover:bg-[#e6951a]"
+                    className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#F5A623] px-6 py-3 text-base font-bold text-primary shadow-lg shadow-[#F5A623]/25 transition-all hover:bg-[#e6951a]"
                   >
                     {t('common.entrar')}
                   </Link>

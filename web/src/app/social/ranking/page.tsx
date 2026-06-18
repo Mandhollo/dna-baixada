@@ -60,8 +60,8 @@ const podiumBg = [
 ] as const;
 
 const roleBadgeMap: Record<string, { label: string; bg: string; color: string }> = {
-  passageiro: { label: 'Passageiro', bg: 'bg-[#0A2463]/10', color: 'text-[#0A2463]' },
-  motorista: { label: 'Motorista', bg: 'bg-[#14A76C]/10', color: 'text-[#14A76C]' },
+  passageiro: { label: 'Passageiro', bg: 'bg-primary/10', color: 'text-primary' },
+  motorista: { label: 'Motorista', bg: 'bg-secondary/10', color: 'text-secondary' },
   parceiro: { label: 'Parceiro', bg: 'bg-[#F5A623]/10', color: 'text-[#F5A623]' },
   admin: { label: 'Admin', bg: 'bg-[#E84855]/10', color: 'text-[#E84855]' },
 };
@@ -126,7 +126,7 @@ function Skeleton() {
     <div className="flex flex-col min-h-screen bg-white animate-pulse">
         <PageTitle title='Ranking Social' />
       {/* Hero skeleton */}
-      <div className="h-72 bg-gradient-to-br from-[#0A2463] to-[#14A76C]" />
+      <div className="h-72 bg-gradient-to-br from-primary to-secondary" />
       {/* Podium skeleton */}
       <div className="max-w-5xl mx-auto px-6 -mt-20">
         <div className="grid grid-cols-3 gap-4">
@@ -192,14 +192,14 @@ function PodiumEntry({
           {position + 1}
         </div>
         {isCurrentUser && (
-          <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-[#F5A623] text-[#0A2463] text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+          <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-[#F5A623] text-primary text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
             Você
           </span>
         )}
       </div>
 
       {/* Name */}
-      <p className="text-sm font-bold text-[#0A2463] text-center mt-1 max-w-[120px] truncate">
+      <p className="text-sm font-bold text-primary text-center mt-1 max-w-[120px] truncate">
         {entry.nome}
       </p>
       <p className="text-xs text-gray-500">{entry.participacoes} participações</p>
@@ -264,7 +264,7 @@ export default function RankingSocialPage() {
         <p className="text-[#E84855] text-lg font-semibold mb-4">{error}</p>
         <Link
           href="/social"
-          className="inline-flex items-center gap-2 text-[#0A2463] font-semibold hover:underline"
+          className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"
         >
           <ArrowLeft className="w-4 h-4" />
           Voltar para Social
@@ -279,10 +279,10 @@ export default function RankingSocialPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#F5A623] py-24 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-[#F5A623] py-24 px-6">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#F5A623] blur-3xl" />
-          <div className="absolute bottom-0 left-10 w-72 h-72 rounded-full bg-[#14A76C] blur-3xl" />
+          <div className="absolute bottom-0 left-10 w-72 h-72 rounded-full bg-secondary blur-3xl" />
         </div>
         <div className="relative max-w-5xl mx-auto">
           <Link
@@ -303,7 +303,7 @@ export default function RankingSocialPage() {
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight">
               Ranking{' '}
-              <span className="bg-gradient-to-r from-[#F5A623] to-[#14A76C] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#F5A623] to-secondary bg-clip-text text-transparent">
                 DNA Social
               </span>
             </h1>
@@ -326,23 +326,23 @@ export default function RankingSocialPage() {
             <div className="w-10 h-10 mx-auto rounded-full bg-[#F5A623]/10 flex items-center justify-center mb-2">
               <TrendingUp className="w-5 h-5 text-[#F5A623]" />
             </div>
-            <p className="text-2xl font-extrabold text-[#0A2463]">
+            <p className="text-2xl font-extrabold text-primary">
               {totalPontos.toLocaleString('pt-BR')}
             </p>
             <p className="text-xs text-gray-500 mt-1">Pontos distribuídos</p>
           </div>
           <div className="bg-white rounded-2xl shadow-lg p-5 text-center border border-gray-100">
-            <div className="w-10 h-10 mx-auto rounded-full bg-[#14A76C]/10 flex items-center justify-center mb-2">
-              <Users className="w-5 h-5 text-[#14A76C]" />
+            <div className="w-10 h-10 mx-auto rounded-full bg-secondary/10 flex items-center justify-center mb-2">
+              <Users className="w-5 h-5 text-secondary" />
             </div>
-            <p className="text-2xl font-extrabold text-[#0A2463]">{totalParticipantes}</p>
+            <p className="text-2xl font-extrabold text-primary">{totalParticipantes}</p>
             <p className="text-xs text-gray-500 mt-1">Participantes</p>
           </div>
           <div className="bg-white rounded-2xl shadow-lg p-5 text-center border border-gray-100">
-            <div className="w-10 h-10 mx-auto rounded-full bg-[#0A2463]/10 flex items-center justify-center mb-2">
-              <Crown className="w-5 h-5 text-[#0A2463]" />
+            <div className="w-10 h-10 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-2">
+              <Crown className="w-5 h-5 text-primary" />
             </div>
-            <p className="text-lg font-extrabold text-[#0A2463] truncate">
+            <p className="text-lg font-extrabold text-primary truncate">
               {liderDoMes?.nome ?? '—'}
             </p>
             <p className="text-xs text-gray-500 mt-1">Líder do mês</p>
@@ -357,7 +357,7 @@ export default function RankingSocialPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-2xl md:text-3xl font-bold text-[#0A2463] text-center mb-10"
+            className="text-2xl md:text-3xl font-bold text-primary text-center mb-10"
           >
             🏆 Top 3 do Mês
           </motion.h2>
@@ -387,7 +387,7 @@ export default function RankingSocialPage() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-2xl md:text-3xl font-bold text-[#0A2463] text-center mb-10"
+            className="text-2xl md:text-3xl font-bold text-primary text-center mb-10"
           >
             Classificação Completa
           </motion.h2>
@@ -440,9 +440,9 @@ export default function RankingSocialPage() {
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-bold text-[#0A2463] truncate">{entry.nome}</p>
+                      <p className="text-sm font-bold text-primary truncate">{entry.nome}</p>
                       {isCurrentUser && (
-                        <span className="shrink-0 bg-[#F5A623] text-[#0A2463] text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        <span className="shrink-0 bg-[#F5A623] text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">
                           Você
                         </span>
                       )}
@@ -461,7 +461,7 @@ export default function RankingSocialPage() {
 
                   {/* Points */}
                   <div className="text-right shrink-0">
-                    <p className="text-lg font-extrabold text-[#0A2463]">
+                    <p className="text-lg font-extrabold text-primary">
                       {entry.pontos.toLocaleString('pt-BR')}
                     </p>
                     <p className="text-[11px] text-gray-400">pontos</p>
@@ -495,14 +495,14 @@ export default function RankingSocialPage() {
             <motion.h2
               variants={fadeUp}
               custom={0}
-              className="text-3xl md:text-4xl font-bold text-[#0A2463]"
+              className="text-3xl md:text-4xl font-bold text-primary"
             >
               Como Ganhar Pontos
             </motion.h2>
             <motion.div
               variants={fadeUp}
               custom={1}
-              className="mt-3 w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] mx-auto rounded-full"
+              className="mt-3 w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] mx-auto rounded-full"
             />
             <motion.p
               variants={fadeUp}
@@ -544,7 +544,7 @@ export default function RankingSocialPage() {
                     {card.pts}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-[#0A2463] mb-1">{card.title}</h3>
+                <h3 className="text-lg font-bold text-primary mb-1">{card.title}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">{card.desc}</p>
               </motion.div>
             ))}
@@ -553,7 +553,7 @@ export default function RankingSocialPage() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="py-16 px-6 bg-gradient-to-r from-[#0A2463] to-[#14A76C]">
+      <section className="py-16 px-6 bg-gradient-to-r from-primary to-secondary">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -571,7 +571,7 @@ export default function RankingSocialPage() {
           </p>
           <Link
             href="/social"
-            className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-[#e6951c] text-[#0A2463] font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
+            className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
           >
             <ArrowLeft className="w-5 h-5" />
             Voltar para Social

@@ -233,13 +233,13 @@ function BookingContent() {
         <div className="max-w-4xl mx-auto flex items-center gap-3 px-4 py-3">
           <a
             href="/turismo"
-            className="flex items-center gap-1 text-sm font-medium text-[#0A2463] hover:text-[#14A76C] transition-colors"
+            className="flex items-center gap-1 text-sm font-medium text-primary hover:text-secondary transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             {t('common.voltar')}
           </a>
           <div className="flex-1 text-center">
-            <h1 className="text-lg font-bold text-[#0A2463]">{t('booking.reservar_city_tour')}</h1>
+            <h1 className="text-lg font-bold text-primary">{t('booking.reservar_city_tour')}</h1>
           </div>
           <div className="w-20" /> {/* spacer */}
         </div>
@@ -251,10 +251,10 @@ function BookingContent() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-2xl bg-gradient-to-r from-[#14A76C]/10 to-[#F5A623]/10 border border-[#14A76C]/20 p-4 flex items-center gap-3"
+            className="rounded-2xl bg-gradient-to-r from-secondary/10 to-[#F5A623]/10 border border-secondary/20 p-4 flex items-center gap-3"
           >
-            <MapPin className="w-6 h-6 text-[#14A76C] shrink-0" />
-            <p className="text-sm text-[#0A2463]">
+            <MapPin className="w-6 h-6 text-secondary shrink-0" />
+            <p className="text-sm text-primary">
               {t('booking.mostrando_roteiros')}{' '}
               <span className="font-bold">
                 {pontos.find((p) => p.slug === pontoSlug)?.nome ?? pontoSlug}
@@ -273,7 +273,7 @@ function BookingContent() {
 
         {/* ════════════ Step 1: Escolher Roteiro ════════════ */}
         <section>
-          <h2 className="text-xl font-bold text-[#0A2463] mb-1">{t('booking.escolha_roteiro')}</h2>
+          <h2 className="text-xl font-bold text-primary mb-1">{t('booking.escolha_roteiro')}</h2>
           <p className="text-sm text-gray-500 mb-4">{t('booking.selecione_passeio')}</p>
 
           {loading ? (
@@ -303,7 +303,7 @@ function BookingContent() {
                     custom={i}
                     className={`rounded-2xl border-2 bg-white shadow-sm transition-all duration-200 ${
                       isSelected
-                        ? 'border-[#14A76C] shadow-md'
+                        ? 'border-secondary shadow-md'
                         : highlights
                           ? 'border-[#F5A623] shadow-md'
                           : 'border-gray-100 hover:border-gray-200'
@@ -328,14 +328,14 @@ function BookingContent() {
                       {/* Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h3 className="font-bold text-[#0A2463] text-base">{roteiro.nome}</h3>
+                          <h3 className="font-bold text-primary text-base">{roteiro.nome}</h3>
                           {highlights && (
                             <span className="text-xs font-semibold bg-[#F5A623]/15 text-[#F5A623] px-2 py-0.5 rounded-full">
                               {t('booking.inclui_seu_ponto')}
                             </span>
                           )}
                           {roteiro.destaque && (
-                            <span className="text-xs font-semibold bg-[#14A76C]/15 text-[#14A76C] px-2 py-0.5 rounded-full">
+                            <span className="text-xs font-semibold bg-secondary/15 text-secondary px-2 py-0.5 rounded-full">
                               {t('turismo.destaque')}
                             </span>
                           )}
@@ -350,7 +350,7 @@ function BookingContent() {
                             <MapPin className="w-4 h-4" />
                             {roteiroPontos.length} {t('booking.pontos_count')}
                           </span>
-                          <span className="font-bold text-[#14A76C]">
+                          <span className="font-bold text-secondary">
                             {formatarBRL(roteiro.preco_base)}
                           </span>
                           {tipoLabel && (
@@ -390,7 +390,7 @@ function BookingContent() {
                           <div className="px-5 pb-5 space-y-4 border-t border-gray-100 pt-4">
                             {/* Pontos turísticos */}
                             <div>
-                              <h4 className="text-sm font-semibold text-[#0A2463] mb-2">
+                              <h4 className="text-sm font-semibold text-primary mb-2">
                                 {t('booking.pontos_incluidos')}
                               </h4>
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -410,12 +410,12 @@ function BookingContent() {
                                         className="w-10 h-10 rounded-lg object-cover shrink-0"
                                       />
                                     ) : (
-                                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0A2463] to-[#14A76C] flex items-center justify-center shrink-0">
+                                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center shrink-0">
                                         <MapPin className="w-5 h-5 text-white/60" />
                                       </div>
                                     )}
                                     <div className="min-w-0">
-                                      <p className="font-medium text-[#0A2463] truncate">
+                                      <p className="font-medium text-primary truncate">
                                         {ponto.nome}
                                       </p>
                                       <p className="text-xs text-gray-400 truncate">
@@ -431,7 +431,7 @@ function BookingContent() {
                             <div className="grid sm:grid-cols-2 gap-4">
                               {roteiro.inclui?.length > 0 && (
                                 <div>
-                                  <h4 className="text-sm font-semibold text-[#14A76C] mb-2">
+                                  <h4 className="text-sm font-semibold text-secondary mb-2">
                                     {t('booking.inclui')}
                                   </h4>
                                   <ul className="space-y-1">
@@ -440,7 +440,7 @@ function BookingContent() {
                                         key={item}
                                         className="flex items-start gap-2 text-sm text-gray-600"
                                       >
-                                        <Check className="w-4 h-4 text-[#14A76C] shrink-0 mt-0.5" />
+                                        <Check className="w-4 h-4 text-secondary shrink-0 mt-0.5" />
                                         {item}
                                       </li>
                                     ))}
@@ -469,17 +469,17 @@ function BookingContent() {
 
                             {/* Observações */}
                             {roteiro.observacoes && (
-                              <div className="rounded-xl bg-[#0A2463]/5 p-3 text-sm text-gray-600">
-                                <strong className="text-[#0A2463]">{t('booking.observacoes_label')}</strong>{' '}
+                              <div className="rounded-xl bg-primary/5 p-3 text-sm text-gray-600">
+                                <strong className="text-primary">{t('booking.observacoes_label')}</strong>{' '}
                                 {roteiro.observacoes}
                               </div>
                             )}
 
                             {/* Price info */}
-                            <div className="rounded-xl bg-gradient-to-r from-[#0A2463]/5 to-[#14A76C]/5 p-4 flex items-center justify-between">
+                            <div className="rounded-xl bg-gradient-to-r from-primary/5 to-secondary/5 p-4 flex items-center justify-between">
                               <div>
                                 <p className="text-sm text-gray-500">{t('booking.a_partir_de')}</p>
-                                <p className="text-2xl font-bold text-[#0A2463]">
+                                <p className="text-2xl font-bold text-primary">
                                   {formatarBRL(roteiro.preco_base)}
                                 </p>
                                 {roteiro.preco_6lugares && (
@@ -493,8 +493,8 @@ function BookingContent() {
                                 onClick={() => handleSelectRoteiro(roteiro)}
                                 className={`px-6 py-3 rounded-xl font-bold text-sm transition-all duration-200 ${
                                   isSelected
-                                    ? 'bg-[#14A76C] text-white shadow-lg'
-                                    : 'bg-[#0A2463] text-white hover:bg-[#0d2d73] shadow-md'
+                                    ? 'bg-secondary text-white shadow-lg'
+                                    : 'bg-primary text-white hover:bg-primary-light shadow-md'
                                 }`}
                               >
                                 {isSelected ? t('booking.selecionado') : t('booking.selecionar')}
@@ -522,7 +522,7 @@ function BookingContent() {
               className="rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden"
             >
               {/* Form header */}
-              <div className="bg-gradient-to-r from-[#0A2463] to-[#14A76C] p-5">
+              <div className="bg-gradient-to-r from-primary to-secondary p-5">
                 <h2 className="text-lg font-bold text-white">{t('booking.dados_reserva')}</h2>
                 <p className="text-sm text-white/70 mt-1">
                   {t('booking.roteiro_label')}: <strong>{selectedRoteiro.nome}</strong> · {selectedRoteiro.duracao_horas}h
@@ -532,7 +532,7 @@ function BookingContent() {
               <div className="p-5 space-y-4">
                 {/* Nome */}
                 <div>
-                  <label className="block text-sm font-medium text-[#0A2463] mb-1.5">
+                  <label className="block text-sm font-medium text-primary mb-1.5">
                     <User className="w-4 h-4 inline mr-1" />
                     {t('booking.nome_completo')}
                   </label>
@@ -541,13 +541,13 @@ function BookingContent() {
                     value={form.nome}
                     onChange={(e) => handleFormChange('nome', e.target.value)}
                     placeholder={t('booking.seu_nome')}
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#14A76C]/40 focus:border-[#14A76C] transition-colors"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary transition-colors"
                   />
                 </div>
 
                 {/* WhatsApp */}
                 <div>
-                  <label className="block text-sm font-medium text-[#0A2463] mb-1.5">
+                  <label className="block text-sm font-medium text-primary mb-1.5">
                     <Phone className="w-4 h-4 inline mr-1" />
                     {t('booking.whatsapp')}
                   </label>
@@ -556,14 +556,14 @@ function BookingContent() {
                     value={form.whatsapp}
                     onChange={(e) => handleFormChange('whatsapp', e.target.value)}
                     placeholder="(13) 99999-9999"
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#14A76C]/40 focus:border-[#14A76C] transition-colors"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary transition-colors"
                   />
                 </div>
 
                 {/* Data + Horário */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-[#0A2463] mb-1.5">
+                    <label className="block text-sm font-medium text-primary mb-1.5">
                       <Calendar className="w-4 h-4 inline mr-1" />
                       {t('booking.data')}
                     </label>
@@ -572,11 +572,11 @@ function BookingContent() {
                       value={form.data}
                       onChange={(e) => handleFormChange('data', e.target.value)}
                       min={new Date().toISOString().split('T')[0]}
-                      className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#14A76C]/40 focus:border-[#14A76C] transition-colors"
+                      className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[#0A2463] mb-1.5">
+                    <label className="block text-sm font-medium text-primary mb-1.5">
                       <Clock className="w-4 h-4 inline mr-1" />
                       {t('booking.horario')}
                     </label>
@@ -584,14 +584,14 @@ function BookingContent() {
                       type="time"
                       value={form.horario}
                       onChange={(e) => handleFormChange('horario', e.target.value)}
-                      className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#14A76C]/40 focus:border-[#14A76C] transition-colors"
+                      className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary transition-colors"
                     />
                   </div>
                 </div>
 
                 {/* Passageiros */}
                 <div>
-                  <label className="block text-sm font-medium text-[#0A2463] mb-1.5">
+                  <label className="block text-sm font-medium text-primary mb-1.5">
                     <Users className="w-4 h-4 inline mr-1" />
                     {t('booking.numero_passageiros')}
                   </label>
@@ -603,7 +603,7 @@ function BookingContent() {
                     >
                       −
                     </button>
-                    <span className="text-xl font-bold text-[#0A2463] w-8 text-center">
+                    <span className="text-xl font-bold text-primary w-8 text-center">
                       {form.passageiros}
                     </span>
                     <button
@@ -623,7 +623,7 @@ function BookingContent() {
 
                 {/* Observações */}
                 <div>
-                  <label className="block text-sm font-medium text-[#0A2463] mb-1.5">
+                  <label className="block text-sm font-medium text-primary mb-1.5">
                     <MessageSquare className="w-4 h-4 inline mr-1" />
                     {t('booking.observacoes_opcional')}
                   </label>
@@ -632,12 +632,12 @@ function BookingContent() {
                     onChange={(e) => handleFormChange('observacoes', e.target.value)}
                     placeholder={t('booking.solicitacao_especial')}
                     rows={3}
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#14A76C]/40 focus:border-[#14A76C] transition-colors resize-none"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary transition-colors resize-none"
                   />
                 </div>
 
                 {/* Price summary */}
-                <div className="rounded-2xl bg-gradient-to-r from-[#0A2463] to-[#14A76C] p-5 text-white">
+                <div className="rounded-2xl bg-gradient-to-r from-primary to-secondary p-5 text-white">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-white/70">{t('booking.valor_total')}</p>
@@ -665,7 +665,7 @@ function BookingContent() {
                     disabled={!isFormValid}
                     className={`w-full py-4 rounded-xl font-bold text-base transition-all duration-200 flex items-center justify-center gap-2 ${
                       isFormValid
-                        ? 'bg-[#14A76C] text-white hover:bg-[#0d8a56] shadow-lg hover:shadow-xl'
+                        ? 'bg-secondary text-white hover:bg-[#0d8a56] shadow-lg hover:shadow-xl'
                         : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                     }`}
                   >
@@ -679,9 +679,9 @@ function BookingContent() {
                     className="space-y-4"
                   >
                     {/* Success */}
-                    <div className="rounded-xl bg-[#14A76C]/10 border border-[#14A76C]/20 p-4 text-center">
-                      <Check className="w-8 h-8 text-[#14A76C] mx-auto mb-2" />
-                      <p className="font-bold text-[#0A2463]">{t('booking.reserva_confirmada')}</p>
+                    <div className="rounded-xl bg-secondary/10 border border-secondary/20 p-4 text-center">
+                      <Check className="w-8 h-8 text-secondary mx-auto mb-2" />
+                      <p className="font-bold text-primary">{t('booking.reserva_confirmada')}</p>
                       <p className="text-sm text-gray-500 mt-1">
                         {t('booking.finalize_whatsapp')}
                       </p>

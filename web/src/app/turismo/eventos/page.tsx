@@ -141,10 +141,10 @@ export default function EventosPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#14A76C] py-24 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-secondary py-24 px-6">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 right-10 w-80 h-80 rounded-full bg-[#F5A623] blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-[#14A76C] blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-secondary blur-3xl" />
         </div>
         <div className="relative max-w-5xl mx-auto">
           <Link
@@ -164,7 +164,7 @@ export default function EventosPage() {
             </span>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
               Eventos na{' '}
-              <span className="bg-gradient-to-r from-[#F5A623] to-[#14A76C] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#F5A623] to-secondary bg-clip-text text-transparent">
                 Baixada Santista
               </span>
             </h1>
@@ -179,7 +179,7 @@ export default function EventosPage() {
       {/* Filters */}
       <section className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-gray-100 py-4 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-          <div className="flex items-center gap-2 text-[#0A2463] font-semibold">
+          <div className="flex items-center gap-2 text-primary font-semibold">
             <Filter className="w-5 h-5" />
             <span>Filtros:</span>
           </div>
@@ -190,7 +190,7 @@ export default function EventosPage() {
               onClick={() => setFiltroCategoria('todos')}
               className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-colors ${
                 filtroCategoria === 'todos'
-                  ? 'bg-[#0A2463] text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
@@ -202,7 +202,7 @@ export default function EventosPage() {
                 onClick={() => setFiltroCategoria(cat)}
                 className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-colors ${
                   filtroCategoria === cat
-                    ? 'bg-[#0A2463] text-white'
+                    ? 'bg-primary text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -217,7 +217,7 @@ export default function EventosPage() {
             onChange={(e) =>
               setFiltroMes(e.target.value === 'todos' ? 'todos' : Number(e.target.value))
             }
-            className="px-3 py-1.5 rounded-xl text-sm border border-gray-200 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0A2463]/20"
+            className="px-3 py-1.5 rounded-xl text-sm border border-gray-200 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20"
           >
             <option value="todos">Todos os meses</option>
             {availableMonths.map((m) => (
@@ -245,7 +245,7 @@ export default function EventosPage() {
               className="text-center py-24"
             >
               <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-[#0A2463] mb-2">Em breve</h3>
+              <h3 className="text-2xl font-bold text-primary mb-2">Em breve</h3>
               <p className="text-gray-500 max-w-md mx-auto">
                 Nenhum evento encontrado com os filtros selecionados. Novos eventos estão chegando!
               </p>
@@ -255,7 +255,7 @@ export default function EventosPage() {
                     setFiltroCategoria('todos');
                     setFiltroMes('todos');
                   }}
-                  className="mt-6 px-6 py-2 rounded-full bg-[#0A2463] text-white text-sm font-semibold hover:bg-[#0d2d73] transition-colors"
+                  className="mt-6 px-6 py-2 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary-light transition-colors"
                 >
                   Limpar filtros
                 </button>
@@ -268,7 +268,7 @@ export default function EventosPage() {
                 <div className="mb-12">
                   <div className="flex items-center gap-2 mb-6">
                     <Sparkles className="w-6 h-6 text-[#F5A623]" />
-                    <h2 className="text-2xl font-bold text-[#0A2463]">Acontecendo em breve</h2>
+                    <h2 className="text-2xl font-bold text-primary">Acontecendo em breve</h2>
                     <span className="ml-2 px-2.5 py-0.5 rounded-full bg-[#F5A623]/10 text-[#F5A623] text-xs font-bold">
                       {upcoming.length}
                     </span>
@@ -291,8 +291,8 @@ export default function EventosPage() {
                 <div>
                   {upcoming.length > 0 && (
                     <div className="flex items-center gap-2 mb-6">
-                      <Calendar className="w-6 h-6 text-[#0A2463]" />
-                      <h2 className="text-2xl font-bold text-[#0A2463]">Mais eventos</h2>
+                      <Calendar className="w-6 h-6 text-primary" />
+                      <h2 className="text-2xl font-bold text-primary">Mais eventos</h2>
                     </div>
                   )}
                   <motion.div
@@ -314,7 +314,7 @@ export default function EventosPage() {
 
       {/* CTA */}
       {filtered.length > 0 && (
-        <section className="py-16 px-6 bg-gradient-to-r from-[#0A2463] to-[#14A76C]">
+        <section className="py-16 px-6 bg-gradient-to-r from-primary to-secondary">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -329,7 +329,7 @@ export default function EventosPage() {
             </p>
             <a
               href="/corrida/solicitar"
-              className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-[#e6951c] text-[#0A2463] font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
+              className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
             >
               Como Chegar
               <Navigation className="w-5 h-5" />
@@ -354,7 +354,7 @@ function EventoCard({ evento, index, highlight = false }: { evento: Evento; inde
       }`}
     >
       {/* Image / Placeholder */}
-      <div className="relative h-44 bg-gradient-to-br from-[#0A2463] to-[#14A76C] flex items-center justify-center overflow-hidden">
+      <div className="relative h-44 bg-gradient-to-br from-primary to-secondary flex items-center justify-center overflow-hidden">
         {evento.foto_url ? (
           <img
             src={evento.foto_url}
@@ -374,19 +374,19 @@ function EventoCard({ evento, index, highlight = false }: { evento: Evento; inde
         </span>
         {/* Gratuito / Preço badge */}
         {evento.gratuito ? (
-          <span className="absolute top-3 right-3 px-2.5 py-1 rounded-xl text-xs font-bold bg-[#14A76C] text-white flex items-center gap-1">
+          <span className="absolute top-3 right-3 px-2.5 py-1 rounded-xl text-xs font-bold bg-secondary text-white flex items-center gap-1">
             <Ticket className="w-3 h-3" />
             Grátis
           </span>
         ) : evento.preco ? (
-          <span className="absolute top-3 right-3 px-2.5 py-1 rounded-xl text-xs font-bold bg-[#F5A623] text-[#0A2463] flex items-center gap-1">
+          <span className="absolute top-3 right-3 px-2.5 py-1 rounded-xl text-xs font-bold bg-[#F5A623] text-primary flex items-center gap-1">
             <CircleDollarSign className="w-3 h-3" />
             {evento.preco}
           </span>
         ) : null}
         {/* Highlight upcoming */}
         {highlight && isFuture && (
-          <span className="absolute bottom-3 left-3 px-2.5 py-1 rounded-xl text-xs font-bold bg-white/90 text-[#0A2463] flex items-center gap-1">
+          <span className="absolute bottom-3 left-3 px-2.5 py-1 rounded-xl text-xs font-bold bg-white/90 text-primary flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-[#F5A623]" />
             Em breve
           </span>
@@ -405,7 +405,7 @@ function EventoCard({ evento, index, highlight = false }: { evento: Evento; inde
         </div>
 
         {/* Title */}
-        <h3 className="text-lg font-bold text-[#0A2463] mb-1 line-clamp-2">{evento.nome}</h3>
+        <h3 className="text-lg font-bold text-primary mb-1 line-clamp-2">{evento.nome}</h3>
 
         {/* Time */}
         {(evento.horario_inicio || evento.horario_fim) && (
@@ -430,7 +430,7 @@ function EventoCard({ evento, index, highlight = false }: { evento: Evento; inde
         <div className="flex gap-2">
           <a
             href="/corrida/solicitar"
-            className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#0A2463] hover:bg-[#0d2d73] text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition-colors"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 bg-primary hover:bg-primary-light text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition-colors"
           >
             <Navigation className="w-4 h-4" />
             Como Chegar

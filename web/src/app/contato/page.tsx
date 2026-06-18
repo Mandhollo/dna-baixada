@@ -83,7 +83,10 @@ export default function ContatoPage() {
     return errs;
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) {
@@ -91,7 +94,31 @@ export default function ContatoPage() {
       return;
     }
     setErrors({});
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const res = await fetch('/api/contato', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Erro ao enviar');
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : 'Erro ao enviar. Tente novamente ou chame no WhatsApp.',
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function handleChange(
@@ -106,10 +133,10 @@ export default function ContatoPage() {
     <div className="flex flex-col min-h-screen bg-white">
         <PageTitle title='Contato' />
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#14A76C] py-28 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-secondary py-28 px-6">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-[#F5A623] blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-[#14A76C] blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-secondary blur-3xl" />
         </div>
         <div className="relative max-w-5xl mx-auto text-center">
           <motion.span
@@ -127,7 +154,7 @@ export default function ContatoPage() {
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
             Entre em{' '}
-            <span className="bg-gradient-to-r from-[#14A76C] to-[#F5A623] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-secondary to-[#F5A623] bg-clip-text text-transparent">
               Contato
             </span>
           </motion.h1>
@@ -155,8 +182,8 @@ export default function ContatoPage() {
           >
             {/* Form */}
             <motion.div variants={fadeUp} custom={0} className="lg:col-span-3">
-              <h2 className="text-3xl font-bold text-[#0A2463] mb-2">Envie sua mensagem</h2>
-              <div className="w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] rounded-full mb-8" />
+              <h2 className="text-3xl font-bold text-primary mb-2">Envie sua mensagem</h2>
+              <div className="w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] rounded-full mb-8" />
 
               <AnimatePresence mode="wait">
                 {submitted ? (
@@ -166,12 +193,12 @@ export default function ContatoPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.4 }}
-                    className="flex flex-col items-center justify-center text-center py-16 bg-[#14A76C]/5 rounded-2xl border border-[#14A76C]/20"
+                    className="flex flex-col items-center justify-center text-center py-16 bg-secondary/5 rounded-2xl border border-secondary/20"
                   >
-                    <div className="w-20 h-20 rounded-full bg-[#14A76C]/10 flex items-center justify-center mb-6">
-                      <CheckCircle2 className="w-10 h-10 text-[#14A76C]" />
+                    <div className="w-20 h-20 rounded-full bg-secondary/10 flex items-center justify-center mb-6">
+                      <CheckCircle2 className="w-10 h-10 text-secondary" />
                     </div>
-                    <h3 className="text-2xl font-bold text-[#0A2463] mb-2">
+                    <h3 className="text-2xl font-bold text-primary mb-2">
                       Mensagem enviada!
                     </h3>
                     <p className="text-gray-500 max-w-sm mb-6">
@@ -183,7 +210,7 @@ export default function ContatoPage() {
                         setSubmitted(false);
                         setFormData({ nome: '', email: '', assunto: '', mensagem: '' });
                       }}
-                      className="px-6 py-3 rounded-full bg-[#0A2463] text-white font-semibold hover:bg-[#0d2d73] transition-colors"
+                      className="px-6 py-3 rounded-full bg-primary text-white font-semibold hover:bg-primary-light transition-colors"
                     >
                       Enviar outra mensagem
                     </button>
@@ -201,7 +228,7 @@ export default function ContatoPage() {
                     <div>
                       <label
                         htmlFor="nome"
-                        className="block text-sm font-semibold text-[#0A2463] mb-1.5"
+                        className="block text-sm font-semibold text-primary mb-1.5"
                       >
                         Nome completo *
                       </label>
@@ -216,7 +243,7 @@ export default function ContatoPage() {
                         className={`w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all ${
                           errors.nome
                             ? 'border-red-400 focus:ring-red-300/40'
-                            : 'border-gray-200 focus:ring-[#14A76C]/40 focus:border-[#14A76C]'
+                            : 'border-gray-200 focus:ring-secondary/40 focus:border-secondary'
                         }`}
                       />
                       {errors.nome && (
@@ -228,7 +255,7 @@ export default function ContatoPage() {
                     <div>
                       <label
                         htmlFor="email"
-                        className="block text-sm font-semibold text-[#0A2463] mb-1.5"
+                        className="block text-sm font-semibold text-primary mb-1.5"
                       >
                         E-mail *
                       </label>
@@ -243,7 +270,7 @@ export default function ContatoPage() {
                         className={`w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all ${
                           errors.email
                             ? 'border-red-400 focus:ring-red-300/40'
-                            : 'border-gray-200 focus:ring-[#14A76C]/40 focus:border-[#14A76C]'
+                            : 'border-gray-200 focus:ring-secondary/40 focus:border-secondary'
                         }`}
                       />
                       {errors.email && (
@@ -255,7 +282,7 @@ export default function ContatoPage() {
                     <div>
                       <label
                         htmlFor="assunto"
-                        className="block text-sm font-semibold text-[#0A2463] mb-1.5"
+                        className="block text-sm font-semibold text-primary mb-1.5"
                       >
                         Assunto *
                       </label>
@@ -268,7 +295,7 @@ export default function ContatoPage() {
                         className={`w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 transition-all appearance-none ${
                           errors.assunto
                             ? 'border-red-400 focus:ring-red-300/40'
-                            : 'border-gray-200 focus:ring-[#14A76C]/40 focus:border-[#14A76C]'
+                            : 'border-gray-200 focus:ring-secondary/40 focus:border-secondary'
                         } ${!formData.assunto ? 'text-gray-400' : ''}`}
                       >
                         {assuntoOptions.map((opt) => (
@@ -286,7 +313,7 @@ export default function ContatoPage() {
                     <div>
                       <label
                         htmlFor="mensagem"
-                        className="block text-sm font-semibold text-[#0A2463] mb-1.5"
+                        className="block text-sm font-semibold text-primary mb-1.5"
                       >
                         Mensagem *
                       </label>
@@ -301,7 +328,7 @@ export default function ContatoPage() {
                         className={`w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all resize-none ${
                           errors.mensagem
                             ? 'border-red-400 focus:ring-red-300/40'
-                            : 'border-gray-200 focus:ring-[#14A76C]/40 focus:border-[#14A76C]'
+                            : 'border-gray-200 focus:ring-secondary/40 focus:border-secondary'
                         }`}
                       />
                       {errors.mensagem && (
@@ -310,11 +337,15 @@ export default function ContatoPage() {
                     </div>
 
                     {/* Submit */}
+                    {submitError && (
+                      <p className="text-sm text-accent2 font-medium">{submitError}</p>
+                    )}
                     <button
                       type="submit"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#14A76C] to-[#0A2463] hover:from-[#0A2463] hover:to-[#14A76C] text-white font-bold px-8 py-4 rounded-full transition-all shadow-lg hover:shadow-xl"
+                      disabled={submitting}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-secondary to-primary hover:from-primary hover:to-secondary text-white font-bold px-8 py-4 rounded-full transition-all shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      Enviar mensagem
+                      {submitting ? 'Enviando...' : 'Enviar mensagem'}
                       <Send className="w-5 h-5" />
                     </button>
                   </motion.form>
@@ -324,8 +355,8 @@ export default function ContatoPage() {
 
             {/* Contact Info Sidebar */}
             <motion.div variants={fadeUp} custom={1} className="lg:col-span-2">
-              <h2 className="text-3xl font-bold text-[#0A2463] mb-2">Informações</h2>
-              <div className="w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] rounded-full mb-8" />
+              <h2 className="text-3xl font-bold text-primary mb-2">Informações</h2>
+              <div className="w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] rounded-full mb-8" />
 
               <div className="space-y-5">
                 {contactInfo.map((item) => {
@@ -347,14 +378,14 @@ export default function ContatoPage() {
                         <Icon className="w-6 h-6" style={{ color: item.color }} />
                       </div>
                       <div>
-                        <h3 className="font-bold text-[#0A2463] mb-0.5">{item.label}</h3>
+                        <h3 className="font-bold text-primary mb-0.5">{item.label}</h3>
                         <Wrapper
                           {...(item.href
                             ? {
                                 href: item.href,
                                 target: '_blank',
                                 rel: 'noopener noreferrer',
-                                className: 'text-[#14A76C] font-semibold hover:underline',
+                                className: 'text-secondary font-semibold hover:underline',
                               }
                             : { className: 'text-gray-700 font-semibold' })}
                         >
@@ -373,11 +404,11 @@ export default function ContatoPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="mt-8 bg-[#14A76C]/5 border border-[#14A76C]/20 rounded-2xl p-5"
+                className="mt-8 bg-secondary/5 border border-secondary/20 rounded-2xl p-5"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <MessageSquare className="w-5 h-5 text-[#14A76C]" />
-                  <span className="font-bold text-[#0A2463] text-sm">Dica rápida</span>
+                  <MessageSquare className="w-5 h-5 text-secondary" />
+                  <span className="font-bold text-primary text-sm">Dica rápida</span>
                 </div>
                 <p className="text-sm text-gray-600 leading-relaxed">
                   Para respostas mais rápidas, escolha o assunto que melhor se encaixa na sua
@@ -390,7 +421,7 @@ export default function ContatoPage() {
       </section>
 
       {/* CTA Motoristas */}
-      <section className="py-20 px-6 bg-gradient-to-r from-[#0A2463] to-[#14A76C]">
+      <section className="py-20 px-6 bg-gradient-to-r from-primary to-secondary">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -408,7 +439,7 @@ export default function ContatoPage() {
           </p>
           <a
             href="/cadastro"
-            className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-[#e6951c] text-[#0A2463] font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
+            className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
           >
             Cadastre-se como motorista
             <ArrowRight className="w-5 h-5" />

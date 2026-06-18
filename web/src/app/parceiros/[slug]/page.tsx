@@ -84,7 +84,7 @@ function StarRating({ rating, total }: { rating: number; total: number }) {
           />
         ))}
       </div>
-      <span className="text-sm font-semibold text-[#0A2463]">
+      <span className="text-sm font-semibold text-primary">
         {rating.toFixed(1)}
       </span>
       <span className="text-sm text-gray-500">({total} avaliações)</span>
@@ -169,7 +169,7 @@ function NotFound() {
         <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
           <Store className="w-12 h-12 text-gray-300" />
         </div>
-        <h1 className="text-2xl font-bold text-[#0A2463] mb-3">
+        <h1 className="text-2xl font-bold text-primary mb-3">
           Estabelecimento não encontrado
         </h1>
         <p className="text-gray-500 mb-8">
@@ -177,7 +177,7 @@ function NotFound() {
         </p>
         <button
           onClick={() => router.push('/parceiros')}
-          className="inline-flex items-center gap-2 bg-[#0A2463] hover:bg-[#0d2d73] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
+          className="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-white font-semibold px-6 py-3 rounded-xl transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
           Voltar para Parceiros
@@ -247,20 +247,20 @@ function HorarioTable({ horarios }: { horarios: Record<string, string> }) {
             return (
               <tr
                 key={dia.key}
-                className={`${isToday ? 'bg-[#0A2463]/5' : ''} ${i % 2 === 0 ? 'bg-gray-50/50' : ''}`}
+                className={`${isToday ? 'bg-primary/5' : ''} ${i % 2 === 0 ? 'bg-gray-50/50' : ''}`}
               >
                 <td
-                  className={`px-4 py-2.5 font-medium ${isToday ? 'text-[#0A2463] font-semibold' : 'text-gray-600'}`}
+                  className={`px-4 py-2.5 font-medium ${isToday ? 'text-primary font-semibold' : 'text-gray-600'}`}
                 >
                   {dia.label}
                   {isToday && (
-                    <span className="ml-2 text-xs bg-[#0A2463] text-white px-1.5 py-0.5 rounded-full">
+                    <span className="ml-2 text-xs bg-primary text-white px-1.5 py-0.5 rounded-full">
                       Hoje
                     </span>
                   )}
                 </td>
                 <td
-                  className={`px-4 py-2.5 text-right ${isToday ? 'text-[#0A2463] font-semibold' : 'text-gray-700'}`}
+                  className={`px-4 py-2.5 text-right ${isToday ? 'text-primary font-semibold' : 'text-gray-700'}`}
                 >
                   {valor === 'Fechado' || valor === '—' ? (
                     <span className="text-[#E84855]">Fechado</span>
@@ -382,7 +382,7 @@ export default function ParceiroDetailPage({
           <nav className="flex items-center gap-2 text-sm">
             <Link
               href="/"
-              className="text-gray-400 hover:text-[#0A2463] transition-colors flex items-center gap-1"
+              className="text-gray-400 hover:text-primary transition-colors flex items-center gap-1"
             >
               <Home className="w-3.5 h-3.5" />
               Home
@@ -390,12 +390,12 @@ export default function ParceiroDetailPage({
             <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
             <Link
               href="/parceiros"
-              className="text-gray-400 hover:text-[#0A2463] transition-colors"
+              className="text-gray-400 hover:text-primary transition-colors"
             >
               Parceiros
             </Link>
             <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
-            <span className="text-[#0A2463] font-medium truncate max-w-[200px] sm:max-w-none">
+            <span className="text-primary font-medium truncate max-w-[200px] sm:max-w-none">
               {estab.nome}
             </span>
           </nav>
@@ -414,7 +414,7 @@ export default function ParceiroDetailPage({
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#14A76C]" />
+          <div className="w-full h-full bg-gradient-to-br from-primary via-primary-light to-secondary" />
         )}
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -460,7 +460,7 @@ export default function ParceiroDetailPage({
                   {catInfo?.label ?? estab.categoria}
                 </span>
                 {estab.verificado && (
-                  <span className="inline-flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-[#14A76C]/20 text-[#14A76C]">
+                  <span className="inline-flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-secondary/20 text-secondary">
                     <BadgeCheck className="w-3.5 h-3.5" />
                     Verificado
                   </span>
@@ -504,7 +504,7 @@ export default function ParceiroDetailPage({
             {/* Description */}
             {estab.descricao && (
               <motion.div variants={fadeUp} custom={1}>
-                <h2 className="text-xl font-bold text-[#0A2463] mb-3">
+                <h2 className="text-xl font-bold text-primary mb-3">
                   Sobre
                 </h2>
                 <div className="text-gray-600 leading-relaxed whitespace-pre-line">
@@ -521,8 +521,8 @@ export default function ParceiroDetailPage({
             >
               {estab.endereco && (
                 <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-                  <div className="w-10 h-10 rounded-full bg-[#0A2463]/10 flex items-center justify-center shrink-0">
-                    <MapPin className="w-5 h-5 text-[#0A2463]" />
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <MapPin className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
@@ -537,8 +537,8 @@ export default function ParceiroDetailPage({
 
               {estab.telefone && (
                 <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-                  <div className="w-10 h-10 rounded-full bg-[#14A76C]/10 flex items-center justify-center shrink-0">
-                    <Phone className="w-5 h-5 text-[#14A76C]" />
+                  <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center shrink-0">
+                    <Phone className="w-5 h-5 text-secondary" />
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
@@ -546,7 +546,7 @@ export default function ParceiroDetailPage({
                     </p>
                     <a
                       href={`tel:${estab.telefone}`}
-                      className="text-sm text-[#0A2463] hover:underline mt-0.5 block"
+                      className="text-sm text-primary hover:underline mt-0.5 block"
                     >
                       {estab.telefone}
                     </a>
@@ -559,16 +559,16 @@ export default function ParceiroDetailPage({
                   href={`https://wa.me/55${estab.whatsapp.replace(/\D/g, '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-start gap-3 p-4 bg-[#14A76C]/5 rounded-xl hover:bg-[#14A76C]/10 transition-colors group"
+                  className="flex items-start gap-3 p-4 bg-secondary/5 rounded-xl hover:bg-secondary/10 transition-colors group"
                 >
-                  <div className="w-10 h-10 rounded-full bg-[#14A76C]/10 flex items-center justify-center shrink-0">
-                    <MessageCircle className="w-5 h-5 text-[#14A76C]" />
+                  <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center shrink-0">
+                    <MessageCircle className="w-5 h-5 text-secondary" />
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
                       WhatsApp
                     </p>
-                    <p className="text-sm text-[#14A76C] font-medium mt-0.5 group-hover:underline">
+                    <p className="text-sm text-secondary font-medium mt-0.5 group-hover:underline">
                       {estab.whatsapp}
                     </p>
                   </div>
@@ -582,14 +582,14 @@ export default function ParceiroDetailPage({
                   rel="noopener noreferrer"
                   className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
                 >
-                  <div className="w-10 h-10 rounded-full bg-[#0A2463]/10 flex items-center justify-center shrink-0">
-                    <Globe className="w-5 h-5 text-[#0A2463]" />
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <Globe className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
                       Site
                     </p>
-                    <p className="text-sm text-[#0A2463] font-medium mt-0.5 group-hover:underline flex items-center gap-1">
+                    <p className="text-sm text-primary font-medium mt-0.5 group-hover:underline flex items-center gap-1">
                       {estab.site_url.replace(/^https?:\/\//, '')}
                       <ExternalLink className="w-3 h-3" />
                     </p>
@@ -649,8 +649,8 @@ export default function ParceiroDetailPage({
             {estab.horario_funcionamento &&
               Object.keys(estab.horario_funcionamento).length > 0 && (
                 <motion.div variants={fadeUp} custom={3}>
-                  <h2 className="text-xl font-bold text-[#0A2463] mb-3 flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-[#14A76C]" />
+                  <h2 className="text-xl font-bold text-primary mb-3 flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-secondary" />
                     Horário de Funcionamento
                   </h2>
                   <HorarioTable horarios={estab.horario_funcionamento} />
@@ -660,7 +660,7 @@ export default function ParceiroDetailPage({
             {/* ═══ Promoções e Cupons ═══ */}
             {campanhasAtivas.length > 0 && (
               <motion.div variants={fadeUp} custom={4}>
-                <h2 className="text-xl font-bold text-[#0A2463] mb-4 flex items-center gap-2">
+                <h2 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
                   <Tag className="w-5 h-5 text-[#F5A623]" />
                   Promoções e Cupons
                 </h2>
@@ -692,7 +692,7 @@ export default function ParceiroDetailPage({
                                 {tipoInfo?.label ?? campanha.tipo}
                               </span>
                             </div>
-                            <h3 className="text-base font-bold text-[#0A2463]">
+                            <h3 className="text-base font-bold text-primary">
                               {campanha.titulo}
                             </h3>
                             <p className="text-sm text-gray-500 mt-1">
@@ -700,13 +700,13 @@ export default function ParceiroDetailPage({
                             </p>
                             <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
                               {campanha.desconto_percentual && (
-                                <span className="flex items-center gap-1 text-[#14A76C] font-semibold">
+                                <span className="flex items-center gap-1 text-secondary font-semibold">
                                   <Percent className="w-3 h-3" />
                                   {campanha.desconto_percentual}% OFF
                                 </span>
                               )}
                               {campanha.desconto_fixo && (
-                                <span className="flex items-center gap-1 text-[#14A76C] font-semibold">
+                                <span className="flex items-center gap-1 text-secondary font-semibold">
                                   {formatarBRL(campanha.desconto_fixo)} OFF
                                 </span>
                               )}
@@ -737,7 +737,7 @@ export default function ParceiroDetailPage({
             {/* ═══ Programa de Fidelidade ═══ */}
             {estab.programa_fidelidade_ativo && (
               <motion.div variants={fadeUp} custom={5}>
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0A2463] to-[#0d2d73] p-6 text-white">
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-light p-6 text-white">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-8 translate-x-8" />
                   <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-6 -translate-x-6" />
                   <div className="relative">
@@ -763,7 +763,7 @@ export default function ParceiroDetailPage({
             {/* ═══ Avaliações Recentes ═══ */}
             <motion.div variants={fadeUp} custom={6}>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-[#0A2463] flex items-center gap-2">
+                <h2 className="text-xl font-bold text-primary flex items-center gap-2">
                   <Users className="w-5 h-5 text-[#F5A623]" />
                   Avaliações Recentes
                 </h2>
@@ -783,14 +783,14 @@ export default function ParceiroDetailPage({
                       className="p-4 rounded-xl border border-gray-100 hover:border-gray-200 transition-colors"
                     >
                       <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0A2463] to-[#14A76C] flex items-center justify-center text-white font-bold text-sm shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm shrink-0">
                           {av.usuario?.nome
                             ? av.usuario.nome.charAt(0).toUpperCase()
                             : '?'}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2">
-                            <span className="font-semibold text-sm text-[#0A2463]">
+                            <span className="font-semibold text-sm text-primary">
                               {av.usuario?.nome ?? 'Usuário'}
                             </span>
                             <span className="text-xs text-gray-400">
@@ -831,7 +831,7 @@ export default function ParceiroDetailPage({
             {/* Transport button */}
             <Link
               href={transportUrl}
-              className="flex items-center justify-center gap-2 w-full bg-[#0A2463] hover:bg-[#0d2d73] text-white font-semibold px-6 py-4 rounded-xl transition-colors shadow-lg shadow-[#0A2463]/20"
+              className="flex items-center justify-center gap-2 w-full bg-primary hover:bg-primary-light text-white font-semibold px-6 py-4 rounded-xl transition-colors shadow-lg shadow-primary/20"
             >
               <Car className="w-5 h-5" />
               Pedir Transporte
@@ -847,7 +847,7 @@ export default function ParceiroDetailPage({
                   );
                 }
               }}
-              className="flex items-center justify-center gap-2 w-full bg-[#14A76C] hover:bg-[#0e8d58] text-white font-semibold px-6 py-4 rounded-xl transition-colors shadow-lg shadow-[#14A76C]/20"
+              className="flex items-center justify-center gap-2 w-full bg-secondary hover:bg-[#0e8d58] text-white font-semibold px-6 py-4 rounded-xl transition-colors shadow-lg shadow-secondary/20"
             >
               <Navigation className="w-5 h-5" />
               Ver no Mapa
@@ -855,21 +855,21 @@ export default function ParceiroDetailPage({
 
             {/* Info card */}
             <div className="bg-gray-50 rounded-xl p-5 space-y-4">
-              <h3 className="text-sm font-bold text-[#0A2463] uppercase tracking-wider">
+              <h3 className="text-sm font-bold text-primary uppercase tracking-wider">
                 Informações
               </h3>
 
               <div className="space-y-3 text-sm">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-400">Categoria</span>
-                  <span className="font-medium text-[#0A2463]">
+                  <span className="font-medium text-primary">
                     {catInfo?.label ?? estab.categoria}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <span className="text-gray-400">Cidade</span>
-                  <span className="font-medium text-[#0A2463]">
+                  <span className="font-medium text-primary">
                     {estab.cidade}
                   </span>
                 </div>
@@ -877,7 +877,7 @@ export default function ParceiroDetailPage({
                 {estab.bairro && (
                   <div className="flex items-center justify-between">
                     <span className="text-gray-400">Bairro</span>
-                    <span className="font-medium text-[#0A2463]">
+                    <span className="font-medium text-primary">
                       {estab.bairro}
                     </span>
                   </div>
@@ -893,7 +893,7 @@ export default function ParceiroDetailPage({
                 {estab.verificado && (
                   <div className="flex items-center justify-between">
                     <span className="text-gray-400">Status</span>
-                    <span className="font-medium text-[#14A76C] flex items-center gap-1">
+                    <span className="font-medium text-secondary flex items-center gap-1">
                       <BadgeCheck className="w-4 h-4" />
                       Verificado
                     </span>
@@ -908,7 +908,7 @@ export default function ParceiroDetailPage({
                 href={`https://wa.me/55${estab.whatsapp.replace(/\D/g, '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full border-2 border-[#14A76C] text-[#14A76C] hover:bg-[#14A76C] hover:text-white font-semibold px-6 py-3 rounded-xl transition-colors"
+                className="flex items-center justify-center gap-2 w-full border-2 border-secondary text-secondary hover:bg-secondary hover:text-white font-semibold px-6 py-3 rounded-xl transition-colors"
               >
                 <MessageCircle className="w-5 h-5" />
                 Chamar no WhatsApp
@@ -918,7 +918,7 @@ export default function ParceiroDetailPage({
             {/* Galeria thumbnails */}
             {estab.galeria && estab.galeria.length > 0 && (
               <div className="bg-gray-50 rounded-xl p-5">
-                <h3 className="text-sm font-bold text-[#0A2463] uppercase tracking-wider mb-3">
+                <h3 className="text-sm font-bold text-primary uppercase tracking-wider mb-3">
                   Galeria
                 </h3>
                 <div className="grid grid-cols-3 gap-2">

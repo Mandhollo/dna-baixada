@@ -62,7 +62,7 @@ export default function InstallBanner() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 animate-[fade-in-up_0.5s_ease-out]">
-      <div className="mx-auto max-w-lg rounded-2xl bg-[#0A2463] p-4 shadow-2xl shadow-black/30">
+      <div className="mx-auto max-w-lg rounded-2xl bg-primary p-4 shadow-2xl shadow-black/30">
         <div className="flex items-start gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F5A623]/20">
             <Smartphone className="h-5 w-5 text-[#F5A623]" />
@@ -80,7 +80,7 @@ export default function InstallBanner() {
         </div>
         <button
           onClick={handleInstall}
-          className="mt-3 w-full flex items-center justify-center gap-2 rounded-xl bg-[#14A76C] py-2.5 text-sm font-bold text-white transition hover:brightness-110 active:scale-[0.98]"
+          className="mt-3 w-full flex items-center justify-center gap-2 rounded-xl bg-secondary py-2.5 text-sm font-bold text-white transition hover:brightness-110 active:scale-[0.98]"
         >
           <Download size={16} />
           Instalar no celular

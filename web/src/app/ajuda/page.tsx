@@ -159,9 +159,9 @@ export default function AjudaPage() {
     <div className="flex flex-col min-h-screen bg-white">
         <PageTitle title='Central de Ajuda' />
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#F5A623] via-[#e6971a] to-[#0A2463] py-28 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#F5A623] via-[#e6971a] to-primary py-28 px-6">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-[#14A76C] blur-3xl" />
+          <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-secondary blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-[#E84855] blur-3xl" />
         </div>
         <div className="relative max-w-5xl mx-auto text-center">
@@ -180,7 +180,7 @@ export default function AjudaPage() {
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
             Central de{' '}
-            <span className="bg-gradient-to-r from-[#14A76C] to-white bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-secondary to-white bg-clip-text text-transparent">
               Ajuda
             </span>
           </motion.h1>
@@ -202,7 +202,7 @@ export default function AjudaPage() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
-          className="inline-flex items-center gap-2 text-[#0A2463] hover:text-[#14A76C] font-semibold transition-colors"
+          className="inline-flex items-center gap-2 text-primary hover:text-secondary font-semibold transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Voltar para a Home
@@ -222,15 +222,15 @@ export default function AjudaPage() {
             <motion.h2
               variants={fadeUp}
               custom={0}
-              className="text-3xl md:text-4xl font-bold text-[#0A2463] flex items-center justify-center gap-3"
+              className="text-3xl md:text-4xl font-bold text-primary flex items-center justify-center gap-3"
             >
-              <HelpCircle className="w-8 h-8 text-[#14A76C]" />
+              <HelpCircle className="w-8 h-8 text-secondary" />
               Perguntas Frequentes
             </motion.h2>
             <motion.div
               variants={fadeUp}
               custom={1}
-              className="mt-3 w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] mx-auto rounded-full"
+              className="mt-3 w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] mx-auto rounded-full"
             />
           </motion.div>
 
@@ -251,7 +251,7 @@ export default function AjudaPage() {
                 setSearchTerm(e.target.value);
                 setOpenQuestion(null);
               }}
-              className="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#14A76C]/40 focus:border-[#14A76C] transition-all"
+              className="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary transition-all"
             />
           </motion.div>
 
@@ -272,7 +272,7 @@ export default function AjudaPage() {
                 }}
                 className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                   activeCategory === cat
-                    ? 'bg-[#0A2463] text-white shadow-md'
+                    ? 'bg-primary text-white shadow-md'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -304,16 +304,16 @@ export default function AjudaPage() {
                     key={item.question}
                     variants={fadeUp}
                     custom={i}
-                    className="border border-gray-100 rounded-2xl overflow-hidden hover:border-[#14A76C]/30 transition-colors"
+                    className="border border-gray-100 rounded-2xl overflow-hidden hover:border-secondary/30 transition-colors"
                   >
                     <button
                       onClick={() => setOpenQuestion(isOpen ? null : item.question)}
                       className="w-full flex items-center gap-4 p-5 text-left bg-white hover:bg-gray-50/50 transition-colors"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-[#14A76C]/10 flex items-center justify-center shrink-0">
-                        <Icon className="w-5 h-5 text-[#14A76C]" />
+                      <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center shrink-0">
+                        <Icon className="w-5 h-5 text-secondary" />
                       </div>
-                      <span className="flex-1 font-semibold text-[#0A2463] pr-4">{item.question}</span>
+                      <span className="flex-1 font-semibold text-primary pr-4">{item.question}</span>
                       <motion.div
                         animate={{ rotate: isOpen ? 180 : 0 }}
                         transition={{ duration: 0.3 }}
@@ -333,7 +333,7 @@ export default function AjudaPage() {
                         >
                           <div className="px-5 pb-5 pl-19">
                             <p className="text-gray-600 leading-relaxed">{item.answer}</p>
-                            <span className="inline-block mt-3 text-xs font-semibold text-[#14A76C] bg-[#14A76C]/10 px-3 py-1 rounded-full">
+                            <span className="inline-block mt-3 text-xs font-semibold text-secondary bg-secondary/10 px-3 py-1 rounded-full">
                               {item.category}
                             </span>
                           </div>
@@ -361,14 +361,14 @@ export default function AjudaPage() {
             <motion.h2
               variants={fadeUp}
               custom={0}
-              className="text-3xl md:text-4xl font-bold text-[#0A2463]"
+              className="text-3xl md:text-4xl font-bold text-primary"
             >
               Entre em Contato
             </motion.h2>
             <motion.div
               variants={fadeUp}
               custom={1}
-              className="mt-3 w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] mx-auto rounded-full"
+              className="mt-3 w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] mx-auto rounded-full"
             />
             <motion.p variants={fadeUp} custom={2} className="mt-4 text-gray-500 max-w-xl mx-auto">
               Não encontrou o que procurava? Nossa equipe está pronta para ajudar.
@@ -423,16 +423,16 @@ export default function AjudaPage() {
                   >
                     <Icon className="w-7 h-7" style={{ color: item.color }} />
                   </div>
-                  <h3 className="font-bold text-[#0A2463] text-lg mb-1">{item.label}</h3>
+                  <h3 className="font-bold text-primary text-lg mb-1">{item.label}</h3>
                   <Wrapper
                     {...(item.href
                       ? {
                           href: item.href,
                           target: '_blank',
                           rel: 'noopener noreferrer',
-                          className: 'text-[#14A76C] font-semibold hover:underline',
+                          className: 'text-secondary font-semibold hover:underline',
                         }
-                      : { className: 'text-[#0A2463] font-semibold' })}
+                      : { className: 'text-primary font-semibold' })}
                   >
                     {item.value}
                   </Wrapper>
@@ -457,14 +457,14 @@ export default function AjudaPage() {
             <motion.h2
               variants={fadeUp}
               custom={0}
-              className="text-3xl md:text-4xl font-bold text-[#0A2463]"
+              className="text-3xl md:text-4xl font-bold text-primary"
             >
               Links Úteis
             </motion.h2>
             <motion.div
               variants={fadeUp}
               custom={1}
-              className="mt-3 w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] mx-auto rounded-full"
+              className="mt-3 w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] mx-auto rounded-full"
             />
           </motion.div>
 
@@ -481,13 +481,13 @@ export default function AjudaPage() {
                 href={link.href}
                 variants={fadeUp}
                 custom={i}
-                className="group flex items-start gap-4 bg-gray-50 rounded-2xl p-6 hover:bg-[#14A76C]/5 hover:border-[#14A76C]/20 border border-transparent transition-all"
+                className="group flex items-start gap-4 bg-gray-50 rounded-2xl p-6 hover:bg-secondary/5 hover:border-secondary/20 border border-transparent transition-all"
               >
-                <div className="w-10 h-10 rounded-xl bg-[#0A2463]/10 flex items-center justify-center shrink-0 group-hover:bg-[#14A76C]/20 transition-colors">
-                  <ExternalLink className="w-5 h-5 text-[#0A2463] group-hover:text-[#14A76C] transition-colors" />
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/20 transition-colors">
+                  <ExternalLink className="w-5 h-5 text-primary group-hover:text-secondary transition-colors" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-[#0A2463] group-hover:text-[#14A76C] transition-colors">
+                  <h3 className="font-bold text-primary group-hover:text-secondary transition-colors">
                     {link.label}
                   </h3>
                   <p className="text-sm text-gray-500 mt-1">{link.desc}</p>

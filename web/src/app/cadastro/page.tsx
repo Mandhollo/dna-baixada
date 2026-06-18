@@ -1,5 +1,6 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
+import Link from 'next/link';
 
 import { useState, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -149,7 +150,7 @@ function FormField({
             className={`w-full rounded-xl border bg-white/80 px-4 py-3 text-sm transition-all outline-none placeholder:text-gray-400 focus:ring-2 ${
               error
                 ? 'border-red-400 focus:border-red-400 focus:ring-red-200'
-                : 'border-gray-200 focus:border-[#14A76C] focus:ring-[#14A76C]/20'
+                : 'border-gray-200 focus:border-secondary focus:ring-secondary/20'
             }`}
           />
         )}
@@ -203,7 +204,7 @@ function FormSelect({
         } ${
           error
             ? 'border-red-400 focus:border-red-400 focus:ring-red-200'
-            : 'border-gray-200 focus:border-[#14A76C] focus:ring-[#14A76C]/20'
+            : 'border-gray-200 focus:border-secondary focus:ring-secondary/20'
         }`}
       >
         <option value="">{placeholder}</option>
@@ -439,7 +440,7 @@ function StepForm({
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#0A2463] transition mb-4"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-primary transition mb-4"
         >
           <ArrowLeft size={16} /> {t('common.voltar')}
         </button>
@@ -458,7 +459,7 @@ function StepForm({
           animate={{ opacity: 1, scale: 1 }}
           className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-green-200 bg-green-50 p-8 text-center"
         >
-          <CheckCircle size={48} className="text-[#14A76C]" />
+          <CheckCircle size={48} className="text-secondary" />
           <h3 className="text-lg font-bold" style={{ color: PRIMARY }}>
             {t('register.conta_criada')}
           </h3>
@@ -671,7 +672,7 @@ function StepForm({
           <button
             type="submit"
             disabled={loading}
-            className="relative w-full rounded-xl py-3.5 text-sm font-bold text-[#0A2463] shadow-lg shadow-[#F5A623]/25 transition-all hover:brightness-110 hover:shadow-xl hover:shadow-[#F5A623]/30 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="relative w-full rounded-xl py-3.5 text-sm font-bold text-primary shadow-lg shadow-[#F5A623]/25 transition-all hover:brightness-110 hover:shadow-xl hover:shadow-[#F5A623]/30 disabled:opacity-70 disabled:cursor-not-allowed"
             style={{ backgroundColor: ACCENT }}
           >
             {loading ? (
@@ -687,13 +688,13 @@ function StepForm({
           {/* Login link */}
           <p className="text-center text-sm text-gray-500">
             {t('register.ja_tem_conta')}{' '}
-            <a
+            <Link
               href="/entrar"
               className="font-semibold hover:underline"
               style={{ color: SECONDARY }}
             >
               {t('common.entrar')}
-            </a>
+            </Link>
           </p>
         </form>
       )}
@@ -723,13 +724,13 @@ export default function CadastroPage() {
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-12">
         <PageTitle title={t('register.page_title')} />
       {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0A2463] via-[#0d2d6e] to-[#14A76C]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-light to-secondary" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(245,166,35,.12),transparent_55%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(20,167,108,.10),transparent_50%)]" />
 
       {/* Decorative floating shapes */}
       <div className="absolute top-20 left-10 h-64 w-64 rounded-full bg-[#F5A623]/5 blur-3xl" />
-      <div className="absolute bottom-20 right-10 h-80 w-80 rounded-full bg-[#14A76C]/5 blur-3xl" />
+      <div className="absolute bottom-20 right-10 h-80 w-80 rounded-full bg-secondary/5 blur-3xl" />
 
       {/* Card */}
       <motion.div
@@ -740,14 +741,14 @@ export default function CadastroPage() {
       >
         {/* Logo */}
         <div className="mb-8 text-center">
-          <a href="/" className="inline-flex items-center gap-1 select-none">
+          <Link href="/" className="inline-flex items-center gap-1 select-none">
             <span className="text-3xl font-extrabold tracking-tight" style={{ color: ACCENT }}>
               DNA
             </span>
             <span className="text-3xl font-semibold tracking-tight" style={{ color: PRIMARY }}>
               Baixada
             </span>
-          </a>
+          </Link>
           <p className="mt-1 text-xs text-gray-400 tracking-wide">
             Mobilidade · Turismo · Impacto Social
           </p>

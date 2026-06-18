@@ -44,8 +44,8 @@ const CATEGORY_ICONS: Record<RecompensaCategoria, React.ElementType> = {
 
 const RESGATE_STATUS_CONFIG: Record<ResgateStatus, { label: string; color: string; bg: string; icon: React.ElementType }> = {
   pendente: { label: 'Pendente', color: 'text-[#F5A623]', bg: 'bg-[#F5A623]/10', icon: Clock },
-  aprovado: { label: 'Aprovado', color: 'text-[#14A76C]', bg: 'bg-[#14A76C]/10', icon: CheckCircle2 },
-  entregue: { label: 'Entregue', color: 'text-[#0A2463]', bg: 'bg-[#0A2463]/10', icon: CheckCircle2 },
+  aprovado: { label: 'Aprovado', color: 'text-secondary', bg: 'bg-secondary/10', icon: CheckCircle2 },
+  entregue: { label: 'Entregue', color: 'text-primary', bg: 'bg-primary/10', icon: CheckCircle2 },
   cancelado: { label: 'Cancelado', color: 'text-[#E84855]', bg: 'bg-[#E84855]/10', icon: XCircle },
 };
 
@@ -141,14 +141,14 @@ function ConfirmModal({
           <div className="w-16 h-16 rounded-full bg-[#F5A623]/10 flex items-center justify-center mx-auto mb-4">
             <Gift className="w-8 h-8 text-[#F5A623]" />
           </div>
-          <h3 className="text-xl font-bold text-[#0A2463]">Confirmar Resgate</h3>
+          <h3 className="text-xl font-bold text-primary">Confirmar Resgate</h3>
           <p className="text-gray-600 mt-2">{recompensa.nome}</p>
         </div>
 
         <div className="bg-gray-50 rounded-xl p-4 mb-6 space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-gray-500">Seus pontos</span>
-            <span className="font-bold text-[#0A2463]">{pontosAtuais.toLocaleString('pt-BR')}</span>
+            <span className="font-bold text-primary">{pontosAtuais.toLocaleString('pt-BR')}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-500">Custo</span>
@@ -156,7 +156,7 @@ function ConfirmModal({
           </div>
           <div className="border-t border-gray-200 pt-2 flex justify-between text-sm">
             <span className="text-gray-500">Saldo após resgate</span>
-            <span className="font-bold text-[#14A76C]">
+            <span className="font-bold text-secondary">
               {(pontosAtuais - recompensa.pontos_necessarios).toLocaleString('pt-BR')}
             </span>
           </div>
@@ -173,7 +173,7 @@ function ConfirmModal({
           <button
             onClick={onConfirm}
             disabled={loading}
-            className="flex-1 py-3 rounded-xl bg-[#14A76C] text-white font-semibold hover:bg-[#128f5e] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            className="flex-1 py-3 rounded-xl bg-secondary text-white font-semibold hover:bg-secondary-dark transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
@@ -207,7 +207,7 @@ function SuccessToast({
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 50 }}
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#14A76C] text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm"
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-secondary text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm"
     >
       <CheckCircle2 className="w-6 h-6 shrink-0" />
       <div className="flex-1">
@@ -345,10 +345,10 @@ export default function RecompensasPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* ─── Hero ─────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#14A76C] via-[#0d6b4f] to-[#0A2463] py-24 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-secondary-dark to-primary py-24 px-6">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 right-10 w-72 h-72 rounded-full bg-[#F5A623] blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-[#14A76C] blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-secondary blur-3xl" />
         </div>
 
         <div className="relative max-w-5xl mx-auto">
@@ -433,8 +433,8 @@ export default function RecompensasPage() {
                 onClick={() => setCategoriaFiltro(cat.value)}
                 className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                   categoriaFiltro === cat.value
-                    ? 'bg-[#0A2463] text-white shadow-md'
-                    : 'bg-white text-gray-600 border border-gray-200 hover:border-[#0A2463]/30 hover:text-[#0A2463]'
+                    ? 'bg-primary text-white shadow-md'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:border-primary/30 hover:text-primary'
                 }`}
               >
                 {cat.label}
@@ -457,14 +457,14 @@ export default function RecompensasPage() {
             <motion.h2
               variants={fadeUp}
               custom={0}
-              className="text-3xl md:text-4xl font-bold text-[#0A2463]"
+              className="text-3xl md:text-4xl font-bold text-primary"
             >
               Catálogo de Recompensas
             </motion.h2>
             <motion.div
               variants={fadeUp}
               custom={1}
-              className="mt-3 w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] mx-auto rounded-full"
+              className="mt-3 w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] mx-auto rounded-full"
             />
           </motion.div>
 
@@ -507,7 +507,7 @@ export default function RecompensasPage() {
                     {/* Badge destaque */}
                     {r.destaque && (
                       <div className="absolute -top-3 left-6">
-                        <span className="inline-flex items-center gap-1 bg-gradient-to-r from-[#F5A623] to-[#e6951c] text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                        <span className="inline-flex items-center gap-1 bg-gradient-to-r from-[#F5A623] to-accent-dark text-white text-xs font-bold px-3 py-1 rounded-full shadow">
                           <Star className="w-3 h-3" />
                           Destaque
                         </span>
@@ -516,11 +516,11 @@ export default function RecompensasPage() {
 
                     {/* Header */}
                     <div className="flex items-start justify-between mb-4">
-                      <div className="w-11 h-11 rounded-xl bg-[#0A2463]/10 flex items-center justify-center">
-                        <Icon className="w-5 h-5 text-[#0A2463]" />
+                      <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <Icon className="w-5 h-5 text-primary" />
                       </div>
                       {r.valor_desconto != null && r.valor_desconto > 0 && (
-                        <span className="inline-flex items-center gap-1 bg-[#14A76C]/10 text-[#14A76C] text-xs font-bold px-2.5 py-1 rounded-full">
+                        <span className="inline-flex items-center gap-1 bg-secondary/10 text-secondary text-xs font-bold px-2.5 py-1 rounded-full">
                           <Tag className="w-3 h-3" />
                           {formatarBRL(r.valor_desconto)} off
                         </span>
@@ -528,7 +528,7 @@ export default function RecompensasPage() {
                     </div>
 
                     {/* Body */}
-                    <h3 className="text-lg font-bold text-[#0A2463] mb-1 line-clamp-1">{r.nome}</h3>
+                    <h3 className="text-lg font-bold text-primary mb-1 line-clamp-1">{r.nome}</h3>
                     <p className="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-2">
                       {r.descricao}
                     </p>
@@ -536,7 +536,7 @@ export default function RecompensasPage() {
                     {/* Pontos */}
                     <div className="flex items-center gap-1.5 mb-4">
                       <Star className="w-5 h-5 text-[#F5A623] fill-[#F5A623]" />
-                      <span className="text-xl font-extrabold text-[#0A2463]">
+                      <span className="text-xl font-extrabold text-primary">
                         {r.pontos_necessarios.toLocaleString('pt-BR')}
                       </span>
                       <span className="text-sm text-gray-400">pontos</span>
@@ -567,7 +567,7 @@ export default function RecompensasPage() {
                     ) : temPontos ? (
                       <button
                         onClick={() => setConfirmRecompensa(r)}
-                        className="w-full py-2.5 rounded-xl bg-[#14A76C] text-white font-semibold text-sm hover:bg-[#128f5e] transition-colors"
+                        className="w-full py-2.5 rounded-xl bg-secondary text-white font-semibold text-sm hover:bg-secondary-dark transition-colors"
                       >
                         Resgatar
                       </button>
@@ -607,14 +607,14 @@ export default function RecompensasPage() {
               <motion.h2
                 variants={fadeUp}
                 custom={0}
-                className="text-3xl font-bold text-[#0A2463]"
+                className="text-3xl font-bold text-primary"
               >
                 Meus Resgates
               </motion.h2>
               <motion.div
                 variants={fadeUp}
                 custom={1}
-                className="mt-3 w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] mx-auto rounded-full"
+                className="mt-3 w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] mx-auto rounded-full"
               />
             </motion.div>
 
@@ -658,11 +658,11 @@ export default function RecompensasPage() {
                       custom={i}
                       className="flex items-center gap-4 bg-white rounded-xl p-4 shadow-sm border border-gray-100"
                     >
-                      <div className="w-10 h-10 rounded-full bg-[#0A2463]/10 flex items-center justify-center shrink-0">
-                        <CatIcon className="w-5 h-5 text-[#0A2463]" />
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                        <CatIcon className="w-5 h-5 text-primary" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-bold text-[#0A2463] text-sm truncate">
+                        <p className="font-bold text-primary text-sm truncate">
                           {resgate.recompensa?.nome ?? 'Recompensa'}
                         </p>
                         <div className="flex items-center gap-3 mt-0.5 text-xs text-gray-500">

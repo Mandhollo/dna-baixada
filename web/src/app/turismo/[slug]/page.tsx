@@ -67,7 +67,7 @@ function StarRating({ rating, total }: { rating: number; total: number }) {
           />
         ))}
       </div>
-      <span className="text-sm font-semibold text-[#0A2463]">{rating.toFixed(1)}</span>
+      <span className="text-sm font-semibold text-primary">{rating.toFixed(1)}</span>
       <span className="text-sm text-gray-500">({total} avaliações)</span>
     </div>
   );
@@ -128,7 +128,7 @@ function NotFound() {
         <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
           <MapPin className="w-12 h-12 text-gray-300" />
         </div>
-        <h1 className="text-2xl font-bold text-[#0A2463] mb-3">
+        <h1 className="text-2xl font-bold text-primary mb-3">
           Ponto turístico não encontrado
         </h1>
         <p className="text-gray-500 mb-8">
@@ -136,7 +136,7 @@ function NotFound() {
         </p>
         <button
           onClick={() => router.push('/turismo')}
-          className="inline-flex items-center gap-2 bg-[#0A2463] hover:bg-[#0d2d73] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
+          className="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-white font-semibold px-6 py-3 rounded-xl transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
           Voltar para Turismo
@@ -239,7 +239,7 @@ function NearbyCard({ ponto }: { ponto: PontoTuristico }) {
         whileHover={{ y: -4 }}
         className="group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-white"
       >
-        <div className="relative h-40 bg-gradient-to-br from-[#0A2463] to-[#14A76C] flex items-center justify-center">
+        <div className="relative h-40 bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
           {ponto.foto_url ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
@@ -259,7 +259,7 @@ function NearbyCard({ ponto }: { ponto: PontoTuristico }) {
           >
             {catInfo?.label ?? ponto.categoria}
           </span>
-          <h4 className="text-sm font-bold text-[#0A2463] line-clamp-1">{ponto.nome}</h4>
+          <h4 className="text-sm font-bold text-primary line-clamp-1">{ponto.nome}</h4>
           <p className="text-xs text-gray-500 mt-1 line-clamp-2">{ponto.descricao_curta}</p>
         </div>
       </motion.div>
@@ -358,7 +358,7 @@ export default function PontoTuristicoDetailPage() {
           <nav className="flex items-center gap-2 text-sm">
             <Link
               href="/"
-              className="text-gray-400 hover:text-[#0A2463] transition-colors flex items-center gap-1"
+              className="text-gray-400 hover:text-primary transition-colors flex items-center gap-1"
             >
               <Home className="w-3.5 h-3.5" />
               Home
@@ -366,12 +366,12 @@ export default function PontoTuristicoDetailPage() {
             <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
             <Link
               href="/turismo"
-              className="text-gray-400 hover:text-[#0A2463] transition-colors"
+              className="text-gray-400 hover:text-primary transition-colors"
             >
               Turismo
             </Link>
             <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
-            <span className="text-[#0A2463] font-medium truncate max-w-[200px] sm:max-w-none">
+            <span className="text-primary font-medium truncate max-w-[200px] sm:max-w-none">
               {ponto.nome}
             </span>
           </nav>
@@ -390,7 +390,7 @@ export default function PontoTuristicoDetailPage() {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#14A76C]" />
+          <div className="w-full h-full bg-gradient-to-br from-primary via-primary-light to-secondary" />
         )}
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -451,7 +451,7 @@ export default function PontoTuristicoDetailPage() {
 
             {/* Description */}
             <motion.div variants={fadeUp} custom={1}>
-              <h2 className="text-xl font-bold text-[#0A2463] mb-3">Sobre</h2>
+              <h2 className="text-xl font-bold text-primary mb-3">Sobre</h2>
               <div className="text-gray-600 leading-relaxed whitespace-pre-line">
                 {ponto.descricao}
               </div>
@@ -461,8 +461,8 @@ export default function PontoTuristicoDetailPage() {
             <motion.div variants={fadeUp} custom={2} className="grid sm:grid-cols-2 gap-4">
               {ponto.endereco && (
                 <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-                  <div className="w-10 h-10 rounded-full bg-[#0A2463]/10 flex items-center justify-center shrink-0">
-                    <MapPin className="w-5 h-5 text-[#0A2463]" />
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <MapPin className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
@@ -475,8 +475,8 @@ export default function PontoTuristicoDetailPage() {
 
               {ponto.horario_funcionamento && (
                 <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-                  <div className="w-10 h-10 rounded-full bg-[#14A76C]/10 flex items-center justify-center shrink-0">
-                    <Clock className="w-5 h-5 text-[#14A76C]" />
+                  <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center shrink-0">
+                    <Clock className="w-5 h-5 text-secondary" />
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
@@ -533,7 +533,7 @@ export default function PontoTuristicoDetailPage() {
                 <div className="relative">
                   <div className="flex items-center gap-2 mb-3">
                     <Lightbulb className="w-5 h-5 text-[#F5A623]" />
-                    <h3 className="text-lg font-bold text-[#0A2463]">Dicas do Visitante</h3>
+                    <h3 className="text-lg font-bold text-primary">Dicas do Visitante</h3>
                   </div>
                   <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                     {ponto.dicas}
@@ -545,8 +545,8 @@ export default function PontoTuristicoDetailPage() {
             {/* Galeria */}
             {allPhotos.length > 0 && (
               <motion.div variants={fadeUp} custom={4}>
-                <h2 className="text-xl font-bold text-[#0A2463] mb-4 flex items-center gap-2">
-                  <Camera className="w-5 h-5 text-[#14A76C]" />
+                <h2 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
+                  <Camera className="w-5 h-5 text-secondary" />
                   Galeria de Fotos
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -588,8 +588,8 @@ export default function PontoTuristicoDetailPage() {
             {/* Map placeholder */}
             {ponto.latitude && ponto.longitude && (
               <motion.div variants={fadeUp} custom={5}>
-                <h2 className="text-xl font-bold text-[#0A2463] mb-4 flex items-center gap-2">
-                  <Navigation className="w-5 h-5 text-[#14A76C]" />
+                <h2 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
+                  <Navigation className="w-5 h-5 text-secondary" />
                   Localização
                 </h2>
                 <div className="relative rounded-2xl overflow-hidden border border-gray-200 bg-gradient-to-br from-[#e8f4f0] to-[#d4ebe4] h-64 sm:h-80">
@@ -616,7 +616,7 @@ export default function PontoTuristicoDetailPage() {
                       <div className="w-10 h-10 rounded-full bg-[#E84855] shadow-lg flex items-center justify-center animate-bounce">
                         <MapPin className="w-6 h-6 text-white" />
                       </div>
-                      <div className="mt-2 bg-white rounded-lg shadow-md px-3 py-1.5 text-xs font-medium text-[#0A2463]">
+                      <div className="mt-2 bg-white rounded-lg shadow-md px-3 py-1.5 text-xs font-medium text-primary">
                         {ponto.nome}
                       </div>
                     </div>
@@ -642,7 +642,7 @@ export default function PontoTuristicoDetailPage() {
             <motion.div variants={fadeUp} custom={0} className="space-y-3">
               <Link
                 href={transportUrl}
-                className="flex items-center justify-center gap-2 w-full bg-[#0A2463] hover:bg-[#0d2d73] text-white font-bold py-4 px-6 rounded-xl transition-colors shadow-lg"
+                className="flex items-center justify-center gap-2 w-full bg-primary hover:bg-primary-light text-white font-bold py-4 px-6 rounded-xl transition-colors shadow-lg"
               >
                 <Car className="w-5 h-5" />
                 Pedir Transporte
@@ -650,7 +650,7 @@ export default function PontoTuristicoDetailPage() {
 
               <Link
                 href={cityTourUrl}
-                className="flex items-center justify-center gap-2 w-full bg-[#14A76C] hover:bg-[#0d8a56] text-white font-bold py-4 px-6 rounded-xl transition-colors shadow-lg"
+                className="flex items-center justify-center gap-2 w-full bg-secondary hover:bg-[#0d8a56] text-white font-bold py-4 px-6 rounded-xl transition-colors shadow-lg"
               >
                 <Compass className="w-5 h-5" />
                 Incluir no City Tour
@@ -663,24 +663,24 @@ export default function PontoTuristicoDetailPage() {
               custom={1}
               className="bg-gray-50 rounded-2xl p-6 space-y-4"
             >
-              <h3 className="font-bold text-[#0A2463]">Informações</h3>
+              <h3 className="font-bold text-primary">Informações</h3>
 
               {ponto.cidade && (
                 <div className="flex items-center gap-3">
-                  <MapPin className="w-4 h-4 text-[#14A76C] shrink-0" />
+                  <MapPin className="w-4 h-4 text-secondary shrink-0" />
                   <span className="text-sm text-gray-600">{ponto.cidade}</span>
                 </div>
               )}
 
               {ponto.horario_funcionamento && (
                 <div className="flex items-center gap-3">
-                  <Clock className="w-4 h-4 text-[#14A76C] shrink-0" />
+                  <Clock className="w-4 h-4 text-secondary shrink-0" />
                   <span className="text-sm text-gray-600">{ponto.horario_funcionamento}</span>
                 </div>
               )}
 
               <div className="flex items-center gap-3">
-                <Ticket className="w-4 h-4 text-[#14A76C] shrink-0" />
+                <Ticket className="w-4 h-4 text-secondary shrink-0" />
                 <span className="text-sm text-gray-600">
                   {ponto.gratuito
                     ? 'Entrada gratuita'
@@ -692,7 +692,7 @@ export default function PontoTuristicoDetailPage() {
 
               {ponto.tempo_visita_minutos && (
                 <div className="flex items-center gap-3">
-                  <Timer className="w-4 h-4 text-[#14A76C] shrink-0" />
+                  <Timer className="w-4 h-4 text-secondary shrink-0" />
                   <span className="text-sm text-gray-600">
                     ~{ponto.tempo_visita_minutos} min de visita
                   </span>
@@ -710,12 +710,12 @@ export default function PontoTuristicoDetailPage() {
                 className="w-14 h-14 rounded-full mx-auto flex items-center justify-center mb-3"
                 style={{ backgroundColor: '#0A246315' }}
               >
-                <MapPin className="w-7 h-7 text-[#0A2463]" />
+                <MapPin className="w-7 h-7 text-primary" />
               </div>
               <p className="text-sm text-gray-400 uppercase tracking-wider font-semibold">
                 Categoria
               </p>
-              <p className="text-lg font-bold text-[#0A2463] mt-1">
+              <p className="text-lg font-bold text-primary mt-1">
                 {catInfo?.label ?? ponto.categoria}
               </p>
             </motion.div>
@@ -739,7 +739,7 @@ export default function PontoTuristicoDetailPage() {
               <motion.h2
                 variants={fadeUp}
                 custom={0}
-                className="text-2xl sm:text-3xl font-bold text-[#0A2463]"
+                className="text-2xl sm:text-3xl font-bold text-primary"
               >
                 Pontos Próximos
               </motion.h2>
@@ -768,7 +768,7 @@ export default function PontoTuristicoDetailPage() {
       {/* ═════════════════════════════════════════════════════════
           CTA Bottom
       ═════════════════════════════════════════════════════════ */}
-      <section className="py-16 px-4 bg-gradient-to-r from-[#0A2463] to-[#14A76C]">
+      <section className="py-16 px-4 bg-gradient-to-r from-primary to-secondary">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -786,14 +786,14 @@ export default function PontoTuristicoDetailPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href={transportUrl}
-              className="flex items-center gap-2 bg-white hover:bg-gray-100 text-[#0A2463] font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
+              className="flex items-center gap-2 bg-white hover:bg-gray-100 text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
             >
               <Car className="w-5 h-5" />
               Pedir Transporte
             </Link>
             <Link
               href={cityTourUrl}
-              className="flex items-center gap-2 bg-[#F5A623] hover:bg-[#e6951c] text-[#0A2463] font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
+              className="flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
             >
               <Compass className="w-5 h-5" />
               Incluir no City Tour

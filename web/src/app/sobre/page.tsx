@@ -59,9 +59,9 @@ export default function SobrePage() {
     <div className="flex flex-col min-h-screen bg-white">
         <PageTitle title='Sobre Nos' />
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#0A2463] py-28 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-primary py-28 px-6">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-[#14A76C] blur-3xl" />
+          <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-secondary blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-[#F5A623] blur-3xl" />
         </div>
         <div className="relative max-w-5xl mx-auto text-center">
@@ -80,7 +80,7 @@ export default function SobrePage() {
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
             Sobre a{' '}
-                        <span className="bg-gradient-to-r from-[#14A76C] to-[#F5A623] bg-clip-text text-transparent">
+                        <span className="bg-gradient-to-r from-secondary to-[#F5A623] bg-clip-text text-transparent">
                           DNA Baixada
             </span>
           </motion.h1>
@@ -107,12 +107,12 @@ export default function SobrePage() {
             className="grid md:grid-cols-2 gap-12 items-center"
           >
             <motion.div variants={fadeUp} custom={0}>
-              <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-[#0A2463]/10 via-[#14A76C]/10 to-[#F5A623]/10 flex items-center justify-center">
-                <span className="text-6xl font-black text-[#0A2463]/20">DNA</span>
+              <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-primary/10 via-secondary/10 to-[#F5A623]/10 flex items-center justify-center">
+                <span className="text-6xl font-black text-primary/20">DNA</span>
               </div>
             </motion.div>
             <motion.div variants={fadeUp} custom={1}>
-              <h2 className="text-3xl font-bold text-[#0A2463] mb-6">Nossa Origem</h2>
+              <h2 className="text-3xl font-bold text-primary mb-6">Nossa Origem</h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 A DNA Baixada nasceu da vontade de transformar a experiência de quem vive e visita
                 a Baixada Santista. Somos criados por quem respira essa região — que conhece cada
@@ -144,14 +144,14 @@ export default function SobrePage() {
             <motion.h2
               variants={fadeUp}
               custom={0}
-              className="text-3xl md:text-4xl font-bold text-[#0A2463]"
+              className="text-3xl md:text-4xl font-bold text-primary"
             >
               Missão, Visão & Valores
             </motion.h2>
             <motion.div
               variants={fadeUp}
               custom={1}
-              className="mt-3 w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] mx-auto rounded-full"
+              className="mt-3 w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] mx-auto rounded-full"
             />
           </motion.div>
 
@@ -194,7 +194,7 @@ export default function SobrePage() {
                 >
                   <item.icon className="w-7 h-7" style={{ color: item.color }} />
                 </div>
-                <h3 className="text-xl font-bold text-[#0A2463] mb-3">{item.title}</h3>
+                <h3 className="text-xl font-bold text-primary mb-3">{item.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{item.text}</p>
               </motion.div>
             ))}
@@ -215,10 +215,10 @@ export default function SobrePage() {
                 custom={i}
                 className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-md transition-shadow"
               >
-                <div className="w-12 h-12 mx-auto rounded-full bg-[#14A76C]/10 flex items-center justify-center mb-4">
-                  <v.icon className="w-6 h-6 text-[#14A76C]" />
+                <div className="w-12 h-12 mx-auto rounded-full bg-secondary/10 flex items-center justify-center mb-4">
+                  <v.icon className="w-6 h-6 text-secondary" />
                 </div>
-                <h4 className="font-bold text-[#0A2463] mb-1">{v.label}</h4>
+                <h4 className="font-bold text-primary mb-1">{v.label}</h4>
                 <p className="text-sm text-gray-500">{v.desc}</p>
               </motion.div>
             ))}
@@ -239,7 +239,7 @@ export default function SobrePage() {
             <motion.h2
               variants={fadeUp}
               custom={0}
-              className="text-3xl md:text-4xl font-bold text-[#0A2463]"
+              className="text-3xl md:text-4xl font-bold text-primary"
             >
               Nossa Equipe
             </motion.h2>
@@ -266,10 +266,10 @@ export default function SobrePage() {
                 custom={i}
                 className="text-center group"
               >
-                <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-[#0A2463]/20 to-[#14A76C]/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                  <Users className="w-12 h-12 text-[#0A2463]/40" />
+                <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                  <Users className="w-12 h-12 text-primary/40" />
                 </div>
-                <h3 className="text-lg font-bold text-[#0A2463]">{member.name}</h3>
+                <h3 className="text-lg font-bold text-primary">{member.name}</h3>
                 <p className="text-sm text-gray-500">{member.role}</p>
               </motion.div>
             ))}
@@ -290,14 +290,14 @@ export default function SobrePage() {
             <motion.h2
               variants={fadeUp}
               custom={0}
-              className="text-3xl md:text-4xl font-bold text-[#0A2463]"
+              className="text-3xl md:text-4xl font-bold text-primary"
             >
               Nossa Jornada
             </motion.h2>
             <motion.div
               variants={fadeUp}
               custom={1}
-              className="mt-3 w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] mx-auto rounded-full"
+              className="mt-3 w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] mx-auto rounded-full"
             />
           </motion.div>
 
@@ -309,7 +309,7 @@ export default function SobrePage() {
             className="relative"
           >
             {/* Vertical line */}
-            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#14A76C] via-[#0A2463] to-[#F5A623]" />
+            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-secondary via-primary to-[#F5A623]" />
 
             {timeline.map((item, i) => (
               <motion.div
@@ -321,7 +321,7 @@ export default function SobrePage() {
                 }`}
               >
                 {/* Dot */}
-                <div className="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#14A76C] border-4 border-white shadow z-10" />
+                <div className="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-secondary border-4 border-white shadow z-10" />
 
                 {/* Content */}
                 <div
@@ -332,7 +332,7 @@ export default function SobrePage() {
                   <span className="inline-block text-xs font-bold tracking-wider uppercase text-[#F5A623] mb-1">
                     {item.year}
                   </span>
-                  <h3 className="text-xl font-bold text-[#0A2463] mb-2">{item.phase}</h3>
+                  <h3 className="text-xl font-bold text-primary mb-2">{item.phase}</h3>
                   <p className="text-gray-600 leading-relaxed">{item.description}</p>
                 </div>
               </motion.div>
@@ -342,7 +342,7 @@ export default function SobrePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 bg-gradient-to-r from-[#0A2463] to-[#14A76C]">
+      <section className="py-20 px-6 bg-gradient-to-r from-primary to-secondary">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -360,7 +360,7 @@ export default function SobrePage() {
           </p>
           <a
             href="/contato"
-            className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-[#e6951c] text-[#0A2463] font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
+            className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
           >
             Faça parte
             <ArrowRight className="w-5 h-5" />

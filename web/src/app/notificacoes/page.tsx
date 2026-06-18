@@ -53,7 +53,7 @@ export default function NotificacoesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-[#0A2463]" />
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -66,7 +66,7 @@ export default function NotificacoesPage() {
         <div className="flex items-center justify-between mb-6">
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-[#0A2463] transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-primary transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Voltar
@@ -74,7 +74,7 @@ export default function NotificacoesPage() {
           {notificacoes.some((n) => !n.lida) && (
             <button
               onClick={handleMarcarTodas}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#14A76C] hover:underline"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-secondary hover:underline"
             >
               <Check className="w-4 h-4" />
               Marcar todas como lidas
@@ -82,7 +82,7 @@ export default function NotificacoesPage() {
           )}
         </div>
 
-        <h1 className="text-2xl font-bold text-[#0A2463] mb-6 flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
           <Bell className="w-6 h-6" />
           Notificações
         </h1>
@@ -107,14 +107,14 @@ export default function NotificacoesPage() {
                 className={`flex items-start gap-3 p-4 rounded-xl border transition-colors ${
                   n.lida
                     ? 'bg-white border-gray-100'
-                    : 'bg-[#0A2463]/[0.03] border-[#0A2463]/20'
+                    : 'bg-primary/[0.03] border-primary/20'
                 }`}
               >
                 <div className="flex-1 min-w-0">
                   {!n.lida && (
                     <span className="inline-block w-2 h-2 rounded-full bg-[#F5A623] mb-1" />
                   )}
-                  <p className="font-semibold text-[#0A2463] text-sm">{n.titulo}</p>
+                  <p className="font-semibold text-primary text-sm">{n.titulo}</p>
                   {n.mensagem && (
                     <p className="text-sm text-gray-600 mt-0.5">{n.mensagem}</p>
                   )}
@@ -126,7 +126,7 @@ export default function NotificacoesPage() {
                   {!n.lida && (
                     <button
                       onClick={() => handleMarcarLida(n.id)}
-                      className="p-1.5 rounded-lg text-gray-400 hover:text-[#14A76C] hover:bg-[#14A76C]/10 transition-colors"
+                      className="p-1.5 rounded-lg text-gray-400 hover:text-secondary hover:bg-secondary/10 transition-colors"
                       title="Marcar como lida"
                     >
                       <Check className="w-4 h-4" />

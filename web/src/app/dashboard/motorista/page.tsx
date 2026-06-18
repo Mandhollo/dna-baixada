@@ -1,5 +1,6 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
+import Link from 'next/link';
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
@@ -379,9 +380,9 @@ export default function MotoristaDashboardPage() {
               <Target size={16} className="text-accent-dark" />
               <h2 className="text-sm font-bold uppercase tracking-wider text-foreground-muted">Metas</h2>
             </div>
-            <a href="/dashboard/motorista/ranking" className="text-xs font-semibold text-primary hover:underline">
+            <Link href="/dashboard/motorista/ranking" className="text-xs font-semibold text-primary hover:underline">
               Ver Ranking
-            </a>
+            </Link>
           </div>
           {metas.length > 0 ? (
             <div className="space-y-3">
@@ -471,7 +472,7 @@ export default function MotoristaDashboardPage() {
 
         {/* ── Perfil link ── */}
         <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={5} className="mt-6">
-          <a
+          <Link
             href="/dashboard/motorista/perfil"
             className="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4 shadow-sm transition hover:shadow-md"
           >
@@ -489,7 +490,7 @@ export default function MotoristaDashboardPage() {
               </p>
             </div>
             <User size={20} className="text-foreground-muted" />
-          </a>
+          </Link>
         </motion.div>
       </div>
     </div>
@@ -517,7 +518,7 @@ function ActionCard({ title, description, icon, href, variant }: {
 }) {
   const bgMap = { primary: 'from-primary to-primary-light', accent: 'from-accent-dark to-accent' };
   return (
-    <a
+    <Link
       href={href}
       className={`group flex items-center gap-3 rounded-2xl bg-gradient-to-br ${bgMap[variant]} p-4 text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl`}
     >
@@ -526,6 +527,6 @@ function ActionCard({ title, description, icon, href, variant }: {
         <h3 className="text-sm font-bold">{title}</h3>
         <p className="text-[11px] text-white/75">{description}</p>
       </div>
-    </a>
+    </Link>
   );
 }

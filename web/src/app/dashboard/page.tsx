@@ -1,5 +1,6 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
+import Link from 'next/link';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -98,10 +99,10 @@ function PassageiroDashboard() {
       {/* ── Top bar ── */}
       <header className="sticky top-0 z-30 bg-primary text-white shadow-lg">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
-          <a href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <span className="text-lg font-extrabold tracking-tight text-accent">DNA</span>
             <span className="text-lg font-semibold text-white">Baixada</span>
-          </a>
+          </Link>
           <div className="flex items-center gap-3">
             <p className="hidden sm:block text-sm text-white/70">
               Olá, <span className="font-semibold text-white">{firstName}</span>
@@ -266,7 +267,7 @@ function ActionCard({
   };
 
   return (
-    <a
+    <Link
       href={href}
       className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${bgMap[variant]} p-5 text-white shadow-lg ${shadowMap[variant]} transition hover:-translate-y-1 hover:shadow-xl`}
     >
@@ -276,6 +277,6 @@ function ActionCard({
       <span className="text-2xl">{icon}</span>
       <h3 className="mt-3 font-bold">{title}</h3>
       <p className="mt-1 text-sm text-white/80">{description}</p>
-    </a>
+    </Link>
   );
 }

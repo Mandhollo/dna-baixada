@@ -39,16 +39,16 @@ const categoriaIcon: Record<string, React.ReactNode> = {
 };
 
 const categoriaGrad: Record<string, string> = {
-  historico: 'from-[#0A2463] to-[#1a3a8a]',
-  praia: 'from-[#14A76C] to-[#0d8a56]',
-  natureza: 'from-[#14A76C] to-[#0A2463]',
-  museu: 'from-[#F5A623] to-[#d48e1c]',
-  religioso: 'from-[#0d2d73] to-[#14A76C]',
+  historico: 'from-primary to-[#1a3a8a]',
+  praia: 'from-secondary to-[#0d8a56]',
+  natureza: 'from-secondary to-primary',
+  museu: 'from-[#F5A623] to-accent-dark',
+  religioso: 'from-primary-light to-secondary',
   gastronomico: 'from-[#E84855] to-[#F5A623]',
-  entretenimento: 'from-[#0A2463] to-[#14A76C]',
-  mirante: 'from-[#14A76C] to-[#F5A623]',
-  cultura: 'from-[#F5A623] to-[#0A2463]',
-  esporte: 'from-[#0d2d73] to-[#0A2463]',
+  entretenimento: 'from-primary to-secondary',
+  mirante: 'from-secondary to-[#F5A623]',
+  cultura: 'from-[#F5A623] to-primary',
+  esporte: 'from-primary-light to-primary',
 };
 
 const roteiroIcons: Record<string, React.ReactNode> = {
@@ -91,10 +91,10 @@ export default function TurismoPage() {
     <div className="flex flex-col min-h-screen bg-white">
         <PageTitle title={t('turismo.page_title')} />
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#14A76C] py-28 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-secondary py-28 px-6">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 right-20 w-80 h-80 rounded-full bg-[#F5A623] blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-[#14A76C] blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-secondary blur-3xl" />
         </div>
         <div className="relative max-w-5xl mx-auto text-center">
           <motion.span
@@ -112,7 +112,7 @@ export default function TurismoPage() {
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
             {t('turismo.hero_titulo_1')}{' '}
-            <span className="bg-gradient-to-r from-[#F5A623] to-[#14A76C] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#F5A623] to-secondary bg-clip-text text-transparent">
               {t('turismo.hero_titulo_2')}
             </span>
           </motion.h1>
@@ -130,12 +130,12 @@ export default function TurismoPage() {
             transition={{ duration: 0.7, delay: 0.45 }}
             className="mt-8 flex flex-wrap justify-center gap-3"
           >
-            <a href="/turismo/booking" className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-[#e6951c] text-[#0A2463] font-bold px-6 py-3 rounded-full transition shadow-lg">
+            <Link href="/turismo/booking" className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-6 py-3 rounded-full transition shadow-lg">
               <Calendar size={18} /> {t('turismo.agendar_city_tour')}
-            </a>
-            <a href="/turismo/cruzeiros" className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-full transition border border-white/20">
+            </Link>
+            <Link href="/turismo/cruzeiros" className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-full transition border border-white/20">
               <Ship size={18} /> {t('turismo.cruzeiros')}
-            </a>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -144,10 +144,10 @@ export default function TurismoPage() {
       <section className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="text-center mb-14">
-            <motion.h2 variants={fadeUp} custom={0} className="text-3xl md:text-4xl font-bold text-[#0A2463]">
+            <motion.h2 variants={fadeUp} custom={0} className="text-3xl md:text-4xl font-bold text-primary">
               {t('turismo.pontos_turisticos')}
             </motion.h2>
-            <motion.div variants={fadeUp} custom={1} className="mt-3 w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] mx-auto rounded-full" />
+            <motion.div variants={fadeUp} custom={1} className="mt-3 w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] mx-auto rounded-full" />
           </motion.div>
 
           {loading ? (
@@ -176,7 +176,7 @@ export default function TurismoPage() {
                     custom={i}
                     className="group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-white cursor-pointer"
                   >
-                    <div className={`relative h-44 bg-gradient-to-br ${categoriaGrad[ponto.categoria] ?? 'from-[#0A2463] to-[#14A76C]'} flex items-center justify-center`}>
+                    <div className={`relative h-44 bg-gradient-to-br ${categoriaGrad[ponto.categoria] ?? 'from-primary to-secondary'} flex items-center justify-center`}>
                       <div className="text-white/50 group-hover:scale-110 transition-transform">
                         {categoriaIcon[ponto.categoria] ?? <MapPin size={48} />}
                       </div>
@@ -187,7 +187,7 @@ export default function TurismoPage() {
                           <span className="bg-[#F5A623] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{t('turismo.destaque')}</span>
                         )}
                         {ponto.gratuito && (
-                          <span className="bg-[#14A76C] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{t('turismo.gratis')}</span>
+                          <span className="bg-secondary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{t('turismo.gratis')}</span>
                         )}
                       </div>
                       <div className="absolute bottom-3 right-3 bg-white/20 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-full">
@@ -195,7 +195,7 @@ export default function TurismoPage() {
                       </div>
                     </div>
                     <div className="p-5">
-                      <h3 className="text-lg font-bold text-[#0A2463] mb-1 group-hover:text-[#14A76C] transition-colors">
+                      <h3 className="text-lg font-bold text-primary mb-1 group-hover:text-secondary transition-colors">
                         {ponto.nome}
                       </h3>
                       <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
@@ -221,7 +221,7 @@ export default function TurismoPage() {
       <section className="py-20 px-6 bg-gray-50">
         <div className="max-w-5xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="text-center mb-14">
-            <motion.h2 variants={fadeUp} custom={0} className="text-3xl md:text-4xl font-bold text-[#0A2463]">
+            <motion.h2 variants={fadeUp} custom={0} className="text-3xl md:text-4xl font-bold text-primary">
               {t('turismo.roteiros_sugeridos')}
             </motion.h2>
             <motion.p variants={fadeUp} custom={1} className="mt-3 text-gray-500">
@@ -257,11 +257,11 @@ export default function TurismoPage() {
                     >
                       {roteiroIcons[roteiro.tipo] ?? <Compass size={28} />}
                     </div>
-                    <h3 className="text-xl font-bold text-[#0A2463] mb-2 text-center">{roteiro.nome}</h3>
+                    <h3 className="text-xl font-bold text-primary mb-2 text-center">{roteiro.nome}</h3>
                     <p className="text-sm text-gray-600 leading-relaxed text-center">{roteiro.descricao}</p>
                     <div className="mt-4 flex items-center justify-center gap-4 text-sm">
                       <span className="text-gray-500 flex items-center gap-1"><Clock size={14} /> {roteiro.duracao_horas}h</span>
-                      <span className="font-bold text-[#14A76C] flex items-center gap-1"><Banknote size={14} /> {formatarBRL(roteiro.preco_base)}</span>
+                      <span className="font-bold text-secondary flex items-center gap-1"><Banknote size={14} /> {formatarBRL(roteiro.preco_base)}</span>
                       <span className="text-xs text-gray-400">{roteiro.pontos_ids.length} {t('turismo.pontos')}</span>
                     </div>
                   </motion.a>
@@ -277,13 +277,13 @@ export default function TurismoPage() {
         <div className="max-w-5xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div variants={fadeUp} custom={0}>
-              <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-[#0A2463] via-[#14A76C] to-[#F5A623] flex items-center justify-center">
+              <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-primary via-secondary to-[#F5A623] flex items-center justify-center">
                 <Compass className="w-24 h-24 text-white/40" />
               </div>
             </motion.div>
             <motion.div variants={fadeUp} custom={1}>
-              <span className="text-sm font-semibold tracking-widest uppercase text-[#14A76C]">{t('turismo.exclusivo')}</span>
-              <h2 className="text-3xl font-bold text-[#0A2463] mt-2 mb-4">{t('turismo.city_tours_dna')}</h2>
+              <span className="text-sm font-semibold tracking-widest uppercase text-secondary">{t('turismo.exclusivo')}</span>
+              <h2 className="text-3xl font-bold text-primary mt-2 mb-4">{t('turismo.city_tours_dna')}</h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 {t('turismo.city_tours_desc')}
               </p>
@@ -295,14 +295,14 @@ export default function TurismoPage() {
                   t('turismo.saida_qualquer_ponto'),
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2 text-gray-600">
-                    <MapPin className="w-5 h-5 text-[#14A76C] shrink-0 mt-0.5" />
+                    <MapPin className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
-              <a href="/turismo/booking" className="inline-flex items-center gap-2 bg-[#0A2463] hover:bg-[#0d2d73] text-white font-bold px-6 py-3 rounded-full transition">
+              <Link href="/turismo/booking" className="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-white font-bold px-6 py-3 rounded-full transition">
                 {t('turismo.agendar_city_tour')} <ArrowRight size={18} />
-              </a>
+              </Link>
             </motion.div>
           </motion.div>
         </div>
@@ -310,7 +310,7 @@ export default function TurismoPage() {
 
       {/* Cruzeiros */}
       {proxCruzeiros.length > 0 && (
-        <section className="py-20 px-6 bg-gradient-to-r from-[#0A2463] to-[#0d2d73]">
+        <section className="py-20 px-6 bg-gradient-to-r from-primary to-primary-light">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10">
               <Ship className="w-10 h-10 text-[#F5A623] mx-auto mb-4" />
@@ -327,16 +327,16 @@ export default function TurismoPage() {
                     <p className="text-white/50">{t('turismo.chegada')} {c.hora_chegada.slice(0,5)} · {t('turismo.saida')} {c.hora_saida.slice(0,5)}</p>
                     {c.passageiros && <p className="text-white/50">~{c.passageiros} {t('turismo.passageiros')}</p>}
                   </div>
-                  <a href="/corrida/solicitar?tipo=transfer_cruzeiro" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#F5A623] hover:underline">
+                  <Link href="/corrida/solicitar?tipo=transfer_cruzeiro" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#F5A623] hover:underline">
                     {t('turismo.reservar_transfer')} <ChevronRight size={12} />
-                  </a>
+                  </Link>
                 </div>
               ))}
             </div>
             <div className="text-center mt-8">
-              <a href="/turismo/cruzeiros" className="inline-flex items-center gap-2 text-white/80 hover:text-white font-semibold transition">
+              <Link href="/turismo/cruzeiros" className="inline-flex items-center gap-2 text-white/80 hover:text-white font-semibold transition">
                 {t('turismo.ver_todos_cruzeiros')} <ArrowRight size={16} />
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -346,39 +346,39 @@ export default function TurismoPage() {
       <section className="py-20 px-6 bg-white">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-[#0A2463]">{t('turismo.explore_mais')}</h2>
+            <h2 className="text-3xl font-bold text-primary">{t('turismo.explore_mais')}</h2>
           </div>
           <div className="grid sm:grid-cols-3 gap-6">
-            <a href="/turismo/eventos" className="group rounded-2xl border border-gray-100 p-6 text-center shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
+            <Link href="/turismo/eventos" className="group rounded-2xl border border-gray-100 p-6 text-center shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
               <Calendar className="w-10 h-10 mx-auto text-[#F5A623] group-hover:scale-110 transition-transform" />
-              <h3 className="mt-3 font-bold text-[#0A2463]">{t('turismo.eventos')}</h3>
+              <h3 className="mt-3 font-bold text-primary">{t('turismo.eventos')}</h3>
               <p className="mt-1 text-sm text-gray-500">{t('turismo.shows_feiras')}</p>
-            </a>
-            <a href="/turismo/cruzeiros" className="group rounded-2xl border border-gray-100 p-6 text-center shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
-              <Ship className="w-10 h-10 mx-auto text-[#0A2463] group-hover:scale-110 transition-transform" />
-              <h3 className="mt-3 font-bold text-[#0A2463]">{t('turismo.cruzeiros')}</h3>
+            </Link>
+            <Link href="/turismo/cruzeiros" className="group rounded-2xl border border-gray-100 p-6 text-center shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
+              <Ship className="w-10 h-10 mx-auto text-primary group-hover:scale-110 transition-transform" />
+              <h3 className="mt-3 font-bold text-primary">{t('turismo.cruzeiros')}</h3>
               <p className="mt-1 text-sm text-gray-500">{t('turismo.calendario_navios')}</p>
-            </a>
-            <a href="/turismo/booking" className="group rounded-2xl border border-gray-100 p-6 text-center shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
-              <Compass className="w-10 h-10 mx-auto text-[#14A76C] group-hover:scale-110 transition-transform" />
-              <h3 className="mt-3 font-bold text-[#0A2463]">{t('turismo.city_tours')}</h3>
+            </Link>
+            <Link href="/turismo/booking" className="group rounded-2xl border border-gray-100 p-6 text-center shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
+              <Compass className="w-10 h-10 mx-auto text-secondary group-hover:scale-110 transition-transform" />
+              <h3 className="mt-3 font-bold text-primary">{t('turismo.city_tours')}</h3>
               <p className="mt-1 text-sm text-gray-500">{t('turismo.agende_seu_passeio')}</p>
-            </a>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* CTA Final */}
-      <section className="py-20 px-6 bg-gradient-to-r from-[#0A2463] to-[#14A76C]">
+      <section className="py-20 px-6 bg-gradient-to-r from-primary to-secondary">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="max-w-3xl mx-auto text-center">
           <Calendar className="w-12 h-12 text-[#F5A623] mx-auto mb-6" />
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t('turismo.agende_city_tour_cta')}</h2>
           <p className="text-white/80 mb-8 max-w-xl mx-auto">
             {t('turismo.viva_baixada')}
           </p>
-          <a href="/turismo/booking" className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-[#e6951c] text-[#0A2463] font-bold px-8 py-4 rounded-full transition-colors shadow-lg">
+          <Link href="/turismo/booking" className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg">
             {t('turismo.agendar_city_tour')} <ArrowRight size={18} />
-          </a>
+          </Link>
         </motion.div>
       </section>
     </div>

@@ -260,7 +260,7 @@ export default function SocialPage() {
       <div className="max-w-6xl mx-auto w-full px-6 pt-6">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-[#0A2463]/70 hover:text-[#0A2463] transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary/70 hover:text-primary transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Voltar para Home
@@ -268,10 +268,10 @@ export default function SocialPage() {
       </div>
 
       {/* ─── Hero ─── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#14A76C] py-28 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-secondary py-28 px-6">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#F5A623] blur-3xl" />
-          <div className="absolute bottom-0 left-10 w-72 h-72 rounded-full bg-[#14A76C] blur-3xl" />
+          <div className="absolute bottom-0 left-10 w-72 h-72 rounded-full bg-secondary blur-3xl" />
         </div>
         <div className="relative max-w-5xl mx-auto text-center">
           <motion.span
@@ -289,7 +289,7 @@ export default function SocialPage() {
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
             DNA{' '}
-            <span className="bg-gradient-to-r from-[#F5A623] to-[#14A76C] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#F5A623] to-secondary bg-clip-text text-transparent">
               Social
             </span>
           </motion.h1>
@@ -314,21 +314,21 @@ export default function SocialPage() {
             transition={{ duration: 0.5 }}
             className="max-w-6xl mx-auto"
           >
-            <div className="bg-gradient-to-r from-[#0A2463]/5 to-[#14A76C]/5 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-[#14A76C]/10">
+            <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-secondary/10">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-xl bg-[#F5A623]/10 flex items-center justify-center">
                   <Star className="w-7 h-7 text-[#F5A623]" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Meu saldo de pontos</p>
-                  <p className="text-3xl font-extrabold text-[#0A2463]">
+                  <p className="text-3xl font-extrabold text-primary">
                     {profile.pontos.toLocaleString('pt-BR')}
                   </p>
                 </div>
               </div>
               <Link
                 href="/recompensas"
-                className="inline-flex items-center gap-2 bg-[#14A76C] hover:bg-[#11915e] text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 bg-secondary hover:bg-[#11915e] text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-sm"
               >
                 <Gift className="w-5 h-5" />
                 Ver Recompensas
@@ -351,14 +351,14 @@ export default function SocialPage() {
             <motion.h2
               variants={fadeUp}
               custom={0}
-              className="text-3xl md:text-4xl font-bold text-[#0A2463]"
+              className="text-3xl md:text-4xl font-bold text-primary"
             >
               Campanhas Ativas
             </motion.h2>
             <motion.div
               variants={fadeUp}
               custom={1}
-              className="mt-3 w-16 h-1 bg-gradient-to-r from-[#14A76C] to-[#F5A623] mx-auto rounded-full"
+              className="mt-3 w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] mx-auto rounded-full"
             />
           </motion.div>
 
@@ -418,7 +418,7 @@ export default function SocialPage() {
                     </div>
 
                     {/* Body */}
-                    <h3 className="text-lg font-bold text-[#0A2463] mb-2">{c.titulo}</h3>
+                    <h3 className="text-lg font-bold text-primary mb-2">{c.titulo}</h3>
                     <p className="text-sm text-gray-600 leading-relaxed mb-4 line-clamp-3">{c.descricao}</p>
 
                     {/* Location */}
@@ -464,13 +464,13 @@ export default function SocialPage() {
                       {!user ? (
                         <Link
                           href="/entrar"
-                          className="w-full inline-flex items-center justify-center gap-2 bg-[#0A2463] hover:bg-[#0d2d73] text-white font-semibold py-3 rounded-xl transition-colors text-sm"
+                          className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-light text-white font-semibold py-3 rounded-xl transition-colors text-sm"
                         >
                           <ArrowRight className="w-4 h-4" />
                           Entre para participar
                         </Link>
                       ) : jaParticipou ? (
-                        <div className="w-full flex items-center justify-center gap-2 bg-[#14A76C]/10 text-[#14A76C] font-semibold py-3 rounded-xl text-sm">
+                        <div className="w-full flex items-center justify-center gap-2 bg-secondary/10 text-secondary font-semibold py-3 rounded-xl text-sm">
                           <CheckCircle2 className="w-4 h-4" />
                           Você já participou
                         </div>
@@ -478,7 +478,7 @@ export default function SocialPage() {
                         <button
                           onClick={() => handleParticipar(c)}
                           disabled={isParticipando}
-                          className="w-full inline-flex items-center justify-center gap-2 bg-[#14A76C] hover:bg-[#11915e] disabled:bg-[#14A76C]/50 text-white font-semibold py-3 rounded-xl transition-colors text-sm"
+                          className="w-full inline-flex items-center justify-center gap-2 bg-secondary hover:bg-[#11915e] disabled:bg-secondary/50 text-white font-semibold py-3 rounded-xl transition-colors text-sm"
                         >
                           {isParticipando ? (
                             <>
@@ -504,7 +504,7 @@ export default function SocialPage() {
           <div className="text-center mt-10">
             <Link
               href="/social/ranking"
-              className="inline-flex items-center gap-2 text-[#0A2463] font-semibold hover:underline text-sm"
+              className="inline-flex items-center gap-2 text-primary font-semibold hover:underline text-sm"
             >
               <Trophy className="w-4 h-4 text-[#F5A623]" />
               Ver Ranking de Participantes
@@ -515,7 +515,7 @@ export default function SocialPage() {
       </section>
 
       {/* ─── Impacto em Números ─── */}
-      <section className="py-20 px-6 bg-gradient-to-r from-[#0A2463] to-[#14A76C]">
+      <section className="py-20 px-6 bg-gradient-to-r from-primary to-secondary">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial="hidden"
@@ -566,10 +566,10 @@ export default function SocialPage() {
             className="grid md:grid-cols-2 gap-12 items-center"
           >
             <motion.div variants={fadeUp} custom={0}>
-              <span className="text-sm font-semibold tracking-widest uppercase text-[#14A76C]">
+              <span className="text-sm font-semibold tracking-widest uppercase text-secondary">
                 Transparência
               </span>
-              <h2 className="text-3xl font-bold text-[#0A2463] mt-2 mb-4">
+              <h2 className="text-3xl font-bold text-primary mt-2 mb-4">
                 Acompanhe a aplicação dos recursos
               </h2>
               <p className="text-gray-600 leading-relaxed mb-6">
@@ -585,7 +585,7 @@ export default function SocialPage() {
                   'Dashboard em tempo real',
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-2 text-gray-600">
-                    <ShieldCheck className="w-5 h-5 text-[#14A76C] shrink-0" />
+                    <ShieldCheck className="w-5 h-5 text-secondary shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -594,8 +594,8 @@ export default function SocialPage() {
             <motion.div variants={fadeUp} custom={1}>
               <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
                 <div className="flex items-center gap-3 mb-6">
-                  <BarChart3 className="w-6 h-6 text-[#0A2463]" />
-                  <h3 className="font-bold text-[#0A2463]">Distribuição de Recursos</h3>
+                  <BarChart3 className="w-6 h-6 text-primary" />
+                  <h3 className="font-bold text-primary">Distribuição de Recursos</h3>
                 </div>
                 <div className="space-y-4">
                   {[
@@ -630,7 +630,7 @@ export default function SocialPage() {
       </section>
 
       {/* ─── CTA ─── */}
-      <section className="py-20 px-6 bg-gradient-to-r from-[#14A76C] to-[#0A2463]">
+      <section className="py-20 px-6 bg-gradient-to-r from-secondary to-primary">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -648,7 +648,7 @@ export default function SocialPage() {
           </p>
           <Link
             href="/recompensas"
-            className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-[#e6951c] text-[#0A2463] font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
+            className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
           >
             Ver Recompensas
             <ArrowRight className="w-5 h-5" />

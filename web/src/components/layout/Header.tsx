@@ -31,7 +31,7 @@ export default function Header() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
-        className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#0A2463]/70 backdrop-blur-xl supports-[backdrop-filter]:bg-[#0A2463]/60"
+        className="sticky top-0 z-50 w-full border-b border-white/10 bg-primary/70 backdrop-blur-xl supports-[backdrop-filter]:bg-primary/60"
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
@@ -62,7 +62,7 @@ export default function Header() {
               <div className="ml-3 flex items-center gap-2">
                 <Link
                   href="/dashboard"
-                  className="inline-flex items-center gap-1.5 rounded-full bg-[#14A76C] px-4 py-2 text-sm font-bold text-white shadow-lg shadow-[#14A76C]/25 transition-all hover:bg-[#0f8a56] hover:shadow-[#14A76C]/40"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-4 py-2 text-sm font-bold text-white shadow-lg shadow-secondary/25 transition-all hover:bg-[#0f8a56] hover:shadow-secondary/40"
                 >
                   <LayoutDashboard className="h-4 w-4" />
                   {profile?.nome?.split(' ')[0] || 'Painel'}
@@ -78,7 +78,7 @@ export default function Header() {
             ) : (
               <Link
                 href="/entrar"
-                className="ml-3 inline-flex items-center rounded-full bg-[#F5A623] px-5 py-2 text-sm font-bold text-[#0A2463] shadow-lg shadow-[#F5A623]/25 transition-all hover:bg-[#e6951a] hover:shadow-[#F5A623]/40"
+                className="ml-3 inline-flex items-center rounded-full bg-[#F5A623] px-5 py-2 text-sm font-bold text-primary shadow-lg shadow-[#F5A623]/25 transition-all hover:bg-[#e6951a] hover:shadow-[#F5A623]/40"
               >
                 {t('common.entrar')}
               </Link>

@@ -147,9 +147,9 @@ export default function CruzeirosPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#0A2463] py-24 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-primary py-24 px-6">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 right-10 w-80 h-80 rounded-full bg-[#14A76C] blur-3xl" />
+          <div className="absolute top-10 right-10 w-80 h-80 rounded-full bg-secondary blur-3xl" />
           <div className="absolute bottom-0 left-10 w-96 h-96 rounded-full bg-[#F5A623] blur-3xl" />
         </div>
         <div className="relative max-w-5xl mx-auto">
@@ -170,7 +170,7 @@ export default function CruzeirosPage() {
             </span>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
               Cruzeiros em{' '}
-              <span className="bg-gradient-to-r from-[#F5A623] to-[#14A76C] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#F5A623] to-secondary bg-clip-text text-transparent">
                 Santos
               </span>
             </h1>
@@ -184,15 +184,15 @@ export default function CruzeirosPage() {
 
       {/* Stats bar (próximos cruzeiros) */}
       {!loading && proximos.length > 0 && (
-        <section className="bg-[#14A76C]/5 border-b border-[#14A76C]/10 py-6 px-6">
+        <section className="bg-secondary/5 border-b border-secondary/10 py-6 px-6">
           <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-[#14A76C]/10 flex items-center justify-center">
-                <Ship className="w-6 h-6 text-[#14A76C]" />
+              <div className="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center">
+                <Ship className="w-6 h-6 text-secondary" />
               </div>
               <div>
                 <p className="text-sm text-gray-500">Próximos 7 dias</p>
-                <p className="text-xl font-bold text-[#0A2463]">
+                <p className="text-xl font-bold text-primary">
                   {proximos.length} cruzeiro{proximos.length !== 1 ? 's' : ''}
                   {totalPassageirosProximos > 0 && (
                     <span className="text-sm font-normal text-gray-500 ml-2">
@@ -206,7 +206,7 @@ export default function CruzeirosPage() {
               <div className="flex flex-wrap gap-3">
                 {passageirosPorDia.map(({ data, total }) => (
                   <div key={data} className="px-3 py-1.5 rounded-xl bg-white border border-gray-100 text-sm">
-                    <span className="font-semibold text-[#0A2463]">{data}</span>
+                    <span className="font-semibold text-primary">{data}</span>
                     <span className="text-gray-400 mx-1">·</span>
                     <span className="text-gray-600">{total.toLocaleString('pt-BR')} passageiros</span>
                   </div>
@@ -233,7 +233,7 @@ export default function CruzeirosPage() {
               className="text-center py-24"
             >
               <Anchor className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-[#0A2463] mb-2">Em breve</h3>
+              <h3 className="text-2xl font-bold text-primary mb-2">Em breve</h3>
               <p className="text-gray-500 max-w-md mx-auto">
                 A temporada de cruzeiros está chegando! Fique ligado para as próximas escalas
                 no Porto de Santos.
@@ -245,9 +245,9 @@ export default function CruzeirosPage() {
               {proximos.length > 0 && (
                 <div className="mb-12">
                   <div className="flex items-center gap-2 mb-6">
-                    <Ship className="w-6 h-6 text-[#14A76C]" />
-                    <h2 className="text-2xl font-bold text-[#0A2463]">Próximos Cruzeiros</h2>
-                    <span className="ml-2 px-2.5 py-0.5 rounded-full bg-[#14A76C]/10 text-[#14A76C] text-xs font-bold">
+                    <Ship className="w-6 h-6 text-secondary" />
+                    <h2 className="text-2xl font-bold text-primary">Próximos Cruzeiros</h2>
+                    <span className="ml-2 px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-xs font-bold">
                       {proximos.length}
                     </span>
                   </div>
@@ -268,9 +268,9 @@ export default function CruzeirosPage() {
               {futuros.length > 0 && (
                 <div className="mb-12">
                   <div className="flex items-center gap-2 mb-6">
-                    <CalendarDays className="w-6 h-6 text-[#0A2463]" />
-                    <h2 className="text-2xl font-bold text-[#0A2463]">Calendário de Cruzeiros</h2>
-                    <span className="ml-2 px-2.5 py-0.5 rounded-full bg-[#0A2463]/10 text-[#0A2463] text-xs font-bold">
+                    <CalendarDays className="w-6 h-6 text-primary" />
+                    <h2 className="text-2xl font-bold text-primary">Calendário de Cruzeiros</h2>
+                    <span className="ml-2 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold">
                       {futuros.length}
                     </span>
                   </div>
@@ -333,7 +333,7 @@ export default function CruzeirosPage() {
 
       {/* CTA */}
       {!loading && cruzeiros.length > 0 && (
-        <section className="py-16 px-6 bg-gradient-to-r from-[#0A2463] to-[#14A76C]">
+        <section className="py-16 px-6 bg-gradient-to-r from-primary to-secondary">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -349,7 +349,7 @@ export default function CruzeirosPage() {
             </p>
             <a
               href="/corrida/solicitar?tipo=transfer_cruzeiro"
-              className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-[#e6951c] text-[#0A2463] font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
+              className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
             >
               Reservar Transfer
               <ArrowRight className="w-5 h-5" />
@@ -381,11 +381,11 @@ function CruzeiroCard({
       variants={fadeUp}
       custom={index}
       className={`group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-white ${
-        highlight ? 'ring-2 ring-[#14A76C]/40' : ''
+        highlight ? 'ring-2 ring-secondary/40' : ''
       } ${past ? 'opacity-70' : ''}`}
     >
       {/* Header gradient */}
-      <div className="relative h-36 bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#14A76C] flex items-center justify-center overflow-hidden">
+      <div className="relative h-36 bg-gradient-to-br from-primary via-primary-light to-secondary flex items-center justify-center overflow-hidden">
         <Ship className="w-14 h-14 text-white/20 group-hover:scale-110 transition-transform" />
         {/* Status badge */}
         <span
@@ -396,7 +396,7 @@ function CruzeiroCard({
         </span>
         {/* Passageiros */}
         {cruzeiro.passageiros && (
-          <span className="absolute top-3 right-3 px-2.5 py-1 rounded-xl text-xs font-bold bg-white/90 text-[#0A2463] flex items-center gap-1">
+          <span className="absolute top-3 right-3 px-2.5 py-1 rounded-xl text-xs font-bold bg-white/90 text-primary flex items-center gap-1">
             <Users className="w-3 h-3" />
             {cruzeiro.passageiros.toLocaleString('pt-BR')}
           </span>
@@ -406,12 +406,12 @@ function CruzeiroCard({
       {/* Content */}
       <div className="p-5">
         {/* Navio */}
-        <h3 className="text-lg font-bold text-[#0A2463] mb-0.5">{cruzeiro.navio}</h3>
+        <h3 className="text-lg font-bold text-primary mb-0.5">{cruzeiro.navio}</h3>
         <p className="text-sm text-gray-400 mb-3">{cruzeiro.companhia}</p>
 
         {/* Chegada */}
         <div className="flex items-start gap-2 text-sm text-gray-600 mb-2">
-          <ArrowRight className="w-4 h-4 shrink-0 mt-0.5 text-[#14A76C]" />
+          <ArrowRight className="w-4 h-4 shrink-0 mt-0.5 text-secondary" />
           <div>
             <span className="font-medium">Chegada:</span>{' '}
             {formatDateTime(cruzeiro.data_chegada, cruzeiro.hora_chegada)}
@@ -445,7 +445,7 @@ function CruzeiroCard({
         {!past && cruzeiro.status !== 'cancelado' && (
           <a
             href="/corrida/solicitar?tipo=transfer_cruzeiro"
-            className="flex items-center justify-center gap-1.5 bg-[#0A2463] hover:bg-[#0d2d73] text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition-colors w-full"
+            className="flex items-center justify-center gap-1.5 bg-primary hover:bg-primary-light text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition-colors w-full"
           >
             <Navigation className="w-4 h-4" />
             Reservar Transfer

@@ -1,5 +1,6 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
+import Link from 'next/link';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -175,12 +176,12 @@ export default function ParceiroDashboardPage() {
                 </div>
               </div>
               <div className="mt-4 flex gap-2">
-                <a href={`/parceiros/${estab.slug}`} className="flex items-center gap-1 rounded-xl bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/20 transition">
+                <Link href={`/parceiros/${estab.slug}`} className="flex items-center gap-1 rounded-xl bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/20 transition">
                   <Eye size={12} /> Ver Página
-                </a>
-                <a href="/dashboard/parceiro/financeiro" className="flex items-center gap-1 rounded-xl bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-dark hover:bg-accent/20 transition">
+                </Link>
+                <Link href="/dashboard/parceiro/financeiro" className="flex items-center gap-1 rounded-xl bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-dark hover:bg-accent/20 transition">
                   <TrendingUp size={12} /> Financeiro
-                </a>
+                </Link>
               </div>
             </div>
           ) : (

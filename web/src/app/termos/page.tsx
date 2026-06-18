@@ -102,9 +102,9 @@ export default function TermosPage() {
     <div className="flex flex-col min-h-screen bg-white">
         <PageTitle title='Termos de Uso' />
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#0A2463] py-28 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-primary py-28 px-6">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-[#14A76C] blur-3xl" />
+          <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-secondary blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-[#F5A623] blur-3xl" />
         </div>
         <div className="relative max-w-5xl mx-auto text-center">
@@ -123,7 +123,7 @@ export default function TermosPage() {
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
             Termos de{' '}
-            <span className="bg-gradient-to-r from-[#14A76C] to-[#F5A623] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-secondary to-[#F5A623] bg-clip-text text-transparent">
               Uso
             </span>
           </motion.h1>
@@ -148,7 +148,7 @@ export default function TermosPage() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 text-[#0A2463] hover:text-[#14A76C] font-semibold mb-10 transition-colors"
+            className="inline-flex items-center gap-2 text-primary hover:text-secondary font-semibold mb-10 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Voltar para a Home
@@ -163,8 +163,8 @@ export default function TermosPage() {
             className="bg-gray-50 rounded-2xl p-8 mb-12 border border-gray-100"
           >
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#0A2463]/10 flex items-center justify-center shrink-0">
-                <FileText className="w-6 h-6 text-[#0A2463]" />
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                <FileText className="w-6 h-6 text-primary" />
               </div>
               <div>
                 <p className="text-gray-600 leading-relaxed">
@@ -190,8 +190,8 @@ export default function TermosPage() {
           >
             {sections.map((section, i) => (
               <motion.div key={section.title} variants={fadeUp} custom={i}>
-                <h2 className="text-xl md:text-2xl font-bold text-[#0A2463] mb-4 flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#14A76C] to-[#0A2463] flex items-center justify-center text-white text-sm font-bold shrink-0">
+                <h2 className="text-xl md:text-2xl font-bold text-primary mb-4 flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-secondary to-primary flex items-center justify-center text-white text-sm font-bold shrink-0">
                     {i + 1}
                   </span>
                   {section.title.replace(/^\d+\.\s/, '')}

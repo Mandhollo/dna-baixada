@@ -29,16 +29,16 @@ const steps: Step[] = [
     description:
       'Sua plataforma completa de mobilidade e turismo na Baixada Santista. Conectamos você a motoristas parceiros, passeios incríveis e muito mais — tudo com segurança e praticidade.',
     icon: <MapPin className="h-16 w-16" />,
-    color: 'text-[#0A2463]',
-    bgColor: 'bg-[#0A2463]/10',
+    color: 'text-primary',
+    bgColor: 'bg-primary/10',
   },
   {
     title: 'Solicite sua Corrida',
     description:
       'Peça uma corrida em poucos toques! Escolha entre corridas comuns, executivas, vans para grupos e muito mais. Acompanhe em tempo real e pague de forma fácil.',
     icon: <Car className="h-16 w-16" />,
-    color: 'text-[#14A76C]',
-    bgColor: 'bg-[#14A76C]/10',
+    color: 'text-secondary',
+    bgColor: 'bg-secondary/10',
   },
   {
     title: 'Explore o Turismo',
@@ -61,8 +61,8 @@ const steps: Step[] = [
     description:
       'Tudo pronto para você explorar a plataforma. Solicite sua primeira corrida, descubra passeios e comece a acumular pontos agora mesmo!',
     icon: <Rocket className="h-16 w-16" />,
-    color: 'text-[#0A2463]',
-    bgColor: 'bg-[#14A76C]/10',
+    color: 'text-primary',
+    bgColor: 'bg-secondary/10',
   },
 ];
 
@@ -161,7 +161,7 @@ export default function OnboardingTutorial({ onComplete }: OnboardingTutorialPro
                   onClick={() => setCurrentStep(i)}
                   className={`h-2 rounded-full transition-all duration-300 ${
                     i === currentStep
-                      ? 'w-6 bg-[#0A2463]'
+                      ? 'w-6 bg-primary'
                       : 'w-2 bg-gray-300 hover:bg-gray-400'
                   }`}
                   aria-label={`Ir para passo ${i + 1}`}
@@ -189,7 +189,7 @@ export default function OnboardingTutorial({ onComplete }: OnboardingTutorialPro
               {isLast ? (
                 <button
                   onClick={handleNext}
-                  className="flex items-center gap-1 rounded-xl bg-[#14A76C] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-[#14A76C]/25 transition hover:bg-[#12a063] hover:shadow-xl active:scale-95"
+                  className="flex items-center gap-1 rounded-xl bg-secondary px-6 py-3 text-sm font-bold text-white shadow-lg shadow-secondary/25 transition hover:bg-[#12a063] hover:shadow-xl active:scale-95"
                 >
                   Explorar a Plataforma
                   <Rocket className="h-4 w-4" />
@@ -197,7 +197,7 @@ export default function OnboardingTutorial({ onComplete }: OnboardingTutorialPro
               ) : (
                 <button
                   onClick={handleNext}
-                  className="flex items-center gap-1 rounded-xl bg-[#0A2463] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-[#0A2463]/25 transition hover:bg-[#091f55] hover:shadow-xl active:scale-95"
+                  className="flex items-center gap-1 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white shadow-lg shadow-primary/25 transition hover:bg-[#091f55] hover:shadow-xl active:scale-95"
                 >
                   Próximo
                   <ChevronRight className="h-4 w-4" />

@@ -50,7 +50,7 @@ const supportLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0A2463] text-white">
+    <footer className="bg-primary text-white">
       <div className="mx-auto max-w-7xl px-4 pt-16 pb-10 sm:px-6 lg:px-8">
         {/* 4-column grid */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -76,7 +76,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-[#F5A623] hover:text-[#0A2463]"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-[#F5A623] hover:text-primary"
               >
                 <InstagramIcon className="h-4 w-4" />
               </a>
@@ -85,7 +85,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-[#F5A623] hover:text-[#0A2463]"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-[#F5A623] hover:text-primary"
               >
                 <FacebookIcon className="h-4 w-4" />
               </a>
@@ -94,7 +94,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="X / Twitter"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-[#F5A623] hover:text-[#0A2463]"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-[#F5A623] hover:text-primary"
               >
                 <XIcon className="h-4 w-4" />
               </a>

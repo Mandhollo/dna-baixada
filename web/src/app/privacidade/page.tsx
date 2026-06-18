@@ -111,9 +111,9 @@ export default function PrivacidadePage() {
     <div className="flex flex-col min-h-screen bg-white">
         <PageTitle title='Politica de Privacidade' />
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#14A76C] via-[#11b85e] to-[#0d9450] py-28 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-[#11b85e] to-[#0d9450] py-28 px-6">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-[#0A2463] blur-3xl" />
+          <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-primary blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-[#F5A623] blur-3xl" />
         </div>
         <div className="relative max-w-5xl mx-auto text-center">
@@ -166,7 +166,7 @@ export default function PrivacidadePage() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 text-[#0A2463] hover:text-[#14A76C] font-semibold mb-10 transition-colors"
+            className="inline-flex items-center gap-2 text-primary hover:text-secondary font-semibold mb-10 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Voltar para a Home
@@ -201,7 +201,7 @@ export default function PrivacidadePage() {
               const Icon = section.icon;
               return (
                 <motion.div key={section.title} variants={fadeUp} custom={i}>
-                  <h2 className="text-xl md:text-2xl font-bold text-[#0A2463] mb-4 flex items-center gap-3">
+                  <h2 className="text-xl md:text-2xl font-bold text-primary mb-4 flex items-center gap-3">
                     <span
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                       style={{ backgroundColor: `${section.color}12` }}
