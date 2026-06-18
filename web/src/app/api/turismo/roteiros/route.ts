@@ -35,9 +35,10 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
 
+    // Buscar roteiros (sem join — pontos_ids é um array UUID[], não FK)
     let query = supabase
       .from('roteiros')
-      .select('*, pontos:pontos_turisticos!pontos_ids(*)', { count: 'exact' })
+      .select('*', { count: 'exact' })
       .eq('ativo', true)
       .order('destaque', { ascending: false });
 
@@ -61,7 +62,31 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ roteiros: data as Roteiro[], count });
+    // Buscar pontos turísticos relacionados manualmente
+    const roteiros = data as Roteiro[];
+    const allPontosIds = roteiros
+      .flatMap((r) => r.pontos_ids ?? [])
+      .filter(Boolean);
+
+    let pontosMap: Record<string, unknown> = {};
+    if (allPontosIds.length > 0) {
+      const { data: pontosData } = await supabase
+        .from('pontos_turisticos')
+        .select('*')
+        .in('id', allPontosIds);
+
+      if (pontosData) {
+        pontosMap = Object.fromEntries(pontosData.map((p) => [p.id, p]));
+      }
+    }
+
+    // Anexar pontos a cada roteiro
+    const roteirosComPontos = roteiros.map((r) => ({
+      ...r,
+      pontos: (r.pontos_ids ?? []).map((id) => pontosMap[id]).filter(Boolean),
+    }));
+
+    return NextResponse.json({ roteiros: roteirosComPontos, count });
   } catch (err) {
     console.error('[GET /api/turismo/roteiros]', err);
     return NextResponse.json(

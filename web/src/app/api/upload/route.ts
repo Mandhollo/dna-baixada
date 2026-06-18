@@ -30,9 +30,11 @@ async function getAuthUser() {
 
 /**
  * POST /api/upload
- * Upload a photo to the Supabase Storage bucket 'fotos'.
+ * Upload a photo to the appropriate Supabase Storage bucket.
  * Requires authentication. Files are stored under the authenticated user's id.
- * Accepts multipart/form-data with a `file` field.
+ * Accepts multipart/form-data with a `file` field and optional `bucket` field.
+ *
+ * bucket: 'avatars' (default) | 'veiculos' | 'parceiros' | 'documentos'
  *
  * Returns: { url: string } — the public URL of the uploaded file.
  */
@@ -46,6 +48,16 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
+    const bucket = (formData.get('bucket') as string) || 'avatars';
+
+    // Validate bucket name (whitelist)
+    const allowedBuckets = ['avatars', 'veiculos', 'parceiros', 'documentos'];
+    if (!allowedBuckets.includes(bucket)) {
+      return NextResponse.json(
+        { error: `Bucket inválido. Permitidos: ${allowedBuckets.join(', ')}` },
+        { status: 400 },
+      );
+    }
 
     if (!file) {
       return NextResponse.json(
@@ -87,7 +99,7 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
 
     const { data, error } = await supabase.storage
-      .from('fotos')
+      .from(bucket)
       .upload(filePath, arrayBuffer, {
         contentType: file.type,
         upsert: false,
@@ -107,13 +119,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get the public URL
+    // Get the public URL (works for public buckets; for private, returns URL needing auth)
     const { data: urlData } = supabase.storage
-      .from('fotos')
+      .from(bucket)
       .getPublicUrl(data.path);
 
     return NextResponse.json(
-      { url: urlData.publicUrl, path: data.path },
+      { url: urlData.publicUrl, path: data.path, bucket },
       { status: 201 },
     );
   } catch (err) {

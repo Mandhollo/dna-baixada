@@ -11,9 +11,12 @@ export async function GET(request: NextRequest) {
   const code = requestUrl.searchParams.get('code');
   const next = requestUrl.searchParams.get('next') ?? '/dashboard';
 
+  // Validate next param — only allow relative paths (prevent open redirect)
+  const safeNext = next.startsWith('/') && !next.startsWith('//') ? next : '/dashboard';
+
   if (code) {
     try {
-      const response = NextResponse.redirect(new URL(next, requestUrl.origin));
+      const response = NextResponse.redirect(new URL(safeNext, requestUrl.origin));
 
       const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,

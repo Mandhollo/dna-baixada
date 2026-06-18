@@ -59,8 +59,23 @@ export async function POST(request: NextRequest) {
     }
 
     // ── Find the transação by MP payment ID ──
-    const supabase = await createSupabaseServerClient();
-    const { data: tx, error: txError } = await supabase
+    // Use service role key for webhook (no user session available)
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    let dbClient;
+
+    if (serviceKey) {
+      const { createClient } = await import('@supabase/supabase-js');
+      dbClient = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        serviceKey,
+        { auth: { persistSession: false, autoRefreshToken: false } }
+      );
+    } else {
+      // Fallback: use anon client with cookies (works in dev if user session exists)
+      dbClient = await createSupabaseServerClient();
+    }
+
+    const { data: tx, error: txError } = await dbClient
       .from('transacoes')
       .select('id, usuario_id, status, corrida_id, metadata')
       .eq('pix_txid', String(mpPaymentId))
@@ -79,7 +94,7 @@ export async function POST(request: NextRequest) {
     const now = new Date().toISOString();
 
     // ── Update transação ──
-    const { error: updateTxError } = await supabase
+    const { error: updateTxError } = await dbClient
       .from('transacoes')
       .update({
         status: 'concluido',
@@ -98,7 +113,7 @@ export async function POST(request: NextRequest) {
 
     // ── Update corrida ──
     if (tx.corrida_id) {
-      const { error: corrError } = await supabase
+      const { error: corrError } = await dbClient
         .from('corridas')
         .update({ status: 'aguardando' })
         .eq('id', tx.corrida_id);
@@ -109,14 +124,14 @@ export async function POST(request: NextRequest) {
 
       // ── Create notifications for available motoristas ──
       try {
-        const { data: corrida } = await supabase
+        const { data: corrida } = await dbClient
           .from('corridas')
           .select('id, origem_endereco, destino_endereco, tipo')
           .eq('id', tx.corrida_id)
           .single();
 
         if (corrida) {
-          const { data: motoristas } = await supabase
+          const { data: motoristas } = await dbClient
             .from('motoristas')
             .select('id')
             .eq('disponivel', true)
@@ -140,7 +155,7 @@ export async function POST(request: NextRequest) {
             const BATCH_SIZE = 50;
             for (let i = 0; i < notifications.length; i += BATCH_SIZE) {
               const batch = notifications.slice(i, i + BATCH_SIZE);
-              const { error: notifError } = await supabase.from('notificacoes').insert(batch);
+              const { error: notifError } = await dbClient.from('notificacoes').insert(batch);
               if (notifError) {
                 console.error('[webhook] Erro ao inserir notificações:', notifError.message);
               }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Bell, Check, CheckCheck, X } from 'lucide-react';
+import Link from 'next/link';
 import type { Notificacao } from '@/lib/supabase';
 
 /** Time ago helper */
@@ -218,12 +219,12 @@ export default function NotificationBell() {
           {/* Footer */}
           {notifications.length > 0 && (
             <div className="border-t border-white/10 px-4 py-2">
-              <a
+              <Link
                 href="/notificacoes"
                 className="block text-center text-xs font-medium text-[#F5A623] transition-colors hover:text-[#e6951a]"
               >
                 Ver todas as notificações
-              </a>
+              </Link>
             </div>
           )}
         </div>

@@ -463,7 +463,7 @@ export default function SocialPage() {
                     <div className="mt-auto">
                       {!user ? (
                         <Link
-                          href="/login"
+                          href="/entrar"
                           className="w-full inline-flex items-center justify-center gap-2 bg-[#0A2463] hover:bg-[#0d2d73] text-white font-semibold py-3 rounded-xl transition-colors text-sm"
                         >
                           <ArrowRight className="w-4 h-4" />

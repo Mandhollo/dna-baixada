@@ -75,7 +75,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function loadData() {
       // Load stats
-      const [{ data: profiles }, { data: passCount }, { data: motCount }, { data: corridas }, { data: motDisp }] = await Promise.all([
+      const [profilesRes, passRes, motRes, corridasRes, motDispRes] = await Promise.all([
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'passageiro'),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'motorista'),
@@ -83,20 +83,20 @@ export default function AdminDashboard() {
         supabase.from('motoristas').select('*', { count: 'exact', head: true }).eq('disponivel', true),
       ]);
 
-      const allCorridas = corridas || [];
+      const allCorridas = corridasRes.data || [];
       const finalizadas = allCorridas.filter(c => c.status === 'finalizada');
       const faturamento = finalizadas.reduce((sum, c) => sum + Number(c.preco_final || c.preco_estimado || 0), 0);
 
       setStats({
-        total_usuarios: profiles?.length || 0,
-        total_passageiros: passCount?.length || 0,
-        total_motoristas: motCount?.length || 0,
+        total_usuarios: profilesRes.count ?? 0,
+        total_passageiros: passRes.count ?? 0,
+        total_motoristas: motRes.count ?? 0,
         total_corridas: allCorridas.length,
         corridas_aguardando: allCorridas.filter(c => c.status === 'aguardando').length,
         corridas_andamento: allCorridas.filter(c => ['aceita', 'motorista_chegou', 'em_andamento'].includes(c.status)).length,
         corridas_finalizadas: finalizadas.length,
         faturamento_total: faturamento,
-        motoristas_disponiveis: motDisp?.length || 0,
+        motoristas_disponiveis: motDispRes.count ?? 0,
       });
 
       setRecentes(allCorridas.slice(0, 8));

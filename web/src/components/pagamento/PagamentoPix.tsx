@@ -180,9 +180,16 @@ export default function PagamentoPix({
       // Fetch user profile for CPF and nome
       const { data: profile } = await supabase
         .from('profiles')
-        .select('nome, telefone')
+        .select('nome, telefone, cpf')
         .eq('id', user.id)
         .maybeSingle();
+
+      const cpf = user.user_metadata?.cpf || profile?.cpf;
+      if (!cpf) {
+        setError('CPF não cadastrado. Atualize seu perfil com seu CPF para pagar via PIX.');
+        setLoading(false);
+        return;
+      }
 
       const res = await fetch('/api/pagamento/create', {
         method: 'POST',
@@ -190,7 +197,7 @@ export default function PagamentoPix({
         body: JSON.stringify({
           corrida_id: corridaId,
           email: user.email,
-          cpf: user.user_metadata?.cpf ?? '00000000000',
+          cpf,
           nome: profile?.nome ?? undefined,
         }),
       });
