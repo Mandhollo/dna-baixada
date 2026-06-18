@@ -104,7 +104,7 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
                     <Link
                       href="/dashboard"
                       onClick={onClose}
-                      className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-secondary px-6 py-3 text-base font-bold text-white shadow-lg shadow-secondary/25 transition-all hover:bg-[#0f8a56]"
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-secondary px-6 py-3 text-base font-bold text-white shadow-lg shadow-secondary/25 transition-all hover:bg-secondary-dark"
                     >
                       <LayoutDashboard className="h-4 w-4" />
                       Painel
@@ -121,7 +121,7 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
                   <Link
                     href="/entrar"
                     onClick={onClose}
-                    className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#F5A623] px-6 py-3 text-base font-bold text-primary shadow-lg shadow-[#F5A623]/25 transition-all hover:bg-[#e6951a]"
+                    className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-accent px-6 py-3 text-base font-bold text-primary shadow-lg shadow-accent/25 transition-all hover:bg-accent-dark"
                   >
                     {t('common.entrar')}
                   </Link>

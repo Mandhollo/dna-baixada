@@ -45,16 +45,16 @@ const steps: Step[] = [
     description:
       'Descubra city tours exclusivos, pontos turísticos imperdíveis e roteiros personalizados pela Baixada Santista. Viva experiências únicas com guias locais.',
     icon: <Palmtree className="h-16 w-16" />,
-    color: 'text-[#F5A623]',
-    bgColor: 'bg-[#F5A623]/10',
+    color: 'text-accent',
+    bgColor: 'bg-accent/10',
   },
   {
     title: 'Acumule Pontos',
     description:
       'A cada corrida você ganha pontos! Troque por descontos, brindes exclusivos e experiências. Participe do DNA Social e suba no ranking da comunidade.',
     icon: <Trophy className="h-16 w-16" />,
-    color: 'text-[#E84855]',
-    bgColor: 'bg-[#E84855]/10',
+    color: 'text-accent2',
+    bgColor: 'bg-accent2/10',
   },
   {
     title: 'Vamos Começar!',

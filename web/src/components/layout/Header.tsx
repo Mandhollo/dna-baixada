@@ -36,7 +36,7 @@ export default function Header() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-1 select-none">
-            <span className="text-2xl font-extrabold tracking-tight text-[#F5A623]">
+            <span className="text-2xl font-extrabold tracking-tight text-accent">
               DNA
             </span>
             <span className="text-2xl font-semibold tracking-tight text-white">
@@ -62,7 +62,7 @@ export default function Header() {
               <div className="ml-3 flex items-center gap-2">
                 <Link
                   href="/dashboard"
-                  className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-4 py-2 text-sm font-bold text-white shadow-lg shadow-secondary/25 transition-all hover:bg-[#0f8a56] hover:shadow-secondary/40"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-4 py-2 text-sm font-bold text-white shadow-lg shadow-secondary/25 transition-all hover:bg-secondary-dark hover:shadow-secondary/40"
                 >
                   <LayoutDashboard className="h-4 w-4" />
                   {profile?.nome?.split(' ')[0] || 'Painel'}
@@ -78,7 +78,7 @@ export default function Header() {
             ) : (
               <Link
                 href="/entrar"
-                className="ml-3 inline-flex items-center rounded-full bg-[#F5A623] px-5 py-2 text-sm font-bold text-primary shadow-lg shadow-[#F5A623]/25 transition-all hover:bg-[#e6951a] hover:shadow-[#F5A623]/40"
+                className="ml-3 inline-flex items-center rounded-full bg-accent px-5 py-2 text-sm font-bold text-primary shadow-lg shadow-accent/25 transition-all hover:bg-accent-dark hover:shadow-accent/40"
               >
                 {t('common.entrar')}
               </Link>

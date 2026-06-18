@@ -109,7 +109,7 @@ export default function NotificationBell() {
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4.5 min-w-[18px] items-center justify-center rounded-full bg-[#F5A623] px-1 text-[10px] font-bold leading-none text-primary">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4.5 min-w-[18px] items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold leading-none text-primary">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -130,7 +130,7 @@ export default function NotificationBell() {
                   type="button"
                   onClick={markAllAsRead}
                   disabled={loading}
-                  className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-[#F5A623] transition-colors hover:bg-[#F5A623]/10 disabled:opacity-50"
+                  className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-accent transition-colors hover:bg-accent/10 disabled:opacity-50"
                   title="Marcar todas como lidas"
                 >
                   <CheckCheck className="h-3.5 w-3.5" />
@@ -166,7 +166,7 @@ export default function NotificationBell() {
                   className={`group relative cursor-pointer border-b border-white/5 px-4 py-3 transition-colors ${
                     notif.lida
                       ? 'bg-transparent hover:bg-white/5'
-                      : 'bg-[#F5A623]/5 hover:bg-[#F5A623]/10'
+                      : 'bg-accent/5 hover:bg-accent/10'
                   }`}
                 >
                   <div className="flex items-start gap-3">
@@ -175,7 +175,7 @@ export default function NotificationBell() {
                       {notif.lida ? (
                         <div className="h-2 w-2 rounded-full bg-white/20" />
                       ) : (
-                        <div className="h-2 w-2 rounded-full bg-[#F5A623] shadow-sm shadow-[#F5A623]/50" />
+                        <div className="h-2 w-2 rounded-full bg-accent shadow-sm shadow-accent/50" />
                       )}
                     </div>
 
@@ -221,7 +221,7 @@ export default function NotificationBell() {
             <div className="border-t border-white/10 px-4 py-2">
               <Link
                 href="/notificacoes"
-                className="block text-center text-xs font-medium text-[#F5A623] transition-colors hover:text-[#e6951a]"
+                className="block text-center text-xs font-medium text-accent transition-colors hover:text-accent-dark"
               >
                 Ver todas as notificações
               </Link>

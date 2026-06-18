@@ -57,7 +57,7 @@ export default function Footer() {
           {/* Col 1 — Logo & description */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="inline-flex items-center gap-1 select-none">
-              <span className="text-2xl font-extrabold tracking-tight text-[#F5A623]">
+              <span className="text-2xl font-extrabold tracking-tight text-accent">
                 DNA
               </span>
               <span className="text-2xl font-semibold tracking-tight text-white">
@@ -76,7 +76,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-[#F5A623] hover:text-primary"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-accent hover:text-primary"
               >
                 <InstagramIcon className="h-4 w-4" />
               </a>
@@ -85,7 +85,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-[#F5A623] hover:text-primary"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-accent hover:text-primary"
               >
                 <FacebookIcon className="h-4 w-4" />
               </a>
@@ -94,7 +94,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="X / Twitter"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-[#F5A623] hover:text-primary"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-accent hover:text-primary"
               >
                 <XIcon className="h-4 w-4" />
               </a>
@@ -103,7 +103,7 @@ export default function Footer() {
 
           {/* Col 2 — Links Rápidos */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-[#F5A623]">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-accent">
               Links Rápidos
             </h3>
             <ul className="mt-4 space-y-3">
@@ -122,7 +122,7 @@ export default function Footer() {
 
           {/* Col 3 — Explorar */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-[#F5A623]">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-accent">
               Explorar
             </h3>
             <ul className="mt-4 space-y-3">
@@ -141,7 +141,7 @@ export default function Footer() {
 
           {/* Col 4 — Suporte + Contato */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-[#F5A623]">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-accent">
               Suporte
             </h3>
             <ul className="mt-4 space-y-3">
@@ -156,7 +156,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-            <h3 className="mt-6 text-sm font-semibold uppercase tracking-wider text-[#F5A623]">
+            <h3 className="mt-6 text-sm font-semibold uppercase tracking-wider text-accent">
               Contato
             </h3>
             <ul className="mt-3 space-y-2 text-sm text-white/60">

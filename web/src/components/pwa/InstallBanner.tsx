@@ -64,8 +64,8 @@ export default function InstallBanner() {
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 animate-[fade-in-up_0.5s_ease-out]">
       <div className="mx-auto max-w-lg rounded-2xl bg-primary p-4 shadow-2xl shadow-black/30">
         <div className="flex items-start gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F5A623]/20">
-            <Smartphone className="h-5 w-5 text-[#F5A623]" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/20">
+            <Smartphone className="h-5 w-5 text-accent" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-bold text-white text-sm">Instale o DNA Baixada</p>
