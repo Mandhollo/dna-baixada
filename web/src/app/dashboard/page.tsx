@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth/AuthProvider';
 import OnboardingTutorial from '@/components/OnboardingTutorial';
+import { supabase } from '@/lib/supabase';
 
 export default function DashboardPage() {
   const { user, profile, loading } = useAuth();
@@ -71,8 +72,12 @@ export default function DashboardPage() {
    Passageiro Dashboard — rendered directly for role=passageiro
    ═══════════════════════════════════════════════════════════ */
 function PassageiroDashboard() {
-  const { profile, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [corridasCount, setCorridasCount] = useState<number | null>(null);
+  const [ultimasCorridas, setUltimasCorridas] = useState<Array<{
+    id: string; tipo: string; status: string; preco_estimado: number; created_at: string;
+  }>>([]);
 
   useEffect(() => {
     try {
@@ -82,6 +87,25 @@ function PassageiroDashboard() {
       // localStorage unavailable
     }
   }, []);
+
+  /* ── Fetch corridas reais do passageiro ── */
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('corridas')
+      .select('id, tipo, status, preco_estimado, created_at')
+      .eq('passageiro_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(5)
+      .then(({ data, error }: { data: Array<{ id: string; tipo: string; status: string; preco_estimado: number; created_at: string }> | null; error: unknown }) => {
+        if (!error && data) {
+          setUltimasCorridas(data);
+          setCorridasCount(data.length);
+        } else {
+          setCorridasCount(0);
+        }
+      });
+  }, [user]);
 
   if (!profile) return null;
 
@@ -128,7 +152,7 @@ function PassageiroDashboard() {
           />
           <StatCard
             label="Corridas"
-            value="0"
+            value={corridasCount === null ? '...' : String(corridasCount)}
             icon="🚗"
             color="secondary"
           />
@@ -186,15 +210,59 @@ function PassageiroDashboard() {
           <h2 className="mb-4 text-sm font-bold uppercase tracking-wider text-foreground-muted">
             Últimas Corridas
           </h2>
-          <div className="rounded-2xl border border-border bg-surface-elevated p-8 text-center shadow-sm">
-            <p className="text-4xl">📭</p>
-            <p className="mt-3 font-semibold text-foreground-secondary">
-              Nenhuma corrida ainda
-            </p>
-            <p className="mt-1 text-sm text-foreground-muted">
-              Solicite sua primeira corrida e ela aparecerá aqui.
-            </p>
-          </div>
+          {ultimasCorridas.length === 0 ? (
+            <div className="rounded-2xl border border-border bg-surface-elevated p-8 text-center shadow-sm">
+              <p className="text-4xl">📭</p>
+              <p className="mt-3 font-semibold text-foreground-secondary">
+                Nenhuma corrida ainda
+              </p>
+              <p className="mt-1 text-sm text-foreground-muted">
+                Solicite sua primeira corrida e ela aparecerá aqui.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {ultimasCorridas.map((c) => (
+                <Link
+                  key={c.id}
+                  href={`/corrida/${c.id}`}
+                  className="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-4 shadow-sm transition hover:shadow-md"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">
+                      {c.tipo === 'city_tour' ? '🗺️' : c.tipo === 'transfer_aeroporto' ? '✈️' : '🚗'}
+                    </span>
+                    <div>
+                      <p className="font-semibold capitalize text-foreground">
+                        {c.tipo.replace(/_/g, ' ')}
+                      </p>
+                      <p className="text-xs text-foreground-muted">
+                        {new Date(c.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-primary">
+                      R$ {(c.preco_estimado ?? 0).toFixed(2)}
+                    </p>
+                    <span className={`text-xs font-medium ${
+                      c.status === 'finalizada' ? 'text-secondary' :
+                      c.status === 'cancelada' ? 'text-accent2' :
+                      'text-accent-dark'
+                    }`}>
+                      {c.status === 'aguardando' ? 'Aguardando' :
+                       c.status === 'aceita' ? 'Aceita' :
+                       c.status === 'em_andamento' ? 'Em andamento' :
+                       c.status === 'finalizada' ? 'Finalizada' :
+                       c.status === 'cancelada' ? 'Cancelada' :
+                       c.status === 'motorista_chegou' ? 'Motorista chegou' :
+                       c.status}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </div>

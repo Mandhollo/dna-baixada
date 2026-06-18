@@ -98,6 +98,42 @@ export default function RootLayout({
             `,
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: "DNA Baixada",
+              description: "Plataforma regional de mobilidade, turismo e impacto social na Baixada Santista.",
+              url: "https://dna-baixada.vercel.app",
+              telephone: "+5513997042065",
+              areaServed: ["Santos", "Guarujá", "São Vicente", "Praia Grande", "Cubatão", "Bertioga"],
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Santos",
+                addressRegion: "SP",
+                addressCountry: "BR",
+              },
+              geo: {
+                "@type": "GeoCoordinates",
+                latitude: -23.9618,
+                longitude: -46.3322,
+              },
+              openingHoursSpecification: {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+                opens: "06:00",
+                closes: "23:00",
+              },
+              priceRange: "$$",
+              sameAs: [
+                "https://instagram.com/contato.dnabaixada",
+                "https://x.com/dnabaixada",
+              ],
+            }),
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col">
         <LanguageProvider>

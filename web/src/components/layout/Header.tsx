@@ -56,7 +56,7 @@ export default function Header() {
               </Link>
             ))}
             <LanguageSwitcher />
-            <NotificationBell />
+            {isLoggedIn && <NotificationBell />}
 
             {isLoggedIn ? (
               <div className="ml-3 flex items-center gap-2">
@@ -87,7 +87,7 @@ export default function Header() {
 
           {/* Mobile: language + hamburger */}
           <div className="flex items-center gap-1 md:hidden">
-            <NotificationBell />
+            {isLoggedIn && <NotificationBell />}
             <LanguageSwitcher />
             <button
               type="button"
