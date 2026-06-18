@@ -16,7 +16,7 @@ const I18nContext = createContext<I18nContextType | undefined>(undefined);
 function detectLocale(): Locale {
   if (typeof window === 'undefined') return 'pt-BR';
 
-  // 1. Check localStorage
+  // 1. Check localStorage — only if user explicitly chose a language
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved === 'pt-BR' || saved === 'en-US' || saved === 'es-ES') return saved;
@@ -24,12 +24,7 @@ function detectLocale(): Locale {
     // Ignore
   }
 
-  // 2. Check navigator.language
-  const lang = navigator.language?.toLowerCase() ?? '';
-  if (lang.startsWith('pt')) return 'pt-BR';
-  if (lang.startsWith('en')) return 'en-US';
-  if (lang.startsWith('es')) return 'es-ES';
-
+  // Always default to pt-BR (EN/ES not yet available)
   return 'pt-BR';
 }
 
