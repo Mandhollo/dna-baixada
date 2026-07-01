@@ -111,8 +111,7 @@ export default function TurismoPage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            {t('turismo.hero_titulo_1')}{' '}
-            <span className="bg-gradient-to-r from-[#F5A623] to-secondary bg-clip-text text-transparent">
+            {t('turismo.hero_titulo_1')} <span className="bg-gradient-to-r from-[#F5A623] to-secondary bg-clip-text text-transparent">
               {t('turismo.hero_titulo_2')}
             </span>
           </motion.h1>

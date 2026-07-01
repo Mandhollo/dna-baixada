@@ -79,7 +79,7 @@ export default function SobrePage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            Sobre a{' '}
+            {'Sobre a '}
                         <span className="bg-gradient-to-r from-secondary to-[#F5A623] bg-clip-text text-transparent">
                           DNA Baixada
             </span>

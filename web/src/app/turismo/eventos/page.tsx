@@ -163,7 +163,7 @@ export default function EventosPage() {
               Agenda Cultural
             </span>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
-              Eventos na{' '}
+              {'Eventos na '}
               <span className="bg-gradient-to-r from-[#F5A623] to-secondary bg-clip-text text-transparent">
                 Baixada Santista
               </span>

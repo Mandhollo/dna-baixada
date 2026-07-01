@@ -495,10 +495,9 @@ export default function ParceirosPage() {
           viewport={{ once: true }}
           className="mb-6 text-xl font-extrabold text-primary"
         >
-          Nossos Parceiros
+          Nossos Parceiros{' '}
           {!loading && (
             <span className="ml-2 text-sm font-normal text-gray-400">
-              {' '}
               {filtered.length} resultado{filtered.length !== 1 ? 's' : ''}
             </span>
           )}

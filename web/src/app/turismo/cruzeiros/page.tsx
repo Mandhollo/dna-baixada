@@ -169,7 +169,7 @@ export default function CruzeirosPage() {
               Terminal Concais
             </span>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
-              Cruzeiros em{' '}
+              {'Cruzeiros em '}
               <span className="bg-gradient-to-r from-[#F5A623] to-secondary bg-clip-text text-transparent">
                 Santos
               </span>
