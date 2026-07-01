@@ -41,28 +41,17 @@ export default function LanguageSwitcher() {
               key={l.code}
               type="button"
               onClick={() => {
-                if (l.code === 'pt-BR') {
-                  setLocale(l.code);
-                  setOpen(false);
-                }
-                // EN/ES — tradução em breve, não troca ainda
+                setLocale(l.code);
+                setOpen(false);
               }}
-              disabled={l.code !== 'pt-BR'}
               className={`flex w-full items-center gap-2 px-3 py-2 text-sm transition-colors ${
-                l.code !== 'pt-BR'
-                  ? 'cursor-not-allowed opacity-50'
-                  : locale === l.code
-                    ? 'bg-white/10 text-white font-semibold'
-                    : 'text-white/70 hover:bg-white/5 hover:text-white'
+                locale === l.code
+                  ? 'bg-white/10 text-white font-semibold'
+                  : 'text-white/70 hover:bg-white/5 hover:text-white'
               }`}
             >
               <span className="text-base leading-none">{l.flag}</span>
               <span>{l.label}</span>
-              {l.code !== 'pt-BR' && (
-                <span className="ml-auto text-[10px] font-medium uppercase tracking-wide text-white/40">
-                  Em breve
-                </span>
-              )}
             </button>
           ))}
         </div>

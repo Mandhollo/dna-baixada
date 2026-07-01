@@ -1,5 +1,6 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 import { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -80,9 +81,10 @@ const categoriaColors: Record<EventoCategoria, string> = {
 
 // ── Skeleton ───────────────────────────────────────────────
 function Skeleton() {
+  const { t } = useTranslation();
   return (
     <div className="animate-pulse rounded-2xl bg-gray-100 overflow-hidden">
-        <PageTitle title='Eventos na Baixada' />
+        <PageTitle title={t('eventos.page_title')} />
       <div className="h-44 bg-gray-200" />
       <div className="p-5 space-y-3">
         <div className="h-4 bg-gray-200 rounded w-1/3" />
@@ -96,6 +98,7 @@ function Skeleton() {
 
 // ── Page ───────────────────────────────────────────────────
 export default function EventosPage() {
+  const { t } = useTranslation();
   const [eventos, setEventos] = useState<Evento[]>([]);
   const [loading, setLoading] = useState(true);
   const [filtroCategoria, setFiltroCategoria] = useState<EventoCategoria | 'todos'>('todos');
@@ -152,7 +155,7 @@ export default function EventosPage() {
             className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-8"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Voltar para Turismo</span>
+            <span className="text-sm font-medium">{t('eventos.voltar')}</span>
           </Link>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -160,17 +163,16 @@ export default function EventosPage() {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block text-sm font-semibold tracking-widest uppercase text-[#F5A623] mb-3">
-              Agenda Cultural
+              {t('eventos.agenda_cultural')}
             </span>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
-              {'Eventos na '}
+              {t('eventos.hero_titulo_1')}{' '}
               <span className="bg-gradient-to-r from-[#F5A623] to-secondary bg-clip-text text-transparent">
-                Baixada Santista
+                {t('eventos.hero_titulo_2')}
               </span>
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-white/80">
-              Shows, festivais, feiras e eventos culturais. Fique por dentro de tudo que acontece
-              na região.
+              {t('eventos.hero_descricao')}
             </p>
           </motion.div>
         </div>
@@ -181,7 +183,7 @@ export default function EventosPage() {
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row gap-4 items-start sm:items-center">
           <div className="flex items-center gap-2 text-primary font-semibold">
             <Filter className="w-5 h-5" />
-            <span>Filtros:</span>
+            <span>{t('eventos.filtros')}</span>
           </div>
 
           {/* Categoria */}
@@ -194,7 +196,7 @@ export default function EventosPage() {
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              Todas
+              {t('eventos.todas')}
             </button>
             {categoriaKeys.map((cat) => (
               <button
@@ -219,7 +221,7 @@ export default function EventosPage() {
             }
             className="px-3 py-1.5 rounded-xl text-sm border border-gray-200 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20"
           >
-            <option value="todos">Todos os meses</option>
+            <option value="todos">{t('eventos.todos_meses')}</option>
             {availableMonths.map((m) => (
               <option key={m} value={m}>
                 {MONTHS[m]}
@@ -245,9 +247,9 @@ export default function EventosPage() {
               className="text-center py-24"
             >
               <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-primary mb-2">Em breve</h3>
+              <h3 className="text-2xl font-bold text-primary mb-2">{t('eventos.em_breve')}</h3>
               <p className="text-gray-500 max-w-md mx-auto">
-                Nenhum evento encontrado com os filtros selecionados. Novos eventos estão chegando!
+                {t('eventos.nenhum_encontrado')}
               </p>
               {(filtroCategoria !== 'todos' || filtroMes !== 'todos') && (
                 <button
@@ -257,7 +259,7 @@ export default function EventosPage() {
                   }}
                   className="mt-6 px-6 py-2 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary-light transition-colors"
                 >
-                  Limpar filtros
+                  {t('eventos.limpar_filtros')}
                 </button>
               )}
             </motion.div>
@@ -268,7 +270,7 @@ export default function EventosPage() {
                 <div className="mb-12">
                   <div className="flex items-center gap-2 mb-6">
                     <Sparkles className="w-6 h-6 text-[#F5A623]" />
-                    <h2 className="text-2xl font-bold text-primary">Acontecendo em breve</h2>
+                    <h2 className="text-2xl font-bold text-primary">{t('eventos.acontecendo_breve')}</h2>
                     <span className="ml-2 px-2.5 py-0.5 rounded-full bg-[#F5A623]/10 text-[#F5A623] text-xs font-bold">
                       {upcoming.length}
                     </span>
@@ -292,7 +294,7 @@ export default function EventosPage() {
                   {upcoming.length > 0 && (
                     <div className="flex items-center gap-2 mb-6">
                       <Calendar className="w-6 h-6 text-primary" />
-                      <h2 className="text-2xl font-bold text-primary">Mais eventos</h2>
+                      <h2 className="text-2xl font-bold text-primary">{t('eventos.mais_eventos')}</h2>
                     </div>
                   )}
                   <motion.div
@@ -323,15 +325,15 @@ export default function EventosPage() {
             className="max-w-3xl mx-auto text-center"
           >
             <Navigation className="w-12 h-12 text-[#F5A623] mx-auto mb-6" />
-            <h2 className="text-3xl font-bold text-white mb-4">Precisa de transporte?</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">{t('eventos.cta_titulo')}</h2>
             <p className="text-white/80 mb-8 max-w-xl mx-auto">
-              Solicite uma corrida e chegue com conforto e segurança a qualquer evento da região.
+              {t('eventos.cta_desc')}
             </p>
             <a
               href="/corrida/solicitar"
               className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
             >
-              Como Chegar
+              {t('eventos.como_chegar')}
               <Navigation className="w-5 h-5" />
             </a>
           </motion.div>
@@ -343,6 +345,7 @@ export default function EventosPage() {
 
 // ── Card ───────────────────────────────────────────────────
 function EventoCard({ evento, index, highlight = false }: { evento: Evento; index: number; highlight?: boolean }) {
+  const { t } = useTranslation();
   const isFuture = isUpcoming(evento.data_inicio);
 
   return (
@@ -376,7 +379,7 @@ function EventoCard({ evento, index, highlight = false }: { evento: Evento; inde
         {evento.gratuito ? (
           <span className="absolute top-3 right-3 px-2.5 py-1 rounded-xl text-xs font-bold bg-secondary text-white flex items-center gap-1">
             <Ticket className="w-3 h-3" />
-            Grátis
+            {t('eventos.gratis')}
           </span>
         ) : evento.preco ? (
           <span className="absolute top-3 right-3 px-2.5 py-1 rounded-xl text-xs font-bold bg-[#F5A623] text-primary flex items-center gap-1">
@@ -388,7 +391,7 @@ function EventoCard({ evento, index, highlight = false }: { evento: Evento; inde
         {highlight && isFuture && (
           <span className="absolute bottom-3 left-3 px-2.5 py-1 rounded-xl text-xs font-bold bg-white/90 text-primary flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-[#F5A623]" />
-            Em breve
+            {t('eventos.em_breve')}
           </span>
         )}
       </div>
@@ -433,7 +436,7 @@ function EventoCard({ evento, index, highlight = false }: { evento: Evento; inde
             className="flex-1 inline-flex items-center justify-center gap-1.5 bg-primary hover:bg-primary-light text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition-colors"
           >
             <Navigation className="w-4 h-4" />
-            Como Chegar
+            {t('eventos.como_chegar')}
           </a>
           {evento.site_url && (
             <a
@@ -443,7 +446,7 @@ function EventoCard({ evento, index, highlight = false }: { evento: Evento; inde
               className="inline-flex items-center justify-center gap-1.5 border border-gray-200 text-gray-600 hover:bg-gray-50 text-sm font-semibold py-2.5 px-4 rounded-xl transition-colors"
             >
               <ExternalLink className="w-4 h-4" />
-              Site
+              {t('eventos.site')}
             </a>
           )}
         </div>

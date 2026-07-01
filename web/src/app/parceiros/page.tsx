@@ -1,5 +1,6 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -83,6 +84,7 @@ function EstabelecimentoCard({
 }: {
   est: Estabelecimento;
 }) {
+  const { t } = useTranslation();
   const cat = ESTABELECIMENTO_CATEGORIA_LABELS[est.categoria];
   return (
     <Link href={`/parceiros/${est.slug}`}>
@@ -115,13 +117,13 @@ function EstabelecimentoCard({
           {/* Verified badge */}
           {est.verificado && (
             <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-bold text-secondary backdrop-blur">
-              <BadgeCheck size={13} /> Verificado
+              <BadgeCheck size={13} /> {t('parceiros.verificado')}
             </span>
           )}
           {/* Destaque */}
           {est.destaque && (
             <span className="absolute bottom-3 left-3 rounded-full bg-[#F5A623] px-3 py-1 text-[11px] font-bold text-white">
-              ⭐ Destaque
+              ⭐ {t('parceiros.destaque')}
             </span>
           )}
         </div>
@@ -143,7 +145,7 @@ function EstabelecimentoCard({
             <p className="mt-2 text-xs text-gray-400 line-clamp-2">{est.descricao}</p>
           )}
           <div className="mt-auto flex items-center justify-end pt-3 text-xs font-semibold text-secondary opacity-0 transition group-hover:opacity-100">
-            Ver detalhes <ChevronRight size={14} />
+            {t('parceiros.ver_detalhes')} <ChevronRight size={14} />
           </div>
         </div>
       </motion.div>
@@ -162,6 +164,7 @@ function CampanhaCard({
   estabelecimentoNome: string;
 }) {
   const [copied, setCopied] = useState(false);
+  const { t } = useTranslation();
   const tipoInfo = CAMPANHA_TIPO_LABELS[campanha.tipo];
 
   const handleCopy = useCallback(() => {
@@ -228,10 +231,10 @@ function CampanhaCard({
 
       {/* Validade */}
       <p className="mt-3 text-[10px] text-gray-400">
-        Válido até{' '}
+        {t('parceiros.valido_ate')}{' '}
         {new Date(campanha.data_fim).toLocaleDateString('pt-BR')}
         {campanha.uso_maximo
-          ? ` · ${campanha.usos_realizados}/${campanha.uso_maximo} usos`
+          ? ` · ${campanha.usos_realizados}/${campanha.uso_maximo} ${t('parceiros.usos')}`
           : ''}
       </p>
     </motion.div>
@@ -269,6 +272,7 @@ function SkeletonCampanha() {
    HERO
    ══════════════════════════════════════════════════════════ */
 function Hero() {
+  const { t } = useTranslation();
   return (
     <section className="relative overflow-hidden pt-6 pb-16 sm:pb-20">
       <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-light to-secondary" />
@@ -281,7 +285,7 @@ function Hero() {
             href="/"
             className="mb-6 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur transition hover:bg-white/20 hover:text-white"
           >
-            <ArrowLeft size={15} /> Voltar ao início
+            <ArrowLeft size={15} /> {t('parceiros.voltar_inicio')}
           </Link>
         </motion.div>
 
@@ -291,7 +295,7 @@ function Hero() {
           transition={{ delay: 0.2 }}
           className="mb-3 text-sm font-semibold uppercase tracking-[.25em] text-[#F5A623]"
         >
-          Parceiros DNA Baixada
+          {t('parceiros.badge')}
         </motion.p>
 
         <motion.h1
@@ -300,7 +304,7 @@ function Hero() {
           transition={{ delay: 0.35 }}
           className="text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl"
         >
-          Onde Comer, Beber e Comprar
+          {t('parceiros.hero_titulo')}
         </motion.h1>
 
         <motion.p
@@ -309,7 +313,7 @@ function Hero() {
           transition={{ delay: 0.55 }}
           className="mx-auto mt-4 max-w-2xl text-base text-white/75 sm:text-lg"
         >
-          Descubra os melhores estabelecimentos da Baixada Santista com descontos exclusivos para quem anda de DNA.
+          {t('parceiros.hero_descricao')}
         </motion.p>
       </div>
     </section>
@@ -320,6 +324,7 @@ function Hero() {
    PAGE
    ══════════════════════════════════════════════════════════ */
 export default function ParceirosPage() {
+  const { t } = useTranslation();
   const [estabelecimentos, setEstabelecimentos] = useState<Estabelecimento[]>([]);
   const [campanhas, setCampanhas] = useState<(CampanhaPromocional & { estabelecimentos?: { nome: string } })[]>([]);
   const [loading, setLoading] = useState(true);
@@ -394,7 +399,7 @@ export default function ParceirosPage() {
 
   return (
     <>
-      <PageTitle title='Parceiros' />
+      <PageTitle title={t('parceiros.page_title')} />
       <Hero />
 
       {/* ═══ SEARCH + FILTERS ═══ */}
@@ -405,7 +410,7 @@ export default function ParceirosPage() {
             <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              placeholder="Buscar por nome, bairro ou cidade..."
+              placeholder={t('parceiros.buscar_placeholder')}
               value={busca}
               onChange={(e) => setBusca(e.target.value)}
               className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-4 text-sm text-gray-800 outline-none transition focus:border-secondary focus:ring-2 focus:ring-secondary/20"
@@ -422,7 +427,7 @@ export default function ParceirosPage() {
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              Todos
+              {t('parceiros.todos')}
             </button>
             {categoriasUsadas.map((cat) => {
               const info = ESTABELECIMENTO_CATEGORIA_LABELS[cat];
@@ -457,7 +462,7 @@ export default function ParceirosPage() {
             className="mb-6 flex items-center gap-2"
           >
             <Tag size={20} className="text-[#F5A623]" />
-            <h2 className="text-xl font-extrabold text-primary">Promoções Ativas</h2>
+            <h2 className="text-xl font-extrabold text-primary">{t('parceiros.promocoes_ativas')}</h2>
           </motion.div>
 
           {loading ? (
@@ -495,10 +500,10 @@ export default function ParceirosPage() {
           viewport={{ once: true }}
           className="mb-6 text-xl font-extrabold text-primary"
         >
-          Nossos Parceiros{' '}
+          {t('parceiros.nossos_parceiros')}{' '}
           {!loading && (
             <span className="ml-2 text-sm font-normal text-gray-400">
-              {filtered.length} resultado{filtered.length !== 1 ? 's' : ''}
+              {filtered.length} {filtered.length !== 1 ? t('parceiros.resultado_plural') : t('parceiros.resultado_singular')}
             </span>
           )}
         </motion.h2>
@@ -513,10 +518,10 @@ export default function ParceirosPage() {
           <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 py-20 text-center">
             <Store size={48} className="text-gray-300" />
             <p className="mt-4 text-base font-semibold text-gray-400">
-              Nenhum estabelecimento encontrado
+              {t('parceiros.nenhum_encontrado')}
             </p>
             <p className="mt-1 text-sm text-gray-400">
-              Tente outra busca ou categoria
+              {t('parceiros.tente_outra')}
             </p>
             <button
               onClick={() => {
@@ -525,7 +530,7 @@ export default function ParceirosPage() {
               }}
               className="mt-4 rounded-full bg-primary px-6 py-2 text-sm font-bold text-white transition hover:bg-primary-light"
             >
-              Limpar filtros
+              {t('parceiros.limpar_filtros')}
             </button>
           </div>
         ) : (

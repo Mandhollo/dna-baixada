@@ -1,5 +1,6 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,7 +12,6 @@ import {
   MessageCircle,
   Mail,
   Clock,
-  Phone,
   ExternalLink,
   MapPin,
   CreditCard,
@@ -39,125 +39,135 @@ const stagger = {
 };
 
 interface FAQItem {
-  question: string;
+  questionKey: string;
   answer: string;
-  category: string;
+  categoryKey: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
 const faqData: FAQItem[] = [
   {
-    question: 'Como faço para solicitar uma corrida?',
+    questionKey: 'ajuda.q1',
     answer:
       'Abra o app DNA Baixada, insira seu destino no campo de busca, confirme o endereço de embarque e toque em "Solicitar Corrida". Você verá o valor estimado antes de confirmar. Um motorista parceiro será designado automaticamente com base na proximidade e avaliação.',
-    category: 'Corridas',
+    categoryKey: 'ajuda.cat_corridas',
     icon: Car,
   },
   {
-    question: 'Quais formas de pagamento são aceitas?',
+    questionKey: 'ajuda.q2',
     answer:
       'Aceitamos cartão de crédito (Visa, Mastercard, Elo, American Express), cartão de débito, PIX e carteira digital DNA Baixada. Você pode gerenciar seus métodos de pagamento em "Configurações > Pagamento" no app. Também aceitamos cupons de desconto e créditos promocionais.',
-    category: 'Pagamento',
+    categoryKey: 'ajuda.cat_pagamento',
     icon: CreditCard,
   },
   {
-    question: 'Como me cadastro na plataforma?',
+    questionKey: 'ajuda.q3',
     answer:
       'Baixe o app DNA Baixada ou acesse nosso site. Toque em "Criar Conta", preencha seus dados pessoais (nome, CPF, telefone e e-mail), verifique seu celular com o código SMS e pronto! Você já pode começar a usar a plataforma.',
-    category: 'Cadastro',
+    categoryKey: 'ajuda.cat_cadastro',
     icon: UserPlus,
   },
   {
-    question: 'Como funciona o programa de pontos e recompensas?',
+    questionKey: 'ajuda.q4',
     answer:
       'A cada corrida concluída, você acumula pontos DNA. Esses pontos podem ser trocados por descontos em corridas, experiências turísticas na Baixada Santista e benefícios com parceiros comerciais. Acesse a seção "Recompensas" no app para ver seu saldo e opções de resgate.',
-    category: 'Recompensas',
+    categoryKey: 'ajuda.cat_recompensas',
     icon: Gift,
   },
   {
-    question: 'Posso cancelar uma corrida? Há alguma taxa?',
+    questionKey: 'ajuda.q5',
     answer:
       'Sim, você pode cancelar a qualquer momento antes do embarque. Cancelamentos feitos em até 2 minutos após a solicitação não geram taxa. Após esse período ou se o motorista já estiver a caminho, uma taxa de cancelamento pode ser cobrada, conforme informado no app no momento do cancelamento.',
-    category: 'Corridas',
+    categoryKey: 'ajuda.cat_corridas',
     icon: AlertCircle,
   },
   {
-    question: 'Como funciona o serviço de turismo e city tours?',
+    questionKey: 'ajuda.q6',
     answer:
       'A DNA Baixada oferece city tours e experiências turísticas pela Baixada Santista, incluindo Santos, São Vicente, Guarujá, Praia Grande e Mongaguá. Acesse a seção "Turismo" no app para ver roteiros disponíveis, preços e agendar seu passeio. Os tours são conduzidos por motoristas parceiros com conhecimento local.',
-    category: 'Turismo',
+    categoryKey: 'ajuda.cat_turismo',
     icon: Compass,
   },
   {
-    question: 'Como me torno um motorista parceiro?',
+    questionKey: 'ajuda.q7',
     answer:
       'Acesse "Quero ser Motorista" no app ou site. Você precisará de: CNH definitiva (categoria B ou superior), documento do veículo em dia, certificado de antecedentes criminais e aprovação em nosso processo de verificação. Após a aprovação, você receberá treinamento e acesso ao app do motorista.',
-    category: 'Cadastro',
+    categoryKey: 'ajuda.cat_cadastro',
     icon: Car,
   },
   {
-    question: 'É seguro usar a DNA Baixada?',
+    questionKey: 'ajuda.q8',
     answer:
       'Sim! Todos os motoristas parceiros passam por verificação de antecedentes criminais, validação de documentos e treinamento. Todas as corridas são rastreadas em tempo real por GPS, e você pode compartilhar sua localização com contatos de confiança. Também oferecemos botão de emergência integrado ao app.',
-    category: 'Segurança',
+    categoryKey: 'ajuda.cat_seguranca',
     icon: Shield,
   },
   {
-    question: 'Como avaliar um motorista ou passageiro?',
+    questionKey: 'ajuda.q9',
     answer:
       'Após cada corrida, o app exibe uma tela de avaliação com estrelas (1 a 5) e espaço para comentários. Suas avaliações ajudam a manter a qualidade da comunidade. Motoristas com notas abaixo do padrão são notificados e podem ser desativados se não houver melhoria.',
-    category: 'Corridas',
+    categoryKey: 'ajuda.cat_corridas',
     icon: Star,
   },
   {
-    question: 'O que são os parceiros comerciais da DNA Baixada?',
+    questionKey: 'ajuda.q10',
     answer:
       'São estabelecimentos da Baixada Santista (restaurantes, lojas, hotéis, atrações) que oferecem benefícios exclusivos para usuários DNA Baixada. Ao apresentar o app no estabelecimento parceiro, você pode obter descontos, cashback ou pontos extras. Confira a lista em "Parceiros" no app.',
-    category: 'Recompensas',
+    categoryKey: 'ajuda.cat_recompensas',
     icon: Globe,
   },
   {
-    question: 'Esqueci minha senha. Como recupero?',
+    questionKey: 'ajuda.q11',
     answer:
       'Na tela de login, toque em "Esqueci minha senha". Informe o e-mail cadastrado e enviaremos um link de redefinição. Se não tiver acesso ao e-mail, entre em contato com nosso suporte pelo WhatsApp ou e-mail para verificação alternativa.',
-    category: 'Cadastro',
+    categoryKey: 'ajuda.cat_cadastro',
     icon: AlertCircle,
   },
   {
-    question: 'A DNA Baixada atende quais cidades?',
+    questionKey: 'ajuda.q12',
     answer:
       'Atualmente atendemos toda a Baixada Santista: Santos, São Vicente, Guarujá, Praia Grande, Cubatão, Mongaguá, Itanhaém, Peruíbe, Bertioga e região. Estamos em expansão — novas áreas serão adicionadas em breve.',
-    category: 'Corridas',
+    categoryKey: 'ajuda.cat_corridas',
     icon: MapPin,
   },
 ];
 
-const categories = ['Todas', 'Corridas', 'Pagamento', 'Cadastro', 'Recompensas', 'Turismo', 'Segurança'];
-
-const usefulLinks = [
-  { href: '/turismo', label: 'Turismo & City Tours', desc: 'Descubra passeios e experiências na Baixada Santista' },
-  { href: '/parceiros', label: 'Parceiros Comerciais', desc: 'Descontos e benefícios em estabelecimentos locais' },
-  { href: '/social', label: 'Impacto Social', desc: 'Conheça nossas iniciativas na comunidade' },
-  { href: '/recompensas', label: 'Recompensas', desc: 'Acumule pontos e troque por benefícios exclusivos' },
-];
-
 export default function AjudaPage() {
+  const { t } = useTranslation();
   const [openQuestion, setOpenQuestion] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeCategory, setActiveCategory] = useState('Todas');
+  const [activeCategory, setActiveCategory] = useState('ajuda.cat_todas');
+
+  const categories = [
+    'ajuda.cat_todas',
+    'ajuda.cat_corridas',
+    'ajuda.cat_pagamento',
+    'ajuda.cat_cadastro',
+    'ajuda.cat_recompensas',
+    'ajuda.cat_turismo',
+    'ajuda.cat_seguranca',
+  ];
+
+  const usefulLinks = [
+    { href: '/turismo', labelKey: 'ajuda.link_turismo_label', descKey: 'ajuda.link_turismo_desc' },
+    { href: '/parceiros', labelKey: 'ajuda.link_parceiros_label', descKey: 'ajuda.link_parceiros_desc' },
+    { href: '/social', labelKey: 'ajuda.link_social_label', descKey: 'ajuda.link_social_desc' },
+    { href: '/recompensas', labelKey: 'ajuda.link_recompensas_label', descKey: 'ajuda.link_recompensas_desc' },
+  ];
 
   const filtered = faqData.filter((item) => {
-    const matchCategory = activeCategory === 'Todas' || item.category === activeCategory;
+    const matchCategory = activeCategory === 'ajuda.cat_todas' || item.categoryKey === activeCategory;
+    const questionText = t(item.questionKey);
     const matchSearch =
       searchTerm === '' ||
-      item.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      questionText.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.answer.toLowerCase().includes(searchTerm.toLowerCase());
     return matchCategory && matchSearch;
   });
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-        <PageTitle title='Central de Ajuda' />
+        <PageTitle title={t('ajuda.page_title')} />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#F5A623] via-[#e6971a] to-primary py-28 px-6">
         <div className="absolute inset-0 opacity-10">
@@ -171,7 +181,7 @@ export default function AjudaPage() {
             transition={{ duration: 0.5 }}
             className="inline-block text-sm font-semibold tracking-widest uppercase text-white/90 mb-4"
           >
-            Estamos aqui para ajudar
+            {t('ajuda.hero_badge')}
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -179,9 +189,9 @@ export default function AjudaPage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            {'Central de '}
+            {t('ajuda.hero_title_1') + ' '}
             <span className="bg-gradient-to-r from-secondary to-white bg-clip-text text-transparent">
-              Ajuda
+              {t('ajuda.hero_title_2')}
             </span>
           </motion.h1>
           <motion.p
@@ -190,7 +200,7 @@ export default function AjudaPage() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="mt-6 max-w-2xl mx-auto text-lg text-white/80"
           >
-            Encontre respostas para as dúvidas mais frequentes ou entre em contato com nossa equipe.
+            {t('ajuda.hero_subtitle')}
           </motion.p>
         </div>
       </section>
@@ -205,7 +215,7 @@ export default function AjudaPage() {
           className="inline-flex items-center gap-2 text-primary hover:text-secondary font-semibold transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Voltar para a Home
+          {t('ajuda.back_home')}
         </motion.a>
       </div>
 
@@ -225,7 +235,7 @@ export default function AjudaPage() {
               className="text-3xl md:text-4xl font-bold text-primary flex items-center justify-center gap-3"
             >
               <HelpCircle className="w-8 h-8 text-secondary" />
-              Perguntas Frequentes
+              {t('ajuda.faq_title')}
             </motion.h2>
             <motion.div
               variants={fadeUp}
@@ -245,7 +255,7 @@ export default function AjudaPage() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="text"
-              placeholder="Buscar perguntas..."
+              placeholder={t('ajuda.search_placeholder')}
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -276,7 +286,7 @@ export default function AjudaPage() {
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                {cat}
+                {t(cat)}
               </button>
             ))}
           </motion.div>
@@ -292,28 +302,28 @@ export default function AjudaPage() {
             {filtered.length === 0 ? (
               <motion.div variants={fadeUp} custom={0} className="text-center py-12">
                 <HelpCircle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500 text-lg">Nenhuma pergunta encontrada.</p>
-                <p className="text-gray-400 text-sm mt-1">Tente outro termo ou categoria.</p>
+                <p className="text-gray-500 text-lg">{t('ajuda.no_results')}</p>
+                <p className="text-gray-400 text-sm mt-1">{t('ajuda.no_results_hint')}</p>
               </motion.div>
             ) : (
               filtered.map((item, i) => {
                 const Icon = item.icon;
-                const isOpen = openQuestion === item.question;
+                const isOpen = openQuestion === item.questionKey;
                 return (
                   <motion.div
-                    key={item.question}
+                    key={item.questionKey}
                     variants={fadeUp}
                     custom={i}
                     className="border border-gray-100 rounded-2xl overflow-hidden hover:border-secondary/30 transition-colors"
                   >
                     <button
-                      onClick={() => setOpenQuestion(isOpen ? null : item.question)}
+                      onClick={() => setOpenQuestion(isOpen ? null : item.questionKey)}
                       className="w-full flex items-center gap-4 p-5 text-left bg-white hover:bg-gray-50/50 transition-colors"
                     >
                       <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center shrink-0">
                         <Icon className="w-5 h-5 text-secondary" />
                       </div>
-                      <span className="flex-1 font-semibold text-primary pr-4">{item.question}</span>
+                      <span className="flex-1 font-semibold text-primary pr-4">{t(item.questionKey)}</span>
                       <motion.div
                         animate={{ rotate: isOpen ? 180 : 0 }}
                         transition={{ duration: 0.3 }}
@@ -334,7 +344,7 @@ export default function AjudaPage() {
                           <div className="px-5 pb-5 pl-19">
                             <p className="text-gray-600 leading-relaxed">{item.answer}</p>
                             <span className="inline-block mt-3 text-xs font-semibold text-secondary bg-secondary/10 px-3 py-1 rounded-full">
-                              {item.category}
+                              {t(item.categoryKey)}
                             </span>
                           </div>
                         </motion.div>
@@ -363,7 +373,7 @@ export default function AjudaPage() {
               custom={0}
               className="text-3xl md:text-4xl font-bold text-primary"
             >
-              Entre em Contato
+              {t('ajuda.contact_title')}
             </motion.h2>
             <motion.div
               variants={fadeUp}
@@ -371,7 +381,7 @@ export default function AjudaPage() {
               className="mt-3 w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] mx-auto rounded-full"
             />
             <motion.p variants={fadeUp} custom={2} className="mt-4 text-gray-500 max-w-xl mx-auto">
-              Não encontrou o que procurava? Nossa equipe está pronta para ajudar.
+              {t('ajuda.contact_desc')}
             </motion.p>
           </motion.div>
 
@@ -385,27 +395,27 @@ export default function AjudaPage() {
             {[
               {
                 icon: MessageCircle,
-                label: 'WhatsApp',
+                label: t('ajuda.contact_whatsapp'),
                 value: '(13) 99764-4646',
                 href: 'https://wa.me/5513997644646',
                 color: '#14A76C',
-                desc: 'Resposta rápida',
+                desc: t('ajuda.contact_whatsapp_desc'),
               },
               {
                 icon: Mail,
-                label: 'E-mail',
+                label: t('ajuda.contact_email'),
                 value: 'contato@dnabaixada.com.br',
                 href: 'mailto:contato@dnabaixada.com.br',
                 color: '#0A2463',
-                desc: 'Resposta em até 24h',
+                desc: t('ajuda.contact_email_desc'),
               },
               {
                 icon: Clock,
-                label: 'Horário',
-                value: 'Seg–Sex: 8h às 20h',
+                label: t('ajuda.contact_horario'),
+                value: t('ajuda.contact_horario_value'),
                 href: null,
                 color: '#F5A623',
-                desc: 'Sáb: 8h às 14h',
+                desc: t('ajuda.contact_horario_desc'),
               },
             ].map((item, i) => {
               const Icon = item.icon;
@@ -459,7 +469,7 @@ export default function AjudaPage() {
               custom={0}
               className="text-3xl md:text-4xl font-bold text-primary"
             >
-              Links Úteis
+              {t('ajuda.links_title')}
             </motion.h2>
             <motion.div
               variants={fadeUp}
@@ -488,9 +498,9 @@ export default function AjudaPage() {
                 </div>
                 <div>
                   <h3 className="font-bold text-primary group-hover:text-secondary transition-colors">
-                    {link.label}
+                    {t(link.labelKey)}
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">{link.desc}</p>
+                  <p className="text-sm text-gray-500 mt-1">{t(link.descKey)}</p>
                 </div>
               </motion.a>
             ))}
@@ -503,11 +513,11 @@ export default function AjudaPage() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
         className="py-8 px-6 bg-gray-50 border-t border-gray-100 text-center text-sm text-gray-400"
       >
         <p>DNA Baixada Tecnologia LTDA — Santos/SP</p>
-        <p className="mt-1">Central de Ajuda — Junho 2026</p>
+        <p className="mt-1">{t('ajuda.footer')}</p>
       </motion.div>
     </div>
   );

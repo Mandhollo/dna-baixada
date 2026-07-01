@@ -1,5 +1,6 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 import { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
@@ -38,11 +39,11 @@ const stagger = {
 };
 
 // ── Helpers ────────────────────────────────────────────────
-function formatDateTime(dateStr: string, timeStr: string): string {
+function formatDateTime(dateStr: string, timeStr: string, asWord: string): string {
   const d = new Date(dateStr + 'T12:00:00');
   const date = d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
   const [h, m] = timeStr.split(':');
-  return `${date} às ${h}:${m}`;
+  return `${date} ${asWord} ${h}:${m}`;
 }
 
 function formatDateShort(dateStr: string): string {
@@ -65,17 +66,24 @@ function isFuture(dateStr: string): boolean {
 // ── Status helpers ─────────────────────────────────────────
 type CruzeiroStatus = Cruzeiro['status'];
 
-const STATUS_CONFIG: Record<CruzeiroStatus, { label: string; color: string; bg: string; icon: typeof CheckCircle2 }> = {
-  confirmado: { label: 'Confirmado', color: 'text-green-700', bg: 'bg-green-100', icon: CheckCircle2 },
-  cancelado: { label: 'Cancelado', color: 'text-red-700', bg: 'bg-red-100', icon: XCircle },
-  atrasado: { label: 'Atrasado', color: 'text-amber-700', bg: 'bg-amber-100', icon: AlertTriangle },
+const STATUS_CONFIG: Record<CruzeiroStatus, { color: string; bg: string; icon: typeof CheckCircle2 }> = {
+  confirmado: { color: 'text-green-700', bg: 'bg-green-100', icon: CheckCircle2 },
+  cancelado: { color: 'text-red-700', bg: 'bg-red-100', icon: XCircle },
+  atrasado: { color: 'text-amber-700', bg: 'bg-amber-100', icon: AlertTriangle },
+};
+
+const STATUS_LABEL_KEYS: Record<CruzeiroStatus, string> = {
+  confirmado: 'cruzeiros.status_confirmado',
+  cancelado: 'cruzeiros.status_cancelado',
+  atrasado: 'cruzeiros.status_atrasado',
 };
 
 // ── Skeleton ───────────────────────────────────────────────
 function Skeleton() {
+  const { t } = useTranslation();
   return (
     <div className="animate-pulse rounded-2xl bg-gray-100 overflow-hidden">
-        <PageTitle title='Cruzeiros em Santos' />
+        <PageTitle title={t('cruzeiros.page_title')} />
       <div className="h-44 bg-gray-200" />
       <div className="p-5 space-y-3">
         <div className="h-4 bg-gray-200 rounded w-1/3" />
@@ -89,6 +97,7 @@ function Skeleton() {
 
 // ── Page ───────────────────────────────────────────────────
 export default function CruzeirosPage() {
+  const { t } = useTranslation();
   const [cruzeiros, setCruzeiros] = useState<Cruzeiro[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -158,7 +167,7 @@ export default function CruzeirosPage() {
             className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-8"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Voltar para Turismo</span>
+            <span className="text-sm font-medium">{t('cruzeiros.voltar')}</span>
           </Link>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -166,17 +175,16 @@ export default function CruzeirosPage() {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block text-sm font-semibold tracking-widest uppercase text-[#F5A623] mb-3">
-              Terminal Concais
+              {t('cruzeiros.terminal_concais')}
             </span>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
-              {'Cruzeiros em '}
+              {t('cruzeiros.hero_titulo_1')}{' '}
               <span className="bg-gradient-to-r from-[#F5A623] to-secondary bg-clip-text text-transparent">
-                Santos
+                {t('cruzeiros.hero_titulo_2')}
               </span>
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-white/80">
-              Acompanhe a chegada e saída dos navios de cruzeiro no Porto de Santos. Planeje
-              seu transfer com antecedência.
+              {t('cruzeiros.hero_descricao')}
             </p>
           </motion.div>
         </div>
@@ -191,12 +199,12 @@ export default function CruzeirosPage() {
                 <Ship className="w-6 h-6 text-secondary" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">Próximos 7 dias</p>
+                <p className="text-sm text-gray-500">{t('cruzeiros.proximos_7_dias')}</p>
                 <p className="text-xl font-bold text-primary">
-                  {proximos.length} cruzeiro{proximos.length !== 1 ? 's' : ''}
+                  {proximos.length} {proximos.length !== 1 ? t('cruzeiros.cruzeiro_plural') : t('cruzeiros.cruzeiro_singular')}
                   {totalPassageirosProximos > 0 && (
                     <span className="text-sm font-normal text-gray-500 ml-2">
-                      ≈ {totalPassageirosProximos.toLocaleString('pt-BR')} passageiros
+                      ≈ {totalPassageirosProximos.toLocaleString('pt-BR')} {t('cruzeiros.passageiros')}
                     </span>
                   )}
                 </p>
@@ -208,7 +216,7 @@ export default function CruzeirosPage() {
                   <div key={data} className="px-3 py-1.5 rounded-xl bg-white border border-gray-100 text-sm">
                     <span className="font-semibold text-primary">{data}</span>
                     <span className="text-gray-400 mx-1">·</span>
-                    <span className="text-gray-600">{total.toLocaleString('pt-BR')} passageiros</span>
+                    <span className="text-gray-600">{total.toLocaleString('pt-BR')} {t('cruzeiros.passageiros')}</span>
                   </div>
                 ))}
               </div>
@@ -233,10 +241,9 @@ export default function CruzeirosPage() {
               className="text-center py-24"
             >
               <Anchor className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-primary mb-2">Em breve</h3>
+              <h3 className="text-2xl font-bold text-primary mb-2">{t('cruzeiros.em_breve')}</h3>
               <p className="text-gray-500 max-w-md mx-auto">
-                A temporada de cruzeiros está chegando! Fique ligado para as próximas escalas
-                no Porto de Santos.
+                {t('cruzeiros.em_breve_desc')}
               </p>
             </motion.div>
           ) : (
@@ -246,7 +253,7 @@ export default function CruzeirosPage() {
                 <div className="mb-12">
                   <div className="flex items-center gap-2 mb-6">
                     <Ship className="w-6 h-6 text-secondary" />
-                    <h2 className="text-2xl font-bold text-primary">Próximos Cruzeiros</h2>
+                    <h2 className="text-2xl font-bold text-primary">{t('cruzeiros.proximos_cruzeiros')}</h2>
                     <span className="ml-2 px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-xs font-bold">
                       {proximos.length}
                     </span>
@@ -269,7 +276,7 @@ export default function CruzeirosPage() {
                 <div className="mb-12">
                   <div className="flex items-center gap-2 mb-6">
                     <CalendarDays className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-bold text-primary">Calendário de Cruzeiros</h2>
+                    <h2 className="text-2xl font-bold text-primary">{t('cruzeiros.calendario')}</h2>
                     <span className="ml-2 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold">
                       {futuros.length}
                     </span>
@@ -292,7 +299,7 @@ export default function CruzeirosPage() {
                 <div className="mb-12">
                   <div className="flex items-center gap-2 mb-6">
                     <Clock className="w-6 h-6 text-gray-400" />
-                    <h2 className="text-2xl font-bold text-gray-500">Cruzeiros anteriores</h2>
+                    <h2 className="text-2xl font-bold text-gray-500">{t('cruzeiros.anteriores')}</h2>
                   </div>
                   <motion.div
                     initial="hidden"
@@ -312,7 +319,7 @@ export default function CruzeirosPage() {
                 <div className="mb-12">
                   <div className="flex items-center gap-2 mb-6">
                     <XCircle className="w-6 h-6 text-[#E84855]" />
-                    <h2 className="text-2xl font-bold text-[#E84855]">Cancelados</h2>
+                    <h2 className="text-2xl font-bold text-[#E84855]">{t('cruzeiros.cancelados')}</h2>
                   </div>
                   <motion.div
                     initial="hidden"
@@ -342,16 +349,15 @@ export default function CruzeirosPage() {
             className="max-w-3xl mx-auto text-center"
           >
             <Navigation className="w-12 h-12 text-[#F5A623] mx-auto mb-6" />
-            <h2 className="text-3xl font-bold text-white mb-4">Reserve seu Transfer</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">{t('cruzeiros.cta_titulo')}</h2>
             <p className="text-white/80 mb-8 max-w-xl mx-auto">
-              Chegue ou saia do Terminal Concais com conforto e pontualidade. Reserve agora
-              seu transfer exclusivo.
+              {t('cruzeiros.cta_desc')}
             </p>
             <a
               href="/corrida/solicitar?tipo=transfer_cruzeiro"
               className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
             >
-              Reservar Transfer
+              {t('cruzeiros.reservar_transfer')}
               <ArrowRight className="w-5 h-5" />
             </a>
           </motion.div>
@@ -373,6 +379,7 @@ function CruzeiroCard({
   highlight?: boolean;
   past?: boolean;
 }) {
+  const { t } = useTranslation();
   const statusCfg = STATUS_CONFIG[cruzeiro.status] ?? STATUS_CONFIG.confirmado;
   const StatusIcon = statusCfg.icon;
 
@@ -392,7 +399,7 @@ function CruzeiroCard({
           className={`absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold ${statusCfg.bg} ${statusCfg.color}`}
         >
           <StatusIcon className="w-3 h-3" />
-          {statusCfg.label}
+          {t(STATUS_LABEL_KEYS[cruzeiro.status] ?? 'cruzeiros.status_confirmado')}
         </span>
         {/* Passageiros */}
         {cruzeiro.passageiros && (
@@ -413,8 +420,8 @@ function CruzeiroCard({
         <div className="flex items-start gap-2 text-sm text-gray-600 mb-2">
           <ArrowRight className="w-4 h-4 shrink-0 mt-0.5 text-secondary" />
           <div>
-            <span className="font-medium">Chegada:</span>{' '}
-            {formatDateTime(cruzeiro.data_chegada, cruzeiro.hora_chegada)}
+            <span className="font-medium">{t('cruzeiros.chegada')}</span>{' '}
+            {formatDateTime(cruzeiro.data_chegada, cruzeiro.hora_chegada, t('cruzeiros.as'))}
           </div>
         </div>
 
@@ -422,8 +429,8 @@ function CruzeiroCard({
         <div className="flex items-start gap-2 text-sm text-gray-600 mb-2">
           <Clock className="w-4 h-4 shrink-0 mt-0.5 text-[#F5A623]" />
           <div>
-            <span className="font-medium">Saída:</span>{' '}
-            {formatDateTime(cruzeiro.data_saida, cruzeiro.hora_saida)}
+            <span className="font-medium">{t('cruzeiros.saida')}</span>{' '}
+            {formatDateTime(cruzeiro.data_saida, cruzeiro.hora_saida, t('cruzeiros.as'))}
           </div>
         </div>
 
@@ -448,7 +455,7 @@ function CruzeiroCard({
             className="flex items-center justify-center gap-1.5 bg-primary hover:bg-primary-light text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition-colors w-full"
           >
             <Navigation className="w-4 h-4" />
-            Reservar Transfer
+            {t('cruzeiros.reservar_transfer')}
           </a>
         )}
       </div>

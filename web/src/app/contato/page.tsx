@@ -1,5 +1,6 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -27,42 +28,44 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.12 } },
 };
 
-const contactInfo = [
-  {
-    icon: Mail,
-    label: 'E-mail',
-    value: 'contato@dnabaixada.com.br',
-    href: 'mailto:contato@dnabaixada.com.br',
-    color: '#0A2463',
-    desc: 'Resposta em até 24h',
-  },
-  {
-    icon: AtSign,
-    label: 'Instagram',
-    value: '@contato.dnabaixada',
-    href: 'https://instagram.com/contato.dnabaixada',
-    color: '#E1306C',
-    desc: 'Siga-nos nas redes',
-  },
-  {
-    icon: Clock,
-    label: 'Horário',
-    value: 'Seg–Sex: 8h às 18h',
-    href: null,
-    color: '#F5A623',
-    desc: 'Atendimento comercial',
-  },
-];
-
-const assuntoOptions = [
-  { value: '', label: 'Selecione um assunto' },
-  { value: 'parceria', label: 'Parceria' },
-  { value: 'motorista', label: 'Motorista' },
-  { value: 'suporte', label: 'Suporte' },
-  { value: 'outro', label: 'Outro' },
-];
-
 export default function ContatoPage() {
+  const { t } = useTranslation();
+
+  const contactInfo = [
+    {
+      icon: Mail,
+      label: t('contato.info_email_label'),
+      value: 'contato@dnabaixada.com.br',
+      href: 'mailto:contato@dnabaixada.com.br',
+      color: '#0A2463',
+      desc: t('contato.info_email_desc'),
+    },
+    {
+      icon: AtSign,
+      label: t('contato.info_instagram_label'),
+      value: '@contato.dnabaixada',
+      href: 'https://instagram.com/contato.dnabaixada',
+      color: '#E1306C',
+      desc: t('contato.info_instagram_desc'),
+    },
+    {
+      icon: Clock,
+      label: t('contato.info_horario_label'),
+      value: t('contato.info_horario_value'),
+      href: null,
+      color: '#F5A623',
+      desc: t('contato.info_horario_desc'),
+    },
+  ];
+
+  const assuntoOptions = [
+    { value: '', label: t('contato.assunto_selecione') },
+    { value: 'parceria', label: t('contato.assunto_parceria') },
+    { value: 'motorista', label: t('contato.assunto_motorista') },
+    { value: 'suporte', label: t('contato.assunto_suporte') },
+    { value: 'outro', label: t('contato.assunto_outro') },
+  ];
+
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -74,12 +77,12 @@ export default function ContatoPage() {
 
   function validate() {
     const errs: Record<string, string> = {};
-    if (!formData.nome.trim()) errs.nome = 'Nome é obrigatório';
-    if (!formData.email.trim()) errs.email = 'E-mail é obrigatório';
+    if (!formData.nome.trim()) errs.nome = t('contato.err_nome');
+    if (!formData.email.trim()) errs.email = t('contato.err_email');
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      errs.email = 'E-mail inválido';
-    if (!formData.assunto) errs.assunto = 'Selecione um assunto';
-    if (!formData.mensagem.trim()) errs.mensagem = 'Mensagem é obrigatória';
+      errs.email = t('contato.err_email_invalid');
+    if (!formData.assunto) errs.assunto = t('contato.err_assunto');
+    if (!formData.mensagem.trim()) errs.mensagem = t('contato.err_mensagem');
     return errs;
   }
 
@@ -114,7 +117,7 @@ export default function ContatoPage() {
       setSubmitError(
         err instanceof Error
           ? err.message
-          : 'Erro ao enviar. Tente novamente ou chame no WhatsApp.',
+          : t('contato.err_geral'),
       );
     } finally {
       setSubmitting(false);
@@ -131,7 +134,7 @@ export default function ContatoPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-        <PageTitle title='Contato' />
+        <PageTitle title={t('contato.page_title')} />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-secondary py-28 px-6">
         <div className="absolute inset-0 opacity-10">
@@ -145,7 +148,7 @@ export default function ContatoPage() {
             transition={{ duration: 0.5 }}
             className="inline-block text-sm font-semibold tracking-widest uppercase text-[#F5A623] mb-4"
           >
-            Fale conosco
+            {t('contato.hero_badge')}
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -153,9 +156,9 @@ export default function ContatoPage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            {'Entre em '}
+            {t('contato.hero_title_1') + ' '}
             <span className="bg-gradient-to-r from-secondary to-[#F5A623] bg-clip-text text-transparent">
-              Contato
+              {t('contato.hero_title_2')}
             </span>
           </motion.h1>
           <motion.p
@@ -164,8 +167,7 @@ export default function ContatoPage() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="mt-6 max-w-2xl mx-auto text-lg text-white/80"
           >
-            Tem alguma dúvida, sugestão ou quer fechar uma parceria? Envie uma mensagem e
-            respondemos o mais rápido possível.
+            {t('contato.hero_subtitle')}
           </motion.p>
         </div>
       </section>
@@ -182,7 +184,7 @@ export default function ContatoPage() {
           >
             {/* Form */}
             <motion.div variants={fadeUp} custom={0} className="lg:col-span-3">
-              <h2 className="text-3xl font-bold text-primary mb-2">Envie sua mensagem</h2>
+              <h2 className="text-3xl font-bold text-primary mb-2">{t('contato.form_title')}</h2>
               <div className="w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] rounded-full mb-8" />
 
               <AnimatePresence mode="wait">
@@ -199,11 +201,10 @@ export default function ContatoPage() {
                       <CheckCircle2 className="w-10 h-10 text-secondary" />
                     </div>
                     <h3 className="text-2xl font-bold text-primary mb-2">
-                      Mensagem enviada!
+                      {t('contato.success_title')}
                     </h3>
                     <p className="text-foreground-muted max-w-sm mb-6">
-                      Obrigado pelo contato, <strong>{formData.nome}</strong>! Vamos responder
-                      o mais breve possível.
+                      {t('contato.success_desc')}
                     </p>
                     <button
                       onClick={() => {
@@ -212,7 +213,7 @@ export default function ContatoPage() {
                       }}
                       className="px-6 py-3 rounded-full bg-primary text-white font-semibold hover:bg-primary-light transition-colors"
                     >
-                      Enviar outra mensagem
+                      {t('contato.send_another')}
                     </button>
                   </motion.div>
                 ) : (
@@ -230,7 +231,7 @@ export default function ContatoPage() {
                         htmlFor="nome"
                         className="block text-sm font-semibold text-primary mb-1.5"
                       >
-                        Nome completo *
+                        {t('contato.label_nome')}
                       </label>
                       <input
                         id="nome"
@@ -239,7 +240,7 @@ export default function ContatoPage() {
                         required
                         value={formData.nome}
                         onChange={handleChange}
-                        placeholder="Seu nome"
+                        placeholder={t('contato.ph_nome')}
                         className={`w-full px-4 py-3 rounded-xl border bg-surface-elevated text-foreground placeholder:text-foreground-muted focus:outline-none focus:ring-2 transition-all ${
                           errors.nome
                             ? 'border-red-400 focus:ring-red-300/40'
@@ -257,7 +258,7 @@ export default function ContatoPage() {
                         htmlFor="email"
                         className="block text-sm font-semibold text-primary mb-1.5"
                       >
-                        E-mail *
+                        {t('contato.label_email')}
                       </label>
                       <input
                         id="email"
@@ -266,7 +267,7 @@ export default function ContatoPage() {
                         required
                         value={formData.email}
                         onChange={handleChange}
-                        placeholder="seuemail@exemplo.com"
+                        placeholder={t('contato.ph_email')}
                         className={`w-full px-4 py-3 rounded-xl border bg-surface-elevated text-foreground placeholder:text-foreground-muted focus:outline-none focus:ring-2 transition-all ${
                           errors.email
                             ? 'border-red-400 focus:ring-red-300/40'
@@ -284,7 +285,7 @@ export default function ContatoPage() {
                         htmlFor="assunto"
                         className="block text-sm font-semibold text-primary mb-1.5"
                       >
-                        Assunto *
+                        {t('contato.label_assunto')}
                       </label>
                       <select
                         id="assunto"
@@ -315,7 +316,7 @@ export default function ContatoPage() {
                         htmlFor="mensagem"
                         className="block text-sm font-semibold text-primary mb-1.5"
                       >
-                        Mensagem *
+                        {t('contato.label_mensagem')}
                       </label>
                       <textarea
                         id="mensagem"
@@ -324,7 +325,7 @@ export default function ContatoPage() {
                         rows={5}
                         value={formData.mensagem}
                         onChange={handleChange}
-                        placeholder="Escreva sua mensagem aqui..."
+                        placeholder={t('contato.ph_mensagem')}
                         className={`w-full px-4 py-3 rounded-xl border bg-surface-elevated text-foreground placeholder:text-foreground-muted focus:outline-none focus:ring-2 transition-all resize-none ${
                           errors.mensagem
                             ? 'border-red-400 focus:ring-red-300/40'
@@ -345,7 +346,7 @@ export default function ContatoPage() {
                       disabled={submitting}
                       className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-secondary to-primary hover:from-primary hover:to-secondary text-white font-bold px-8 py-4 rounded-full transition-all shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      {submitting ? 'Enviando...' : 'Enviar mensagem'}
+                      {submitting ? t('contato.submitting') : t('contato.submit')}
                       <Send className="w-5 h-5" />
                     </button>
                   </motion.form>
@@ -355,7 +356,7 @@ export default function ContatoPage() {
 
             {/* Contact Info Sidebar */}
             <motion.div variants={fadeUp} custom={1} className="lg:col-span-2">
-              <h2 className="text-3xl font-bold text-primary mb-2">Informações</h2>
+              <h2 className="text-3xl font-bold text-primary mb-2">{t('contato.info_title')}</h2>
               <div className="w-16 h-1 bg-gradient-to-r from-secondary to-[#F5A623] rounded-full mb-8" />
 
               <div className="space-y-5">
@@ -408,11 +409,10 @@ export default function ContatoPage() {
               >
                 <div className="flex items-center gap-2 mb-2">
                   <MessageSquare className="w-5 h-5 text-secondary" />
-                  <span className="font-bold text-primary text-sm">Dica rápida</span>
+                  <span className="font-bold text-primary text-sm">{t('contato.tip_title')}</span>
                 </div>
                 <p className="text-sm text-foreground-secondary leading-relaxed">
-                  Para respostas mais rápidas, escolha o assunto que melhor se encaixa na sua
-                  necessidade. Assim direcionamos sua mensagem ao time certo!
+                  {t('contato.tip_desc')}
                 </p>
               </motion.div>
             </motion.div>
@@ -431,17 +431,16 @@ export default function ContatoPage() {
         >
           <Car className="w-12 h-12 text-[#F5A623] mx-auto mb-6" />
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Quer ser motorista parceiro?
+            {t('contato.cta_title')}
           </h2>
           <p className="text-white/80 mb-8 max-w-xl mx-auto">
-            Faça parte do time de motoristas da DNA Baixada e ganhe dinheiro fazendo o que
-            ama, com flexibilidade e apoio total.
+            {t('contato.cta_desc')}
           </p>
           <a
             href="/cadastro"
             className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
           >
-            Cadastre-se como motorista
+            {t('contato.cta_button')}
             <ArrowRight className="w-5 h-5" />
           </a>
         </motion.div>

@@ -1,5 +1,6 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 import { motion } from 'framer-motion';
 import { ArrowLeft, FileText } from 'lucide-react';
@@ -98,9 +99,10 @@ const sections = [
 ];
 
 export default function TermosPage() {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col min-h-screen bg-white">
-        <PageTitle title='Termos de Uso' />
+        <PageTitle title={t('termos.page_title')} />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-primary py-28 px-6">
         <div className="absolute inset-0 opacity-10">
@@ -114,7 +116,7 @@ export default function TermosPage() {
             transition={{ duration: 0.5 }}
             className="inline-block text-sm font-semibold tracking-widest uppercase text-[#F5A623] mb-4"
           >
-            Documento Legal
+            {t('termos.hero_badge')}
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -122,9 +124,9 @@ export default function TermosPage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            {'Termos de '}
+            {t('termos.hero_title_1') + ' '}
             <span className="bg-gradient-to-r from-secondary to-[#F5A623] bg-clip-text text-transparent">
-              Uso
+              {t('termos.hero_title_2')}
             </span>
           </motion.h1>
           <motion.p
@@ -133,8 +135,7 @@ export default function TermosPage() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="mt-6 max-w-2xl mx-auto text-lg text-white/80"
           >
-            Leia atentamente os termos que regulam o uso da plataforma DNA Baixada.
-            Última atualização: Junho de 2026.
+            {t('termos.hero_subtitle')}
           </motion.p>
         </div>
       </section>
@@ -151,7 +152,7 @@ export default function TermosPage() {
             className="inline-flex items-center gap-2 text-primary hover:text-secondary font-semibold mb-10 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Voltar para a Home
+            {t('termos.back_home')}
           </motion.a>
 
           {/* Intro */}
@@ -174,7 +175,7 @@ export default function TermosPage() {
                   Santos, Estado de São Paulo.
                 </p>
                 <p className="text-sm text-gray-400 mt-3">
-                  Última atualização: Junho de 2026
+                  {t('termos.last_update')}
                 </p>
               </div>
             </div>
@@ -216,7 +217,7 @@ export default function TermosPage() {
             className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-400"
           >
             <p>DNA Baixada Tecnologia LTDA — Santos/SP</p>
-            <p className="mt-1">Termos de Uso — Junho de 2026</p>
+            <p className="mt-1">{t('termos.footer')}</p>
           </motion.div>
         </div>
       </section>

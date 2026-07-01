@@ -1,5 +1,6 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 import { motion } from 'framer-motion';
 import {
@@ -10,7 +11,6 @@ import {
   Rocket,
   Sparkles,
   ArrowRight,
-  CheckCircle2,
 } from 'lucide-react';
 
 const fadeUp = {
@@ -26,38 +26,37 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.12 } },
 };
 
-const timeline = [
-  {
-    year: '2026',
-    phase: 'Ideia',
-    description:
-      'Nasce a visão de uma plataforma que conecta mobilidade, turismo e impacto social na Baixada Santista.',
-  },
-  {
-    year: '2026',
-    phase: 'Desenvolvimento',
-    description:
-      'Estruturação da tecnologia, parcerias locais e construção da marca DNA Baixada.',
-  },
-  {
-    year: '2026',
-    phase: 'Lançamento',
-    description:
-      'A plataforma chega ao público com serviços de transporte, city tours e programas sociais.',
-  },
-];
-
-const values = [
-  { icon: Heart, label: 'Empatia', desc: 'Colocamos as pessoas no centro de cada decisão.' },
-  { icon: Target, label: 'Compromisso', desc: 'Cumprimos o que prometemos, com transparência total.' },
-  { icon: Sparkles, label: 'Inovação', desc: 'Usamos tecnologia para transformar a experiência regional.' },
-  { icon: Users, label: 'Comunidade', desc: 'Fortalecemos os laços que unem a Baixada Santista.' },
-];
-
 export default function SobrePage() {
+  const { t } = useTranslation();
+
+  const timeline = [
+    {
+      year: '2026',
+      phase: t('sobre.phase_ideia'),
+      description: t('sobre.phase_ideia_desc'),
+    },
+    {
+      year: '2026',
+      phase: t('sobre.phase_dev'),
+      description: t('sobre.phase_dev_desc'),
+    },
+    {
+      year: '2026',
+      phase: t('sobre.phase_lancamento'),
+      description: t('sobre.phase_lancamento_desc'),
+    },
+  ];
+
+  const values = [
+    { icon: Heart, label: t('sobre.value_empatia'), desc: t('sobre.value_empatia_desc') },
+    { icon: Target, label: t('sobre.value_compromisso'), desc: t('sobre.value_compromisso_desc') },
+    { icon: Sparkles, label: t('sobre.value_inovacao'), desc: t('sobre.value_inovacao_desc') },
+    { icon: Users, label: t('sobre.value_comunidade'), desc: t('sobre.value_comunidade_desc') },
+  ];
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
-        <PageTitle title='Sobre Nos' />
+        <PageTitle title={t('sobre.page_title')} />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-primary py-28 px-6">
         <div className="absolute inset-0 opacity-10">
@@ -71,7 +70,7 @@ export default function SobrePage() {
             transition={{ duration: 0.5 }}
             className="inline-block text-sm font-semibold tracking-widest uppercase text-[#F5A623] mb-4"
           >
-            Conheça nossa história
+            {t('sobre.hero_badge')}
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -79,9 +78,9 @@ export default function SobrePage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            {'Sobre a '}
-                        <span className="bg-gradient-to-r from-secondary to-[#F5A623] bg-clip-text text-transparent">
-                          DNA Baixada
+            {t('sobre.hero_title_1') + ' '}
+            <span className="bg-gradient-to-r from-secondary to-[#F5A623] bg-clip-text text-transparent">
+              {t('sobre.hero_title_2')}
             </span>
           </motion.h1>
           <motion.p
@@ -90,8 +89,7 @@ export default function SobrePage() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="mt-6 max-w-2xl mx-auto text-lg text-white/80"
           >
-            Nascidos na Baixada Santista, feitos por quem conhece cada rua, cada praia e cada
-            história dessa região.
+            {t('sobre.hero_subtitle')}
           </motion.p>
         </div>
       </section>
@@ -112,20 +110,10 @@ export default function SobrePage() {
               </div>
             </motion.div>
             <motion.div variants={fadeUp} custom={1}>
-              <h2 className="text-3xl font-bold text-primary mb-6">Nossa Origem</h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                A DNA Baixada nasceu da vontade de transformar a experiência de quem vive e visita
-                a Baixada Santista. Somos criados por quem respira essa região — que conhece cada
-                cantinho, cada cultura e cada necessidade local.
-              </p>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Mais do que uma plataforma de mobilidade, somos um movimento que conecta transporte,
-                turismo e responsabilidade social em um único ecossistema.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                Cada corrida, cada city tour e cada parceria carrega o nosso DNA: o compromisso
-                com a comunidade da Baixada Santista.
-              </p>
+              <h2 className="text-3xl font-bold text-primary mb-6">{t('sobre.origin_title')}</h2>
+              <p className="text-gray-600 leading-relaxed mb-4">{t('sobre.origin_p1')}</p>
+              <p className="text-gray-600 leading-relaxed mb-4">{t('sobre.origin_p2')}</p>
+              <p className="text-gray-600 leading-relaxed">{t('sobre.origin_p3')}</p>
             </motion.div>
           </motion.div>
         </div>
@@ -146,7 +134,7 @@ export default function SobrePage() {
               custom={0}
               className="text-3xl md:text-4xl font-bold text-primary"
             >
-              Missão, Visão & Valores
+              {t('sobre.mvv_title')}
             </motion.h2>
             <motion.div
               variants={fadeUp}
@@ -165,20 +153,20 @@ export default function SobrePage() {
             {[
               {
                 icon: Target,
-                title: 'Missão',
-                text: 'Oferecer mobilidade inteligente, experiências turísticas memoráveis e impacto social positivo na Baixada Santista.',
+                title: t('sobre.missao_title'),
+                text: t('sobre.missao_text'),
                 color: '#0A2463',
               },
               {
                 icon: Eye,
-                title: 'Visão',
-                text: 'Ser a principal plataforma regional de mobilidade e turismo, referência em inovação e responsabilidade social.',
+                title: t('sobre.visao_title'),
+                text: t('sobre.visao_text'),
                 color: '#14A76C',
               },
               {
                 icon: Heart,
-                title: 'Propósito',
-                text: 'Cada serviço prestado gera impacto direto na comunidade, fortalecendo a economia e o bem-estar local.',
+                title: t('sobre.proposito_title'),
+                text: t('sobre.proposito_text'),
                 color: '#F5A623',
               },
             ].map((item, i) => (
@@ -241,10 +229,10 @@ export default function SobrePage() {
               custom={0}
               className="text-3xl md:text-4xl font-bold text-primary"
             >
-              Nossa Equipe
+              {t('sobre.team_title')}
             </motion.h2>
             <motion.p variants={fadeUp} custom={1} className="mt-3 text-gray-500">
-              Pessoas apaixonadas pela Baixada Santista
+              {t('sobre.team_subtitle')}
             </motion.p>
           </motion.div>
 
@@ -256,9 +244,9 @@ export default function SobrePage() {
             className="grid sm:grid-cols-2 md:grid-cols-3 gap-8"
           >
             {[
-              { name: 'Anderson N. Oliveira', role: 'CEO & Fundador' },
-              { name: 'Equipe DNA Baixada', role: 'Diretor de Operações' },
-              { name: 'Equipe Técnica', role: 'CTO' },
+              { name: 'Anderson N. Oliveira', role: t('sobre.role_ceo') },
+              { name: 'Equipe DNA Baixada', role: t('sobre.role_ops') },
+              { name: 'Equipe Técnica', role: t('sobre.role_cto') },
             ].map((member, i) => (
               <motion.div
                 key={member.role}
@@ -292,7 +280,7 @@ export default function SobrePage() {
               custom={0}
               className="text-3xl md:text-4xl font-bold text-primary"
             >
-              Nossa Jornada
+              {t('sobre.journey_title')}
             </motion.h2>
             <motion.div
               variants={fadeUp}
@@ -352,17 +340,16 @@ export default function SobrePage() {
         >
           <Rocket className="w-12 h-12 text-[#F5A623] mx-auto mb-6" />
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Faça parte da DNA Baixada
+            {t('sobre.cta_title')}
           </h2>
           <p className="text-white/80 mb-8 max-w-xl mx-auto">
-            Junte-se a nós e ajude a transformar a Baixada Santista. Seja motorista, parceiro ou
-            voluntário.
+            {t('sobre.cta_desc')}
           </p>
           <a
             href="/contato"
             className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-accent-dark text-primary font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
           >
-            Faça parte
+            {t('sobre.cta_button')}
             <ArrowRight className="w-5 h-5" />
           </a>
         </motion.div>

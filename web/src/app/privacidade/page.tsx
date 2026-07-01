@@ -1,5 +1,6 @@
 'use client';
 import PageTitle from '@/components/seo/PageTitle';
+import { useTranslation } from '@/components/i18n/LanguageProvider';
 
 import { motion } from 'framer-motion';
 import { ArrowLeft, Shield, Lock, Eye, Database, Share2, Cookie, Mail, RefreshCw } from 'lucide-react';
@@ -107,9 +108,10 @@ const sections = [
 ];
 
 export default function PrivacidadePage() {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col min-h-screen bg-white">
-        <PageTitle title='Politica de Privacidade' />
+        <PageTitle title={t('privacidade.page_title')} />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-[#11b85e] to-[#0d9450] py-28 px-6">
         <div className="absolute inset-0 opacity-10">
@@ -123,7 +125,7 @@ export default function PrivacidadePage() {
             transition={{ duration: 0.5 }}
             className="inline-block text-sm font-semibold tracking-widest uppercase text-[#F5A623] mb-4"
           >
-            Sua privacidade importa
+            {t('privacidade.hero_badge')}
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -131,9 +133,9 @@ export default function PrivacidadePage() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight"
           >
-            {'Política de '}
+            {t('privacidade.hero_title_1') + ' '}
             <span className="bg-gradient-to-r from-white/90 to-white/70 bg-clip-text text-transparent">
-              Privacidade
+              {t('privacidade.hero_title_2')}
             </span>
           </motion.h1>
           <motion.p
@@ -142,8 +144,7 @@ export default function PrivacidadePage() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="mt-6 max-w-2xl mx-auto text-lg text-white/80"
           >
-            Saiba como coletamos, usamos e protegemos seus dados pessoais em conformidade com a LGPD.
-            Última atualização: Junho de 2026.
+            {t('privacidade.hero_subtitle')}
           </motion.p>
           <motion.div
             initial={{ opacity: 0 }}
@@ -152,7 +153,7 @@ export default function PrivacidadePage() {
             className="mt-6 inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 text-sm text-white/90"
           >
             <Shield className="w-4 h-4" />
-            Em conformidade com a Lei nº 13.709/2018 — LGPD
+            {t('privacidade.lgpd_badge')}
           </motion.div>
         </div>
       </section>
@@ -169,7 +170,7 @@ export default function PrivacidadePage() {
             className="inline-flex items-center gap-2 text-primary hover:text-secondary font-semibold mb-10 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Voltar para a Home
+            {t('privacidade.back_home')}
           </motion.a>
 
           {/* Intro */}
@@ -231,7 +232,7 @@ export default function PrivacidadePage() {
             className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-400"
           >
             <p>DNA Baixada Tecnologia LTDA — Santos/SP</p>
-            <p className="mt-1">Política de Privacidade — Junho de 2026</p>
+            <p className="mt-1">{t('privacidade.footer')}</p>
           </motion.div>
         </div>
       </section>
