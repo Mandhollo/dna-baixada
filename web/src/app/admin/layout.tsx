@@ -17,6 +17,7 @@ import {
   ChevronRight,
   Car,
   UserCheck,
+  Crown,
 } from 'lucide-react';
 import { useAuth } from '@/components/auth/AuthProvider';
 
@@ -27,6 +28,7 @@ const NAV_ITEMS = [
   { label: 'Motoristas', href: '/admin/motoristas', icon: UserCheck },
   { label: 'Usuários', href: '/admin/usuarios', icon: Users },
   { label: 'Parceiros', href: '/admin/parceiros', icon: Store },
+  { label: 'Premium', href: '/admin/premium', icon: Crown },
   { label: 'Relatórios', href: '/admin/relatorios', icon: BarChart3 },
   { label: 'Campanhas', href: '/admin/campanhas', icon: Megaphone },
   { label: 'Config', href: '/admin/config', icon: Settings },
