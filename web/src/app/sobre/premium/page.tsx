@@ -1,6 +1,7 @@
 'use client';
 
 import SeoMeta from '@/components/seo/SeoMeta';
+import JsonLd from '@/components/seo/JsonLd';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -70,6 +71,36 @@ export default function SobrePremiumPage() {
       <SeoMeta
         title="DNA Premium — Plataforma Completa para Motoristas"
         description="14 módulos premium: fundadores, níveis, DNA Pass, benefícios, saúde, educação, comunidade, IA e mais. Comissão reduzida, cursos grátis e tecnologia de ponta."
+      />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: 'DNA Premium — Plataforma para Motoristas',
+          description: 'Plataforma premium para motoristas da Baixada Santista com 14 módulos: fundadores, níveis, DNA Pass, benefícios, saúde, educação, comunidade, IA e mais.',
+          provider: {
+            '@type': 'Organization',
+            name: 'DNA Baixada',
+            url: 'https://dna-baixada.vercel.app',
+            email: 'contato@dnabaixada.com.br',
+          },
+          areaServed: {
+            '@type': 'AdministrativeArea',
+            name: 'Baixada Santista',
+          },
+          offers: {
+            '@type': 'AggregateOffer',
+            priceCurrency: 'BRL',
+            lowPrice: '19.90',
+            highPrice: '29.90',
+            offerCount: 3,
+          },
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: '4.9',
+            reviewCount: '1000',
+          },
+        }}
       />
 
       {/* ─── Hero ─────────────────────────────────────────── */}

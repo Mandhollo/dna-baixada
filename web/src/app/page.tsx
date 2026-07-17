@@ -271,7 +271,7 @@ function PremiumBanner() {
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.8 }}
           className="mt-10"
         >
-          <Link href="/premium" className="inline-flex items-center gap-2 rounded-full bg-accent px-8 py-3.5 font-bold text-primary shadow-lg shadow-accent/30 transition hover:brightness-110">
+          <Link href="/sobre/premium" className="inline-flex items-center gap-2 rounded-full bg-accent px-8 py-3.5 font-bold text-primary shadow-lg shadow-accent/30 transition hover:brightness-110">
             <Crown size={18} /> Conhecer o Módulo Premium <ArrowRight size={16} />
           </Link>
         </motion.div>

@@ -1,6 +1,7 @@
 'use client';
 
 import SeoMeta from '@/components/seo/SeoMeta';
+import JsonLd from '@/components/seo/JsonLd';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -245,7 +246,31 @@ export default function HubPremiumPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <SeoMeta title='DNA Premium' description='Módulo Premium DNA Mobilidade: benefícios, níveis, educação, saúde, comunidade e tecnologia para motoristas da Baixada Santista.' />
+      <SeoMeta title="DNA Premium" description="Módulo Premium DNA Mobilidade: benefícios, níveis, educação, saúde, comunidade e tecnologia para motoristas da Baixada Santista." />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: 'DNA Premium — Módulos',
+          description: '14 módulos premium para motoristas da DNA Mobilidade',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Motoristas Fundadores' },
+            { '@type': 'ListItem', position: 2, name: 'Sistema de Níveis' },
+            { '@type': 'ListItem', position: 3, name: 'DNA Pass' },
+            { '@type': 'ListItem', position: 4, name: 'Recompensas' },
+            { '@type': 'ListItem', position: 5, name: 'Central de Benefícios' },
+            { '@type': 'ListItem', position: 6, name: 'Saúde e Bem-estar' },
+            { '@type': 'ListItem', position: 7, name: 'Educação' },
+            { '@type': 'ListItem', position: 8, name: 'Comunidade' },
+            { '@type': 'ListItem', position: 9, name: 'IA para Motoristas' },
+            { '@type': 'ListItem', position: 10, name: 'Previsão de Demanda' },
+            { '@type': 'ListItem', position: 11, name: 'Metas Inteligentes' },
+            { '@type': 'ListItem', position: 12, name: 'Sistema de Segurança' },
+            { '@type': 'ListItem', position: 13, name: 'Painel Financeiro Pro' },
+            { '@type': 'ListItem', position: 14, name: 'Motorista Guia' },
+          ],
+        }}
+      />
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-[#0d2d73] py-20 px-6">
