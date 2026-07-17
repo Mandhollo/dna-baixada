@@ -2,6 +2,7 @@
 
 import SeoMeta from '@/components/seo/SeoMeta';
 import JsonLd from '@/components/seo/JsonLd';
+import SocialShare from '@/components/premium/SocialShare';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -492,6 +493,9 @@ export default function HubPremiumPage() {
               É criar uma mobilidade mais justa, transparente e integrada
               ao turismo e ao comércio da Baixada Santista.
             </p>
+            <div className="mt-8 flex justify-center">
+              <SocialShare url="/premium" title="DNA Premium — Módulo Premium para Motoristas" />
+            </div>
           </motion.div>
         </div>
       </section>
