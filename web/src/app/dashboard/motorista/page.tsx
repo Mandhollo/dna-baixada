@@ -23,6 +23,9 @@ import {
   Zap,
   CheckCircle,
   X,
+  Crown,
+  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import {
@@ -470,8 +473,34 @@ export default function MotoristaDashboardPage() {
           />
         </motion.div>
 
-        {/* ── Perfil link ── */}
+        {/* ── DNA Premium Upsell ── */}
         <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={5} className="mt-6">
+          <Link
+            href="/sobre/premium"
+            className="block overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary-dark to-[#0d2d73] p-6 shadow-lg transition hover:shadow-xl"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent/20 backdrop-blur-sm">
+                <Crown className="h-7 w-7 text-accent" />
+              </div>
+              <div className="flex-1 text-white">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-bold">DNA Premium</h3>
+                  <span className="rounded-full bg-accent/20 px-2 py-0.5 text-[10px] font-bold text-accent">
+                    14 módulos
+                  </span>
+                </div>
+                <p className="mt-0.5 text-xs text-white/60">
+                  Reduza sua comissão, ganhe benefícios e cursos grátis
+                </p>
+              </div>
+              <ArrowRight className="h-5 w-5 shrink-0 text-white/40" />
+            </div>
+          </Link>
+        </motion.div>
+
+        {/* ── Perfil link ── */}
+        <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={6} className="mt-6">
           <Link
             href="/dashboard/motorista/perfil"
             className="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4 shadow-sm transition hover:shadow-md"
