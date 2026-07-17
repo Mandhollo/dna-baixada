@@ -17,7 +17,7 @@ export default function JsonLd({ data }: JsonLdProps) {
     script.text = JSON.stringify(data);
     script.setAttribute('data-hermes-jsonld', 'true');
 
-    // Remove existing JSON-LD with same data to avoid duplicates
+    // Remove existing JSON-LD injected by THIS component only (avoid duplicates)
     const existing = document.querySelector('script[data-hermes-jsonld="true"]');
     if (existing) existing.remove();
 
