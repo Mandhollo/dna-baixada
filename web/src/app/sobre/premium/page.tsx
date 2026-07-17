@@ -76,31 +76,14 @@ export default function SobrePremiumPage() {
       <JsonLd
         data={{
           '@context': 'https://schema.org',
-          '@type': 'Service',
-          name: 'DNA Premium — Plataforma para Motoristas',
-          description: 'Plataforma premium para motoristas da Baixada Santista com 14 módulos: fundadores, níveis, DNA Pass, benefícios, saúde, educação, comunidade, IA e mais.',
-          provider: {
-            '@type': 'Organization',
-            name: 'DNA Baixada',
-            url: 'https://dna-baixada.vercel.app',
-            email: 'contato@dnabaixada.com.br',
-          },
-          areaServed: {
-            '@type': 'AdministrativeArea',
-            name: 'Baixada Santista',
-          },
-          offers: {
-            '@type': 'AggregateOffer',
-            priceCurrency: 'BRL',
-            lowPrice: '19.90',
-            highPrice: '29.90',
-            offerCount: 3,
-          },
-          aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: '4.9',
-            reviewCount: '1000',
-          },
+          '@type': 'FAQPage',
+          mainEntity: [
+            { '@type': 'Question', name: 'Preciso pagar para usar a DNA?', acceptedAnswer: { '@type': 'Answer', text: 'Não. O cadastro é gratuito. Motoristas podem usar a plataforma sem assinatura, com a comissão padrão de 20%.' } },
+            { '@type': 'Question', name: 'O DNA Pass tem fidelidade?', acceptedAnswer: { '@type': 'Answer', text: 'Não. Você pode cancelar quando quiser, sem multa. Os 7 dias de teste são totalmente gratuitos.' } },
+            { '@type': 'Question', name: 'Os cursos são realmente gratuitos?', acceptedAnswer: { '@type': 'Answer', text: 'Sim! Todos os 7 cursos são gratuitos para motoristas cadastrados, com certificado digital.' } },
+            { '@type': 'Question', name: 'Como funcionam os níveis de motorista?', acceptedAnswer: { '@type': 'Answer', text: '5 níveis: Bronze, Prata, Ouro, Platinum e Elite. Cada nível reduz sua comissão de 20% até 12%.' } },
+            { '@type': 'Question', name: 'A plataforma atende quais cidades?', acceptedAnswer: { '@type': 'Answer', text: 'Toda a Baixada Santista: Santos, São Vicente, Guarujá, Cubatão, Praia Grande, Mongaguá, Itanhaém e Peruíbe.' } },
+          ],
         }}
       />
 
@@ -240,6 +223,78 @@ export default function SobrePremiumPage() {
             O objetivo não é apenas transportar passageiros. É criar uma mobilidade mais justa,
             transparente e integrada ao turismo e ao comércio da Baixada Santista.
           </p>
+        </div>
+      </section>
+
+      {/* ─── FAQ ────────────────────────────────────────── */}
+      <section className="py-20 px-6 bg-gray-50 border-t border-gray-100">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary text-center mb-12">
+            Perguntas Frequentes
+          </h2>
+          <div className="space-y-4">
+            <details className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <summary className="flex cursor-pointer items-center justify-between font-bold text-primary text-sm">
+                Preciso pagar para usar a DNA?
+                <span className="ml-4 text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span>
+              </summary>
+              <p className="mt-3 text-sm text-gray-500">
+                Não. O cadastro é gratuito. Motoristas podem usar a plataforma sem assinatura,
+                com a comissão padrão de 20%. O DNA Pass é opcional e oferece benefícios extras.
+              </p>
+            </details>
+            <details className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <summary className="flex cursor-pointer items-center justify-between font-bold text-primary text-sm">
+                O DNA Pass tem fidelidade?
+                <span className="ml-4 text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span>
+              </summary>
+              <p className="mt-3 text-sm text-gray-500">
+                Não. Você pode cancelar quando quiser, sem multa. Os 7 dias de teste são
+                totalmente gratuitos e você só é cobrado se decidir continuar.
+              </p>
+            </details>
+            <details className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <summary className="flex cursor-pointer items-center justify-between font-bold text-primary text-sm">
+                Os cursos são realmente gratuitos?
+                <span className="ml-4 text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span>
+              </summary>
+              <p className="mt-3 text-sm text-gray-500">
+                Sim! Todos os 7 cursos disponíveis na plataforma são gratuitos para motoristas
+                cadastrados. Ao concluir, você recebe certificado digital e pontos de recompensa.
+              </p>
+            </details>
+            <details className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <summary className="flex cursor-pointer items-center justify-between font-bold text-primary text-sm">
+                Como funcionam os níveis de motorista?
+                <span className="ml-4 text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span>
+              </summary>
+              <p className="mt-3 text-sm text-gray-500">
+                Existem 5 níveis: Bronze, Prata, Ouro, Platinum e Elite. Você evolui com base
+                em avaliação, tempo de plataforma, quantidade de corridas e treinamentos.
+                Cada nível reduz sua comissão (de 20% até 12%).
+              </p>
+            </details>
+            <details className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <summary className="flex cursor-pointer items-center justify-between font-bold text-primary text-sm">
+                A plataforma atende quais cidades?
+                <span className="ml-4 text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span>
+              </summary>
+              <p className="mt-3 text-sm text-gray-500">
+                Toda a Baixada Santista: Santos, São Vicente, Guarujá, Cubatão, Praia Grande,
+                Mongaguá, Itanhaém e Peruíbe. Same qualidade em todas as cidades.
+              </p>
+            </details>
+            <details className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <summary className="flex cursor-pointer items-center justify-between font-bold text-primary text-sm">
+                Como faço para me tornar Motorista Guia?
+                <span className="ml-4 text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span>
+              </summary>
+              <p className="mt-3 text-sm text-gray-500">
+                É necessário ter nível Ouro ou superior, concluir o curso de Atendimento ao
+                Turista e cadastrar seus idiomas. Após isso, basta aguardar a aprovação da equipe.
+              </p>
+            </details>
+          </div>
         </div>
       </section>
 
