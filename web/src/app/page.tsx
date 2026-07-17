@@ -8,6 +8,7 @@ import {
   MapPin, Star, Users, Gift, Heart, Target, TrendingUp,
   Award, HandHeart, Phone, Shield, CheckCircle, ChevronRight,
   Mail, ArrowRight, Download,
+  CreditCard, Sparkles, HeartPulse, GraduationCap, Bot,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from '@/components/i18n/LanguageProvider';
@@ -201,6 +202,77 @@ function Motoristas() {
               <p className="mt-3 text-sm font-semibold text-primary">{t(c.labelKey)}</p>
             </div>
           ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ════════════════════════════════════════════════════════
+   4.5. DNA PREMIUM BANNER
+   ════════════════════════════════════════════════════════ */
+function PremiumBanner() {
+  const modules = [
+    { icon: Crown, label: 'Fundadores' },
+    { icon: Shield, label: 'Níveis' },
+    { icon: CreditCard, label: 'DNA Pass' },
+    { icon: Sparkles, label: 'Benefícios' },
+    { icon: HeartPulse, label: 'Saúde' },
+    { icon: GraduationCap, label: 'Cursos' },
+    { icon: Users, label: 'Comunidade' },
+    { icon: Bot, label: 'IA' },
+  ];
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-[#0d2d73] py-20">
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-accent blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-secondary blur-3xl" />
+      </div>
+      <div className="relative mx-auto max-w-5xl px-6 text-center">
+        <motion.span
+          initial={{ opacity: 0, y: -10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-accent"
+        >
+          <Crown size={16} /> DNA Premium
+        </motion.span>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="mt-3 text-3xl font-extrabold text-white sm:text-4xl md:text-5xl"
+        >
+          Mais que corridas.<br />
+          <span className="text-accent">Uma plataforma completa para motoristas.</span>
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+          className="mx-auto mt-5 max-w-2xl text-lg text-white/70"
+        >
+          Fundadores, níveis, benefícios, saúde, educação, comunidade, IA e muito mais.
+          Tudo pensado para valorizar quem está na estrada.
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
+          className="mt-10 grid grid-cols-4 gap-3 sm:grid-cols-8"
+        >
+          {modules.map((m, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
+              transition={{ delay: 0.3 + i * 0.05 }}
+              className="flex flex-col items-center gap-2 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-3"
+            >
+              <m.icon size={20} className="text-accent" />
+              <span className="text-[10px] font-medium text-white/60 sm:text-xs">{m.label}</span>
+            </motion.div>
+          ))}
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.8 }}
+          className="mt-10"
+        >
+          <Link href="/premium" className="inline-flex items-center gap-2 rounded-full bg-accent px-8 py-3.5 font-bold text-primary shadow-lg shadow-accent/30 transition hover:brightness-110">
+            <Crown size={18} /> Conhecer o Módulo Premium <ArrowRight size={16} />
+          </Link>
         </motion.div>
       </div>
     </section>
@@ -460,6 +532,7 @@ export default function Home() {
       <ComoFunciona />
       <Servicos />
       <Motoristas />
+      <PremiumBanner />
       <Turismo />
       <Social />
       <Recompensas />
