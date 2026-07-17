@@ -1,6 +1,7 @@
 'use client';
 
 import SeoMeta from '@/components/seo/SeoMeta';
+import PremiumBreadcrumb from '@/components/premium/PremiumBreadcrumb';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -217,6 +218,7 @@ export default function GuiaPage() {
       <SeoMeta title='Motorista Guia' description='Categoria premium para motoristas guia de turismo em Santos e Baixada Santista. Passeios turísticos com idiomas e certificações.' />
 
       {/* ─── Hero ─────────────────────────────────────────── */}
+      <PremiumBreadcrumb current="Motorista Guia" />
       <section className="relative overflow-hidden bg-gradient-to-br from-yellow-500 to-amber-600 text-white">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.25),transparent_55%)]" />
         <div className="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">

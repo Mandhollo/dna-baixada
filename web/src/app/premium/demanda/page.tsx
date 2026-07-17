@@ -1,6 +1,7 @@
 'use client';
 
 import SeoMeta from '@/components/seo/SeoMeta';
+import PremiumBreadcrumb from '@/components/premium/PremiumBreadcrumb';
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -534,6 +535,7 @@ export default function DemandaPage() {
       <SeoMeta title='Previsão de Demanda' description='Mapa de previsão de demanda para motoristas DNA: regiões com maior procura, eventos, cruzeiros e clima em tempo real.' />
 
       {/* ═══ HERO ═══ */}
+      <PremiumBreadcrumb current="Demanda" />
       <section className="relative overflow-hidden bg-gradient-to-br from-orange-500 to-red-600 px-6 py-20">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute -right-10 top-10 h-72 w-72 rounded-full bg-white blur-3xl" />

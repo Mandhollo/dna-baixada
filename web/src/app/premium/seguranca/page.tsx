@@ -1,6 +1,7 @@
 'use client';
 
 import SeoMeta from '@/components/seo/SeoMeta';
+import PremiumBreadcrumb from '@/components/premium/PremiumBreadcrumb';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -154,13 +155,7 @@ export default function SegurancaPage() {
 
         <div className="relative mx-auto max-w-4xl text-center">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
-            <Link
-              href="/premium"
-              className="mb-8 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur transition hover:bg-white/20 hover:text-white"
-            >
-              <ArrowLeft size={15} />
-              Voltar para Premium
-            </Link>
+            <PremiumBreadcrumb current="Segurança" />
           </motion.div>
 
           <motion.div
@@ -321,13 +316,7 @@ export default function SegurancaPage() {
       {/* ═══ FOOTER CTA ─══ */}
       <section className="bg-gray-900 px-6 pb-16">
         <div className="mx-auto max-w-3xl text-center">
-          <Link
-            href="/premium"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-gray-900 transition hover:bg-gray-100"
-          >
-            <ArrowLeft size={16} />
-            Voltar para Premium
-          </Link>
+          <PremiumBreadcrumb current="Segurança" />
         </div>
       </section>
     </div>

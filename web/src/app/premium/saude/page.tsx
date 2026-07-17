@@ -1,6 +1,7 @@
 'use client';
 
 import SeoMeta from '@/components/seo/SeoMeta';
+import PremiumBreadcrumb from '@/components/premium/PremiumBreadcrumb';
 import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -414,13 +415,7 @@ export default function SaudePage() {
 
         <div className="relative mx-auto max-w-4xl text-center">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
-            <Link
-              href="/premium"
-              className="mb-8 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur transition hover:bg-white/20 hover:text-white"
-            >
-              <ArrowLeft size={15} />
-              Voltar para Premium
-            </Link>
+            <PremiumBreadcrumb current="Saúde" />
           </motion.div>
 
           <motion.div

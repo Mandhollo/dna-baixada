@@ -1,6 +1,7 @@
 'use client';
 
 import SeoMeta from '@/components/seo/SeoMeta';
+import PremiumBreadcrumb from '@/components/premium/PremiumBreadcrumb';
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -331,13 +332,7 @@ export default function BeneficiosPage() {
         </div>
 
         <div className="relative max-w-4xl mx-auto">
-          <Link
-            href="/premium"
-            className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-medium mb-8 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Voltar para Premium
-          </Link>
+          <PremiumBreadcrumb current="Benefícios" />
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
