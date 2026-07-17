@@ -71,6 +71,7 @@ export default function SobrePremiumPage() {
       <SeoMeta
         title="DNA Premium — Plataforma Completa para Motoristas"
         description="14 módulos premium: fundadores, níveis, DNA Pass, benefícios, saúde, educação, comunidade, IA e mais. Comissão reduzida, cursos grátis e tecnologia de ponta."
+        ogImage="/og-premium.png"
       />
       <JsonLd
         data={{

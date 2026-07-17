@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 interface SeoMetaProps {
   title: string;
   description?: string;
+  ogImage?: string;
 }
 
 /**
@@ -12,7 +13,7 @@ interface SeoMetaProps {
  * Next.js layout metadata only works for server components.
  * This handles SEO for client-side premium pages.
  */
-export default function SeoMeta({ title, description }: SeoMetaProps) {
+export default function SeoMeta({ title, description, ogImage }: SeoMetaProps) {
   useEffect(() => {
     document.title = `${title} | DNA Baixada`;
 
@@ -46,7 +47,18 @@ export default function SeoMeta({ title, description }: SeoMetaProps) {
       }
       ogDesc.setAttribute('content', description);
     }
-  }, [title, description]);
+
+    // Update og:image if provided
+    if (ogImage) {
+      let ogImg = document.querySelector('meta[property="og:image"]');
+      if (!ogImg) {
+        ogImg = document.createElement('meta');
+        ogImg.setAttribute('property', 'og:image');
+        document.head.appendChild(ogImg);
+      }
+      ogImg.setAttribute('content', ogImage);
+    }
+  }, [title, description, ogImage]);
 
   return null;
 }
