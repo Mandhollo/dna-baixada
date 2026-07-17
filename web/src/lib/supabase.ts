@@ -893,6 +893,176 @@ export const DNA_PASS_STATUS_LABELS: Record<DNAPassStatus, { label: string; colo
   suspendida: { label: 'Suspensa', color: 'text-accent2', bg: 'bg-accent2/10' },
 };
 
+// ════════════════════════════════════════════════════════════
+// TIPOS — Módulo Premium Fase 2 (Etapa 11)
+// ════════════════════════════════════════════════════════════
+
+// ─── Central de Benefícios ───
+export type BeneficioCategoria =
+  | 'combustivel' | 'oficina' | 'troca_oleo' | 'lavagem' | 'pneus'
+  | 'auto_eletrica' | 'funilaria' | 'loja_auto' | 'alimentacao'
+  | 'farmacia' | 'academia' | 'barbearia' | 'clinica' | 'outro';
+
+export interface BeneficioParceiro {
+  id: string;
+  nome: string;
+  categoria: BeneficioCategoria;
+  desconto_descricao: string;
+  desconto_percentual?: number | null;
+  condicoes?: string | null;
+  telefone?: string | null;
+  whatsapp?: string | null;
+  endereco?: string | null;
+  cidade: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  logo_url?: string | null;
+  foto_url?: string | null;
+  dna_pass_exclusivo: boolean;
+  desconto_dna_pass?: string | null;
+  ativo: boolean;
+  destaque: boolean;
+  verificado: boolean;
+  ordem: number;
+}
+
+export const BENEFICIO_CATEGORIA_LABELS: Record<BeneficioCategoria, { label: string; icon: string; color: string }> = {
+  combustivel: { label: 'Combustível', icon: 'fuel', color: '#E84855' },
+  oficina: { label: 'Oficina', icon: 'wrench', color: '#0A2463' },
+  troca_oleo: { label: 'Troca de Óleo', icon: 'droplet', color: '#F5A623' },
+  lavagem: { label: 'Lavagem', icon: 'droplets', color: '#14A76C' },
+  pneus: { label: 'Pneus', icon: 'circle-dot', color: '#0d2d73' },
+  auto_eletrica: { label: 'Auto Elétrica', icon: 'zap', color: '#F5A623' },
+  funilaria: { label: 'Funilaria', icon: 'hammer', color: '#0A2463' },
+  loja_auto: { label: 'Loja Automotiva', icon: 'shopping-bag', color: '#14A76C' },
+  alimentacao: { label: 'Alimentação', icon: 'utensils', color: '#E84855' },
+  farmacia: { label: 'Farmácia', icon: 'pill', color: '#14A76C' },
+  academia: { label: 'Academia', icon: 'dumbbell', color: '#0A2463' },
+  barbearia: { label: 'Barbearia', icon: 'scissors', color: '#E84855' },
+  clinica: { label: 'Clínica', icon: 'stethoscope', color: '#0A2463' },
+  outro: { label: 'Outro', icon: 'store', color: '#0d2d73' },
+};
+
+// ─── Saúde e Bem-estar ───
+export type SaudeTipo = 'psicologo' | 'nutricionista' | 'fisioterapeuta' | 'academia' | 'clinica' | 'medico' | 'outro';
+
+export interface ParceiroSaude {
+  id: string;
+  nome: string;
+  tipo: SaudeTipo;
+  descricao?: string | null;
+  especialidades: string[];
+  desconto_descricao?: string | null;
+  desconto_percentual?: number | null;
+  aceita_convenio: boolean;
+  convenios: string[];
+  atendimento_online: boolean;
+  atendimento_presencial: boolean;
+  telefone?: string | null;
+  whatsapp?: string | null;
+  endereco?: string | null;
+  cidade: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  logo_url?: string | null;
+  foto_url?: string | null;
+  dna_pass_exclusivo: boolean;
+  desconto_dna_pass?: string | null;
+  ativo: boolean;
+  destaque: boolean;
+  ordem: number;
+}
+
+export const SAUDE_TIPO_LABELS: Record<SaudeTipo, { label: string; icon: string; color: string }> = {
+  psicologo: { label: 'Psicólogo', icon: 'brain', color: '#7c3aed' },
+  nutricionista: { label: 'Nutricionista', icon: 'apple', color: '#14A76C' },
+  fisioterapeuta: { label: 'Fisioterapeuta', icon: 'activity', color: '#F5A623' },
+  academia: { label: 'Academia', icon: 'dumbbell', color: '#0A2463' },
+  clinica: { label: 'Clínica', icon: 'stethoscope', color: '#E84855' },
+  medico: { label: 'Médico', icon: 'stethoscope', color: '#0A2463' },
+  outro: { label: 'Outro', icon: 'heart-pulse', color: '#0d2d73' },
+};
+
+// ─── Educação / Cursos ───
+export type CursoCategoria =
+  | 'direcao_defensiva' | 'atendimento' | 'primeiros_socorros'
+  | 'idiomas' | 'educacao_financeira' | 'marketing' | 'gestao' | 'outro';
+
+export type CursoNivel = 'basico' | 'intermediario' | 'avancado';
+export type CursoProgressoStatus = 'matriculado' | 'em_andamento' | 'concluido' | 'abandonado';
+
+export interface CursoModulo {
+  titulo: string;
+  duracao_min: number;
+}
+
+export interface Curso {
+  id: string;
+  titulo: string;
+  slug: string;
+  descricao: string;
+  descricao_curta?: string | null;
+  categoria: CursoCategoria;
+  carga_horaria_horas: number;
+  nivel: CursoNivel;
+  modulos: CursoModulo[];
+  total_modulos: number;
+  imagem_url?: string | null;
+  video_intro_url?: string | null;
+  pontos_recompensa: number;
+  certificado_disponivel: boolean;
+  nivel_minimo?: MotoristaNivelSlug | null;
+  dna_pass_exclusivo: boolean;
+  instrutor_nome?: string | null;
+  instrutor_bio?: string | null;
+  ativo: boolean;
+  destaque: boolean;
+  ordem: number;
+  total_matriculas: number;
+  total_concluidos: number;
+}
+
+export interface CursoProgresso {
+  id: string;
+  curso_id: string;
+  motorista_id: string;
+  status: CursoProgressoStatus;
+  modulos_concluidos: number[];
+  progresso_percentual: number;
+  matriculado_em: string;
+  iniciado_em?: string | null;
+  concluido_em?: string | null;
+  nota_final?: number | null;
+  certificado_url?: string | null;
+  certificado_emitido_em?: string | null;
+  // Joined
+  curso?: Curso;
+}
+
+export const CURSO_CATEGORIA_LABELS: Record<CursoCategoria, { label: string; icon: string; color: string }> = {
+  direcao_defensiva: { label: 'Direção Defensiva', icon: 'shield-check', color: '#0A2463' },
+  atendimento: { label: 'Atendimento', icon: 'smile', color: '#14A76C' },
+  primeiros_socorros: { label: 'Primeiros Socorros', icon: 'heart-pulse', color: '#E84855' },
+  idiomas: { label: 'Idiomas', icon: 'languages', color: '#F5A623' },
+  educacao_financeira: { label: 'Educação Financeira', icon: 'wallet', color: '#14A76C' },
+  marketing: { label: 'Marketing Pessoal', icon: 'megaphone', color: '#7c3aed' },
+  gestao: { label: 'Gestão', icon: 'briefcase', color: '#0d2d73' },
+  outro: { label: 'Outro', icon: 'book-open', color: '#0d2d73' },
+};
+
+export const CURSO_NIVEL_LABELS: Record<CursoNivel, { label: string; color: string }> = {
+  basico: { label: 'Básico', color: 'text-secondary' },
+  intermediario: { label: 'Intermediário', color: 'text-accent-dark' },
+  avancado: { label: 'Avançado', color: 'text-accent2' },
+};
+
+export const CURSO_STATUS_LABELS: Record<CursoProgressoStatus, { label: string; color: string; bg: string }> = {
+  matriculado: { label: 'Matriculado', color: 'text-primary', bg: 'bg-primary/10' },
+  em_andamento: { label: 'Em Andamento', color: 'text-accent-dark', bg: 'bg-accent/10' },
+  concluido: { label: 'Concluído', color: 'text-secondary', bg: 'bg-secondary/10' },
+  abandonado: { label: 'Abandonado', color: 'text-foreground-muted', bg: 'bg-background-tertiary' },
+};
+
 export function calcularPrecoEstimado(tipo: CorridaTipo, distanciaKm?: number, passageiros: number = 1): number {
   const BASE: Record<CorridaTipo, { fixo: number; km: number }> = {
     urbana: { fixo: 15, km: 3.50 },
