@@ -36,6 +36,7 @@ function Hero() {
     { value: '6', labelKey: 'home.stat_cidades' },
     { value: '1 000+', labelKey: 'home.stat_corridas' },
     { value: '4.9★', labelKey: 'home.stat_avaliacao' },
+    { value: '14', labelKey: 'home.stat_premium' },
   ];
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -73,7 +74,7 @@ function Hero() {
 
         {/* Stats bar */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-          className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {stats.map((s) => (
             <div key={s.labelKey} className="rounded-2xl bg-white/10 backdrop-blur-sm px-5 py-4">
               <p className="text-2xl font-extrabold text-accent">{s.value}</p>
