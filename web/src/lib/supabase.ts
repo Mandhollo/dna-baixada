@@ -1063,6 +1063,130 @@ export const CURSO_STATUS_LABELS: Record<CursoProgressoStatus, { label: string; 
   abandonado: { label: 'Abandonado', color: 'text-foreground-muted', bg: 'bg-background-tertiary' },
 };
 
+// ════════════════════════════════════════════════════════════
+// TIPOS — Módulo Premium Fase 3 (Etapa 12)
+// ════════════════════════════════════════════════════════════
+
+// ─── Comunidade ───
+export type ComunidadeTopicoTipo = 'discussao' | 'sugestao' | 'duvida' | 'aviso' | 'denuncia' | 'grupo_cidade';
+export type ComunidadeTopicoStatus = 'aberto' | 'em_analise' | 'aprovado' | 'recusado' | 'implementado' | 'fechado';
+
+export interface ComunidadeCategoria {
+  id: string;
+  nome: string;
+  slug: string;
+  descricao?: string | null;
+  icone: string;
+  cor_hex: string;
+  ordem: number;
+  ativo: boolean;
+}
+
+export interface ComunidadeTopico {
+  id: string;
+  categoria_id?: string | null;
+  autor_id: string;
+  titulo: string;
+  conteudo: string;
+  tipo: ComunidadeTopicoTipo;
+  status: ComunidadeTopicoStatus;
+  cidade?: string | null;
+  imagem_url?: string | null;
+  fixado: boolean;
+  total_votos: number;
+  total_respostas: number;
+  total_visualizacoes: number;
+  ativo: boolean;
+  created_at: string;
+  updated_at: string;
+  // Joined
+  autor?: { nome: string; foto_url?: string | null };
+  categoria?: ComunidadeCategoria;
+}
+
+export interface ComunidadeResposta {
+  id: string;
+  topico_id: string;
+  autor_id: string;
+  conteudo: string;
+  imagem_url?: string | null;
+  melhor_resposta: boolean;
+  total_votos: number;
+  ativo: boolean;
+  created_at: string;
+  updated_at: string;
+  autor?: { nome: string; foto_url?: string | null };
+}
+
+// ─── Previsão de Demanda ───
+export interface DemandaRegiao {
+  id: string;
+  nome: string;
+  cidade: string;
+  bairro?: string | null;
+  latitude: number;
+  longitude: number;
+  raio_km: number;
+  nivel_demanda: number;
+  demanda_por_hora: Record<string, number>;
+  melhores_horarios: string[];
+  fatores: string[];
+  evento_proximo?: string | null;
+  evento_fim?: string | null;
+  aumento_turismo_percentual: number;
+  cor_hex: string;
+  ativo: boolean;
+}
+
+export type DemandaEventoTipo = 'show' | 'jogo' | 'feira' | 'congresso' | 'cruzeiro' | 'feriado' | 'clima' | 'transito' | 'outro';
+
+export interface DemandaEvento {
+  id: string;
+  nome: string;
+  descricao?: string | null;
+  cidade: string;
+  local?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  data_inicio: string;
+  data_fim?: string | null;
+  tipo: DemandaEventoTipo;
+  aumento_demanda_percentual: number;
+  corridas_estimadas?: number | null;
+  recomendacao?: string | null;
+  ativo: boolean;
+}
+
+export const DEMANDA_EVENTO_TIPO_LABELS: Record<DemandaEventoTipo, { label: string; icon: string; color: string }> = {
+  show: { label: 'Show', icon: 'music', color: '#7c3aed' },
+  jogo: { label: 'Jogo', icon: 'trophy', color: '#14A76C' },
+  feira: { label: 'Feira', icon: 'shopping-cart', color: '#F5A623' },
+  congresso: { label: 'Congresso', icon: 'briefcase', color: '#0A2463' },
+  cruzeiro: { label: 'Cruzeiro', icon: 'ship', color: '#0d2d73' },
+  feriado: { label: 'Feriado', icon: 'calendar', color: '#E84855' },
+  clima: { label: 'Clima', icon: 'cloud-rain', color: '#0A2463' },
+  transito: { label: 'Trânsito', icon: 'car', color: '#E84855' },
+  outro: { label: 'Outro', icon: 'info', color: '#0d2d73' },
+};
+
+export const COMUNIDADE_TOPICO_TIPO_LABELS: Record<ComunidadeTopicoTipo, { label: string; icon: string; color: string }> = {
+  discussao: { label: 'Discussão', icon: 'message-circle', color: '#0A2463' },
+  sugestao: { label: 'Sugestão', icon: 'lightbulb', color: '#F5A623' },
+  duvida: { label: 'Dúvida', icon: 'help-circle', color: '#14A76C' },
+  aviso: { label: 'Aviso', icon: 'bell', color: '#E84855' },
+  denuncia: { label: 'Denúncia', icon: 'flag', color: '#E84855' },
+  grupo_cidade: { label: 'Grupo', icon: 'map-pin', color: '#7c3aed' },
+};
+
+export const COMUNIDADE_TOPICO_STATUS_LABELS: Record<ComunidadeTopicoStatus, { label: string; color: string; bg: string }> = {
+  aberto: { label: 'Aberto', color: 'text-secondary', bg: 'bg-secondary/10' },
+  em_analise: { label: 'Em Análise', color: 'text-accent-dark', bg: 'bg-accent/10' },
+  aprovado: { label: 'Aprovado', color: 'text-primary', bg: 'bg-primary/10' },
+  recusado: { label: 'Recusado', color: 'text-accent2', bg: 'bg-accent2/10' },
+  implementado: { label: 'Implementado', color: 'text-secondary', bg: 'bg-secondary/10' },
+  fechado: { label: 'Fechado', color: 'text-foreground-muted', bg: 'bg-background-tertiary' },
+};
+
 export function calcularPrecoEstimado(tipo: CorridaTipo, distanciaKm?: number, passageiros: number = 1): number {
   const BASE: Record<CorridaTipo, { fixo: number; km: number }> = {
     urbana: { fixo: 15, km: 3.50 },
