@@ -18,6 +18,7 @@ const navKeys = [
   { key: 'nav.parceiros', href: '/parceiros' },
   { key: 'nav.social', href: '/social' },
   { key: 'nav.recompensas', href: '/recompensas' },
+  { key: 'nav.premium', href: '/premium' },
   { key: 'nav.sobre', href: '/sobre' },
   { key: 'nav.ajuda', href: '/ajuda' },
 ];

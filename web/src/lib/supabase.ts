@@ -756,6 +756,143 @@ export interface RelatorioFinanceiro {
   liquido_total: number;
 }
 
+// ════════════════════════════════════════════════════════════
+// TIPOS — Módulo Premium (Etapa 10)
+// ════════════════════════════════════════════════════════════
+
+// ─── Motoristas Fundadores ───
+export interface MotoristaFundador {
+  id: string;
+  motorista_id: string;
+  numero_fundador: number;
+  selo_ativo: boolean;
+  data_ingresso: string;
+  certificado_url?: string | null;
+  certificado_emitido_em?: string | null;
+  reconhecimento_publico: boolean;
+  observacoes?: string | null;
+  metadata?: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+  // Joined (via view)
+  nome?: string;
+  foto_url?: string | null;
+  avaliacao_media?: number;
+  total_avaliacoes?: number;
+  veiculo_modelo?: string;
+  cidade_base?: string;
+  total_corridas?: number;
+}
+
+// ─── Sistema de Níveis ───
+export type MotoristaNivelSlug = 'bronze' | 'prata' | 'ouro' | 'platinum' | 'elite';
+
+export interface MotoristaNivel {
+  id: string;
+  nome: string;
+  slug: MotoristaNivelSlug;
+  ordem: number;
+  cor_hex: string;
+  cor_gradiente: string;
+  icone: string;
+  avaliacao_minima: number;
+  tempo_plataforma_meses: number;
+  corridas_minimas: number;
+  taxa_cancelamento_maxima: number;
+  treinamentos_minimos: number;
+  beneficios: string[];
+  comissao_percentual: number;
+  prioridade_corridas: number;
+  descricao: string;
+  ativo: boolean;
+}
+
+export interface MotoristaNivelAtual {
+  id: string;
+  motorista_id: string;
+  nivel_atual: string;
+  nivel_destino?: string | null;
+  progresso_percentual: number;
+  avaliacao_atual: number;
+  tempo_plataforma_meses: number;
+  total_corridas: number;
+  taxa_cancelamento: number;
+  treinamentos_concluidos: number;
+  pontualidade_percentual: number;
+  nivel_alcancado_em?: string | null;
+  snapshot_em: string;
+}
+
+// ─── DNA Pass ───
+export type DNAPassPlanoSlug = 'mensal' | 'trimestral' | 'anual';
+export type DNAPassStatus = 'trial' | 'ativa' | 'cancelada' | 'expirada' | 'suspendida';
+export type DNAPassBeneficioCategoria = 'comissao' | 'prioridade' | 'desconto' | 'suporte' | 'exclusivo' | 'geral';
+
+export interface DNAPassPlano {
+  id: string;
+  nome: string;
+  slug: DNAPassPlanoSlug;
+  preco_mensal: number;
+  preco_total: number;
+  desconto_percentual: number;
+  periodo_meses: number;
+  descricao: string;
+  descricao_curta?: string | null;
+  destaque: boolean;
+  badge?: string | null;
+  cor_hex: string;
+  ativo: boolean;
+  ordem: number;
+}
+
+export interface DNAPassBeneficio {
+  id: string;
+  titulo: string;
+  descricao: string;
+  icone: string;
+  plano_id?: string | null;
+  categoria: DNAPassBeneficioCategoria;
+  valor?: string | null;
+  ordem: number;
+  ativo: boolean;
+}
+
+export interface DNAPassAssinatura {
+  id: string;
+  motorista_id: string;
+  plano_id: string;
+  status: DNAPassStatus;
+  inicio_em: string;
+  fim_em: string;
+  proxima_cobranca?: string | null;
+  auto_renovar: boolean;
+  metodo_pagamento?: 'pix' | 'cartao' | 'boleto' | null;
+  valor_pago: number;
+  cancelado_em?: string | null;
+  motivo_cancelamento?: string | null;
+  metadata?: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+  // Joined
+  plano?: DNAPassPlano;
+}
+
+export const MOTORISTA_NIVEL_LABELS: Record<MotoristaNivelSlug, { label: string; color: string; icon: string }> = {
+  bronze: { label: 'Bronze', color: '#CD7F32', icon: 'shield' },
+  prata: { label: 'Prata', color: '#C0C0C0', icon: 'shield-check' },
+  ouro: { label: 'Ouro', color: '#FFD700', icon: 'award' },
+  platinum: { label: 'Platinum', color: '#E5E4E2', icon: 'crown' },
+  elite: { label: 'Elite', color: '#00CEC9', icon: 'gem' },
+};
+
+export const DNA_PASS_STATUS_LABELS: Record<DNAPassStatus, { label: string; color: string; bg: string }> = {
+  trial: { label: 'Período de Teste', color: 'text-accent-dark', bg: 'bg-accent/10' },
+  ativa: { label: 'Ativa', color: 'text-secondary', bg: 'bg-secondary/10' },
+  cancelada: { label: 'Cancelada', color: 'text-foreground-muted', bg: 'bg-background-tertiary' },
+  expirada: { label: 'Expirada', color: 'text-accent2', bg: 'bg-accent2/10' },
+  suspendida: { label: 'Suspensa', color: 'text-accent2', bg: 'bg-accent2/10' },
+};
+
 export function calcularPrecoEstimado(tipo: CorridaTipo, distanciaKm?: number, passageiros: number = 1): number {
   const BASE: Record<CorridaTipo, { fixo: number; km: number }> = {
     urbana: { fixo: 15, km: 3.50 },

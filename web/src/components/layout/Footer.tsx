@@ -30,6 +30,7 @@ const quickLinks = [
   { label: 'City Tours', href: '/turismo' },
   { label: 'Transfer Aeroporto', href: '/corrida/solicitar' },
   { label: 'Recompensas', href: '/recompensas' },
+  { label: 'DNA Premium', href: '/premium' },
 ];
 
 const exploreLinks = [
