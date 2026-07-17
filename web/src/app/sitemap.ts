@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/social/ranking`, lastModified, changeFrequency: 'daily', priority: 0.6 },
     { url: `${base}/recompensas`, lastModified, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/premium`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${base}/sobre/premium`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/premium/fundadores`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/premium/niveis`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/premium/dna-pass`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
