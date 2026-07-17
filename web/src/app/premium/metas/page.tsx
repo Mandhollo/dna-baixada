@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -198,7 +198,7 @@ export default function MetasPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <PageTitle title="Metas Inteligentes" />
+      <SeoMeta title='Metas Inteligentes' description='Metas personalizadas para motoristas DNA Mobilidade com previsões de faturamento baseadas em IA e eventos da região.' />
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-lime-500 via-green-600 to-green-700 py-20 px-6">

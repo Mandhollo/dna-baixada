@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -321,7 +321,7 @@ export default function BeneficiosPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <PageTitle title="Central de Benefícios | DNA Premium" />
+      <SeoMeta title='Central de Benefícios' description='Convênios exclusivos para motoristas DNA: combustível, oficinas, lavagem, pneus, alimentação, farmácias e muito mais.' />
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-cyan-500 to-blue-600 py-20 px-6">

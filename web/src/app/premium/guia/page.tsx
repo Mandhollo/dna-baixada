@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -214,7 +214,7 @@ export default function GuiaPage() {
 
   return (
     <>
-      <PageTitle title="Motorista Guia" />
+      <SeoMeta title='Motorista Guia' description='Categoria premium para motoristas guia de turismo em Santos e Baixada Santista. Passeios turísticos com idiomas e certificações.' />
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-yellow-500 to-amber-600 text-white">

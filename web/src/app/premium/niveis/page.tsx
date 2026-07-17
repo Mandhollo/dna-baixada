@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -80,7 +80,7 @@ export default function NiveisPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <PageTitle title="Sistema de Níveis" />
+      <SeoMeta title='Sistema de Níveis DNA' description='Evolua de Bronze a Elite no sistema de níveis DNA Mobilidade. Comissão reduzida, prioridade e benefícios exclusivos.' />
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-[#0d2d73] py-20 px-6">

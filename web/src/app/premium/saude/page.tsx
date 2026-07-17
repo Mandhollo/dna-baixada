@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -403,7 +403,7 @@ export default function SaudePage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <PageTitle title="Saúde e Bem-estar" />
+      <SeoMeta title='Saúde e Bem-estar' description='Parceiros de saúde para motoristas DNA: psicólogos, nutricionistas, fisioterapeutas, academias e clínicas com desconto.' />
 
       {/* ═══ HERO ═══ */}
       <section className="relative overflow-hidden bg-gradient-to-br from-red-500 to-rose-600 px-6 py-20">

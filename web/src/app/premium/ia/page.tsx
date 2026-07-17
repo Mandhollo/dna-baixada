@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -169,7 +169,7 @@ export default function IAPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-b from-gray-50 to-white">
-      <PageTitle title="IA para Motoristas | DNA Premium" />
+      <SeoMeta title='IA para Motoristas' description='Assistente de IA para motoristas DNA: melhores regiões, previsão de demanda, eventos e horários de pico em tempo real.' />
 
       {/* ═══ HERO ═══ */}
       <section className="relative overflow-hidden bg-gradient-to-br from-violet-500 to-fuchsia-600 px-6 py-20">

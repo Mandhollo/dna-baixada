@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -632,7 +632,7 @@ export default function ComunidadePage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <PageTitle title="Área da Comunidade · DNA Mobilidade" />
+      <SeoMeta title='Comunidade DNA' description='Comunidade exclusiva de motoristas DNA Mobilidade: fórum, sugestões, votações e grupos por cidade na Baixada Santista.' />
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-teal-500 to-cyan-600 py-16 sm:py-20 px-6">

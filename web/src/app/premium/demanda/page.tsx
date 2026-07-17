@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -531,7 +531,7 @@ export default function DemandaPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <PageTitle title="Previsão de Demanda" />
+      <SeoMeta title='Previsão de Demanda' description='Mapa de previsão de demanda para motoristas DNA: regiões com maior procura, eventos, cruzeiros e clima em tempo real.' />
 
       {/* ═══ HERO ═══ */}
       <section className="relative overflow-hidden bg-gradient-to-br from-orange-500 to-red-600 px-6 py-20">

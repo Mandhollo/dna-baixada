@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -142,7 +142,7 @@ export default function SegurancaPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <PageTitle title="Sistema de Segurança | DNA Premium" />
+      <SeoMeta title='Sistema de Segurança' description='Sistema de segurança DNA: botão SOS, compartilhamento de corrida, verificação de passageiros e monitoramento de rotas.' />
 
       {/* ═══ HERO ═══ */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-600 to-gray-800 px-6 py-20">

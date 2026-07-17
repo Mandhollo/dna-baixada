@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -364,7 +364,7 @@ export default function EducacaoPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <PageTitle title="Educação" />
+      <SeoMeta title='Educação DNA' description='Cursos gratuitos para motoristas: direção defensiva, atendimento ao turista, primeiros socorros, inglês, espanhol e mais.' />
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 py-20 px-6">

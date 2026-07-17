@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -206,7 +206,7 @@ export default function DNAPassPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <PageTitle title="DNA Pass" />
+      <SeoMeta title='DNA Pass' description='Assinatura DNA Pass: comissão reduzida, prioridade em novidades, descontos ampliados e atendimento prioritário para motoristas.' />
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-secondary-dark to-primary py-20 px-6">

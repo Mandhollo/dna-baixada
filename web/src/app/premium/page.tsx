@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -245,7 +245,7 @@ export default function HubPremiumPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <PageTitle title="DNA Premium" />
+      <SeoMeta title='DNA Premium' description='Módulo Premium DNA Mobilidade: benefícios, níveis, educação, saúde, comunidade e tecnologia para motoristas da Baixada Santista.' />
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-[#0d2d73] py-20 px-6">

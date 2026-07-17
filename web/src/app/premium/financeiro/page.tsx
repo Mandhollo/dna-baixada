@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -403,7 +403,7 @@ export default function FinanceiroPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-16">
-      <PageTitle title="Painel Financeiro Pro" />
+      <SeoMeta title='Painel Financeiro Pro' description='Dashboard financeiro avançado para motoristas DNA: ganhos, gráficos, exportação PDF/Excel e breakdown de comissão.' />
 
       {/* ─── HERO ─── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-green-600 to-emerald-700 px-4 pb-10 pt-8 text-white sm:px-6 lg:px-8">

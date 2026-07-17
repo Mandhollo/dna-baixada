@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from '@/components/seo/PageTitle';
+import SeoMeta from '@/components/seo/SeoMeta';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -114,7 +114,7 @@ export default function FundadoresPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <PageTitle title="Motoristas Fundadores" />
+      <SeoMeta title='Motoristas Fundadores' description='Programa exclusivo para os primeiros motoristas da DNA Mobilidade. Selo permanente, comissão reduzida e certificado digital.' />
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-amber-500 via-orange-600 to-orange-700 py-20 px-6">
