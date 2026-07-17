@@ -2,6 +2,7 @@
 
 import SeoMeta from '@/components/seo/SeoMeta';
 import JsonLd from '@/components/seo/JsonLd';
+import SocialShare from '@/components/premium/SocialShare';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -320,6 +321,9 @@ export default function SobrePremiumPage() {
             >
               Ver Módulos <ArrowRight className="w-4 h-4" />
             </Link>
+          </div>
+          <div className="mt-8 flex justify-center">
+            <SocialShare url="/sobre/premium" title="DNA Premium — Plataforma Completa para Motoristas" />
           </div>
         </div>
       </section>

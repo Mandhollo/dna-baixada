@@ -49,6 +49,12 @@
       "short_name": "Ajuda",
       "url": "/ajuda",
       "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "DNA Premium",
+      "short_name": "Premium",
+      "url": "/premium",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }
