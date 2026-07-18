@@ -9,6 +9,7 @@ import {
   Award, HandHeart, Phone, Shield, CheckCircle, ChevronRight,
   Mail, ArrowRight, Download,
   CreditCard, Sparkles, HeartPulse, GraduationCap, Bot,
+  Leaf,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from '@/components/i18n/LanguageProvider';
@@ -128,6 +129,7 @@ function Servicos() {
   const items = [
     { icon: Car, titleKey: 'home.svc_corrida_urbana', tagKey: 'home.tag_popular' },
     { icon: Crown, titleKey: 'home.svc_executivo', tagKey: 'home.tag_premium' },
+    { icon: Leaf, titleKey: 'home.svc_eletrico', tagKey: 'home.tag_eco' },
     { icon: Plane, titleKey: 'home.svc_transfer_aeroporto', tagKey: '' },
     { icon: Ship, titleKey: 'home.svc_transfer_cruzeiro', tagKey: '' },
     { icon: Map, titleKey: 'home.svc_city_tour', tagKey: 'home.tag_turismo' },

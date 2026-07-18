@@ -15,6 +15,7 @@ interface TaxaConfig {
 const TIPO_LABELS: Record<string, string> = {
   urbana: 'Urbana',
   executivo: 'Executivo',
+  eletrico_hibrido: 'Elétrico/Híbrido',
   transfer_aeroporto: 'Transfer Aeroporto',
   transfer_rodoviaria: 'Transfer Rodoviária',
   transfer_hotel: 'Transfer Hotel',

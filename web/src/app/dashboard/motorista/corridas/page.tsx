@@ -27,6 +27,7 @@ import {
   Navigation,
   CalendarDays,
   Inbox,
+  Leaf,
 } from 'lucide-react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import {
@@ -55,6 +56,7 @@ const fadeUp = {
 const TIPO_ICON: Record<CorridaTipo, React.ElementType> = {
   urbana: Car,
   executivo: Star,
+  eletrico_hibrido: Leaf,
   transfer_aeroporto: Plane,
   transfer_rodoviaria: Bus,
   transfer_hotel: Hotel,

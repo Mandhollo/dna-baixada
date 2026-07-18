@@ -12,7 +12,7 @@ export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
 export type UserRole = 'passageiro' | 'motorista' | 'parceiro' | 'admin';
 export type MotoristaStatus = 'pendente' | 'aprovado' | 'rejeitado' | 'suspenso';
 export type CorridaStatus = 'aguardando' | 'aceita' | 'motorista_chegou' | 'em_andamento' | 'finalizada' | 'cancelada';
-export type CorridaTipo = 'urbana' | 'executivo' | 'transfer_aeroporto' | 'transfer_rodoviaria' | 'transfer_hotel' | 'transfer_cruzeiro' | 'city_tour' | 'passeio_turistico';
+export type CorridaTipo = 'urbana' | 'executivo' | 'eletrico_hibrido' | 'transfer_aeroporto' | 'transfer_rodoviaria' | 'transfer_hotel' | 'transfer_cruzeiro' | 'city_tour' | 'passeio_turistico';
 export type FormaPagamento = 'pix' | 'dinheiro' | 'cartao';
 
 export interface Profile {
@@ -126,6 +126,7 @@ export interface Avaliacao {
 export const CORRIDA_TIPOS: { value: CorridaTipo; label: string; icon: string; descricao: string }[] = [
   { value: 'urbana', label: 'Corrida Urbana', icon: '🚗', descricao: 'Deslocamento dentro da cidade' },
   { value: 'executivo', label: 'Transporte Executivo', icon: '🎩', descricao: 'Veículo premium com motorista profissional' },
+  { value: 'eletrico_hibrido', label: 'Elétrico/Híbrido', icon: '🍃', descricao: 'Veículos elétricos e híbridos — mobilidade sustentável' },
   { value: 'transfer_aeroporto', label: 'Transfer Aeroporto', icon: '✈️', descricao: 'Guarulhos (GRU) ou Congonhas (CGH)' },
   { value: 'transfer_rodoviaria', label: 'Transfer Rodoviária', icon: '🚌', descricao: 'Ida ou volta da rodoviária' },
   { value: 'transfer_hotel', label: 'Transfer Hotel', icon: '🏨', descricao: 'Transporte de/para hotel' },
@@ -1253,6 +1254,7 @@ export function calcularPrecoEstimado(tipo: CorridaTipo, distanciaKm?: number, p
   const BASE: Record<CorridaTipo, { fixo: number; km: number }> = {
     urbana: { fixo: 15, km: 3.50 },
     executivo: { fixo: 40, km: 5.00 },
+    eletrico_hibrido: { fixo: 25, km: 4.00 },  // Verde: preço entre urbana e executivo
     transfer_aeroporto: { fixo: 600, km: 0 },   // GRU R$600 fixo
     transfer_rodoviaria: { fixo: 80, km: 2.50 },
     transfer_hotel: { fixo: 40, km: 3.00 },

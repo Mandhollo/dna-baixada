@@ -6,6 +6,7 @@ import { Car, Filter, Search, Eye, X } from 'lucide-react';
 
 const TIPO_LABELS: Record<string, string> = {
   urbana: 'Urbana', executivo: 'Executivo',
+  eletrico_hibrido: 'Elétrico/Híbrido',
   transfer_aeroporto: 'Transfer Aeroporto', transfer_rodoviaria: 'Transfer Rodoviária',
   transfer_hotel: 'Transfer Hotel', transfer_cruzeiro: 'Transfer Cruzeiro',
   city_tour: 'City Tour', passeio_turistico: 'Passeio Turístico',
