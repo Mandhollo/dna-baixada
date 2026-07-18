@@ -1199,6 +1199,9 @@ export interface FeedPost {
   estabelecimento_id?: string | null;
   conteudo: string;
   imagem_url?: string | null;
+  imagens?: string[] | null;
+  video_url?: string | null;
+  video_thumbnail?: string | null;
   tipo: FeedPostTipo;
   link?: string | null;
   codigo_cupom?: string | null;

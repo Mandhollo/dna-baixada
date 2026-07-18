@@ -17,6 +17,7 @@ import {
   MapPin,
   X,
   Loader2,
+  Video,
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/components/auth/AuthProvider';
@@ -732,15 +733,40 @@ function PostCard({
         </p>
       )}
 
-      {/* Imagem */}
-      {post.imagem_url && (
-        <div className="relative aspect-video w-full overflow-hidden bg-gray-100">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={post.imagem_url}
-            alt={post.conteudo.slice(0, 60)}
+      {/* Vídeo */}
+      {post.video_url && (
+        <div className="relative aspect-video w-full overflow-hidden bg-black">
+          <video
+            src={post.video_url}
+            controls
+            playsInline
             className="h-full w-full object-cover"
           />
+        </div>
+      )}
+
+      {/* Galeria de imagens (se não tem vídeo) */}
+      {!post.video_url && post.imagens && post.imagens.length > 0 && (
+        <div className={`grid gap-0.5 ${post.imagens.length === 1 ? 'grid-cols-1' : post.imagens.length === 2 ? 'grid-cols-2' : 'grid-cols-2'}`}>
+          {post.imagens.slice(0, 4).map((img, idx) => (
+            <div key={idx} className={`relative overflow-hidden bg-gray-100 ${post.imagens!.length === 3 && idx === 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={img} alt={`Foto ${idx + 1} de ${post.parceiro?.nome || ''}`} className="h-full w-full object-cover" />
+              {idx === 3 && post.imagens!.length > 4 && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                  <span className="text-xl font-bold text-white">+{post.imagens!.length - 4}</span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Imagem única (fallback) */}
+      {!post.video_url && !post.imagens?.length && post.imagem_url && (
+        <div className="relative aspect-video w-full overflow-hidden bg-gray-100">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={post.imagem_url} alt={post.conteudo.slice(0, 60)} className="h-full w-full object-cover" />
         </div>
       )}
 
@@ -924,10 +950,40 @@ function CreatePostModal({ onClose, onCreated }: CreatePostModalProps) {
   const { user, profile } = useAuth();
   const [conteudo, setConteudo] = useState('');
   const [tipo, setTipo] = useState<FeedPostTipo>('promocao');
-  const [imagemUrl, setImagemUrl] = useState('');
   const [codigoCupom, setCodigoCupom] = useState('');
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
+  const [imagens, setImagens] = useState<string[]>([]);
+  const [videoUrl, setVideoUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
+
+  const handleUpload = async (files: FileList | null, isVideo: boolean) => {
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    setErro(null);
+    try {
+      for (const file of Array.from(files)) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('bucket', 'feed');
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || 'Erro no upload');
+        }
+        const data = await res.json();
+        if (isVideo) {
+          setVideoUrl(data.url);
+        } else {
+          setImagens((prev) => [...prev, data.url]);
+        }
+      }
+    } catch (e: unknown) {
+      setErro(e instanceof Error ? e.message : 'Erro no upload');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -943,9 +999,11 @@ function CreatePostModal({ onClose, onCreated }: CreatePostModalProps) {
         parceiro_id: profile.id,
         conteudo: conteudo.trim(),
         tipo,
-        imagem_url: imagemUrl.trim() || null,
+        imagem_url: imagens[0] || null,
+        imagens: imagens.length > 0 ? imagens : null,
+        video_url: videoUrl.trim() || null,
         codigo_cupom: codigoCupom.trim().toUpperCase() || null,
-        cidade: '',
+        cidade: profile.role === 'parceiro' ? 'Santos' : 'Santos',
         ativo: true,
         fixado: false,
         total_curtidas: 0,
@@ -957,11 +1015,15 @@ function CreatePostModal({ onClose, onCreated }: CreatePostModalProps) {
       if (error) throw error;
       onCreated();
       onClose();
-    } catch (e: any) {
-      setErro(e?.message ?? 'Erro ao publicar post.');
+    } catch (e: unknown) {
+      setErro(e instanceof Error ? e.message : 'Erro ao publicar post.');
     } finally {
       setSalvando(false);
     }
+  };
+
+  const removerImagem = (idx: number) => {
+    setImagens((prev) => prev.filter((_, i) => i !== idx));
   };
 
   return (
@@ -993,27 +1055,21 @@ function CreatePostModal({ onClose, onCreated }: CreatePostModalProps) {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Tipo */}
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">
-              Tipo de post
-            </label>
+            <label className="mb-1.5 block text-sm font-semibold text-gray-700">Tipo de post</label>
             <select
               value={tipo}
               onChange={(e) => setTipo(e.target.value as FeedPostTipo)}
               className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
             >
               {(Object.keys(FEED_POST_TIPO_LABELS) as FeedPostTipo[]).map((t) => (
-                <option key={t} value={t}>
-                  {FEED_POST_TIPO_LABELS[t].label}
-                </option>
+                <option key={t} value={t}>{FEED_POST_TIPO_LABELS[t].label}</option>
               ))}
             </select>
           </div>
 
           {/* Conteúdo */}
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">
-              Conteúdo
-            </label>
+            <label className="mb-1.5 block text-sm font-semibold text-gray-700">Conteúdo</label>
             <textarea
               value={conteudo}
               onChange={(e) => setConteudo(e.target.value)}
@@ -1023,27 +1079,79 @@ function CreatePostModal({ onClose, onCreated }: CreatePostModalProps) {
             />
           </div>
 
-          {/* Imagem URL */}
+          {/* Galeria de fotos */}
           <div>
             <label className="mb-1.5 block text-sm font-semibold text-gray-700">
-              <ImageIcon className="mr-1 inline h-4 w-4" />
-              URL da imagem (opcional)
+              <ImageIcon className="mr-1 inline h-4 w-4" /> Fotos (até 4)
             </label>
-            <input
-              type="url"
-              value={imagemUrl}
-              onChange={(e) => setImagemUrl(e.target.value)}
-              placeholder="https://..."
-              className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-            />
+            <div className="flex flex-wrap gap-2">
+              {imagens.map((url, idx) => (
+                <div key={idx} className="relative h-20 w-20 overflow-hidden rounded-xl border border-gray-200">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={url} alt={`Foto ${idx + 1}`} className="h-full w-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => removerImagem(idx)}
+                    className="absolute top-1 right-1 rounded-full bg-black/60 p-1 text-white transition hover:bg-black/80"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+              {imagens.length < 4 && (
+                <label className="flex h-20 w-20 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 text-gray-400 transition hover:border-primary hover:text-primary">
+                  {uploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ImageIcon className="h-5 w-5" />}
+                  <span className="mt-1 text-[10px]">Foto</span>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => handleUpload(e.target.files, false)}
+                  />
+                </label>
+              )}
+            </div>
+          </div>
+
+          {/* Vídeo */}
+          <div>
+            <label className="mb-1.5 block text-sm font-semibold text-gray-700">
+              <Video className="mr-1 inline h-4 w-4" /> Vídeo (opcional, até 50MB)
+            </label>
+            {videoUrl ? (
+              <div className="relative overflow-hidden rounded-xl border border-gray-200">
+                <video src={videoUrl} controls className="h-40 w-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => setVideoUrl('')}
+                  className="absolute top-2 right-2 rounded-full bg-black/60 p-1.5 text-white transition hover:bg-black/80"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <label className="flex cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-gray-300 py-4 text-gray-400 transition hover:border-primary hover:text-primary">
+                {uploading ? (
+                  <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Enviando vídeo... </>
+                ) : (
+                  <><Video className="mr-2 h-5 w-5" /> Selecionar vídeo (MP4, WebM)</>
+                )}
+                <input
+                  type="file"
+                  accept="video/mp4,video/webm,video/quicktime"
+                  className="hidden"
+                  onChange={(e) => handleUpload(e.target.files, true)}
+                />
+              </label>
+            )}
           </div>
 
           {/* Cupom */}
           {tipo === 'cupom' && (
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-gray-700">
-                <Ticket className="mr-1 inline h-4 w-4" />
-                Código do cupom
+                <Ticket className="mr-1 inline h-4 w-4" /> Código do cupom
               </label>
               <input
                 type="text"
@@ -1056,35 +1164,13 @@ function CreatePostModal({ onClose, onCreated }: CreatePostModalProps) {
           )}
 
           {erro && (
-            <div className="rounded-xl bg-accent2/10 px-4 py-2.5 text-sm font-semibold text-accent2">
-              {erro}
-            </div>
+            <div className="rounded-xl bg-accent2/10 px-4 py-2.5 text-sm font-semibold text-accent2">{erro}</div>
           )}
 
           <div className="flex gap-3 pt-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              disabled={salvando}
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {salvando ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Publicando...
-                </>
-              ) : (
-                <>
-                  <Plus className="h-4 w-4" />
-                  Publicar
-                </>
-              )}
+            <button type="button" onClick={onClose} className="flex-1 rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50">Cancelar</button>
+            <button type="submit" disabled={salvando || uploading} className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50">
+              {salvando ? (<><Loader2 className="h-4 w-4 animate-spin" /> Publicando...</>) : (<><Plus className="h-4 w-4" /> Publicar</>)}
             </button>
           </div>
         </form>

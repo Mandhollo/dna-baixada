@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     const bucket = (formData.get('bucket') as string) || 'avatars';
 
     // Validate bucket name (whitelist)
-    const allowedBuckets = ['avatars', 'veiculos', 'parceiros', 'documentos'];
+    const allowedBuckets = ['avatars', 'veiculos', 'parceiros', 'documentos', 'feed'];
     if (!allowedBuckets.includes(bucket)) {
       return NextResponse.json(
         { error: `Bucket inválido. Permitidos: ${allowedBuckets.join(', ')}` },
@@ -66,8 +66,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+    // Validate file type (images + videos)
+    const allowedTypes = [
+      'image/jpeg', 'image/png', 'image/webp', 'image/jpg',
+      'video/mp4', 'video/webm', 'video/quicktime',
+    ];
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
         {
@@ -77,8 +80,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file size (max 5MB)
-    const maxSize = 5 * 1024 * 1024;
+    // Validate file size (max 5MB for images, 50MB for videos)
+    const isVideo = file.type.startsWith('video/');
+    const maxSize = isVideo ? 50 * 1024 * 1024 : 5 * 1024 * 1024;
     if (file.size > maxSize) {
       return NextResponse.json(
         { error: 'Arquivo excede o tamanho máximo de 5MB' },
