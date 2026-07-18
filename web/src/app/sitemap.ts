@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/turismo/booking`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/turismo/eventos`, lastModified, changeFrequency: 'weekly', priority: 0.6 },
     { url: `${base}/parceiros`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${base}/parceiros/feed`, lastModified, changeFrequency: 'daily', priority: 0.7 },
     { url: `${base}/social`, lastModified, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${base}/social/ranking`, lastModified, changeFrequency: 'daily', priority: 0.6 },
     { url: `${base}/recompensas`, lastModified, changeFrequency: 'monthly', priority: 0.6 },

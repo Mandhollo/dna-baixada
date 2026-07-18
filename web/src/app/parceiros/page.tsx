@@ -19,6 +19,7 @@ import {
   Ticket,
   ChevronRight,
   Store,
+  MessageCircle,
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import type {
@@ -401,6 +402,25 @@ export default function ParceirosPage() {
     <>
       <PageTitle title={t('parceiros.page_title')} />
       <Hero />
+
+      {/* ═══ FEED LINK ═══ */}
+      <div className="mx-auto max-w-6xl px-6 -mt-4 mb-4">
+        <Link
+          href="/parceiros/feed"
+          className="flex items-center justify-between rounded-2xl bg-gradient-to-br from-primary to-secondary p-5 text-white shadow-lg transition hover:shadow-xl"
+        >
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15">
+              <MessageCircle className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="font-bold text-sm">Feed dos Parceiros</p>
+              <p className="text-xs text-white/70">Promoções, novidades e cupons em tempo real</p>
+            </div>
+          </div>
+          <ChevronRight className="h-5 w-5 text-white/40" />
+        </Link>
+      </div>
 
       {/* ═══ SEARCH + FILTERS ═══ */}
       <section className="relative z-20 -mt-6 mx-auto max-w-6xl px-6">

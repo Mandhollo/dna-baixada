@@ -1187,6 +1187,65 @@ export const COMUNIDADE_TOPICO_STATUS_LABELS: Record<ComunidadeTopicoStatus, { l
   fechado: { label: 'Fechado', color: 'text-foreground-muted', bg: 'bg-background-tertiary' },
 };
 
+// ════════════════════════════════════════════════════════════
+// TIPOS — Feed de Parceiros (Etapa 14)
+// ════════════════════════════════════════════════════════════
+
+export type FeedPostTipo = 'promocao' | 'novidade' | 'evento' | 'produto_novo' | 'cupom' | 'geral';
+
+export interface FeedPost {
+  id: string;
+  parceiro_id: string;
+  estabelecimento_id?: string | null;
+  conteudo: string;
+  imagem_url?: string | null;
+  tipo: FeedPostTipo;
+  link?: string | null;
+  codigo_cupom?: string | null;
+  cidade: string;
+  total_curtidas: number;
+  total_comentarios: number;
+  total_compartilhamentos: number;
+  total_visualizacoes: number;
+  ativo: boolean;
+  fixado: boolean;
+  created_at: string;
+  updated_at: string;
+  // Joined
+  parceiro?: { nome: string; foto_url?: string | null };
+  estabelecimento?: { nome: string; logo_url?: string | null } | null;
+}
+
+export interface FeedCurtida {
+  id: string;
+  post_id: string;
+  usuario_id: string;
+  created_at: string;
+}
+
+export interface FeedComentario {
+  id: string;
+  post_id: string;
+  autor_id: string;
+  conteudo: string;
+  imagem_url?: string | null;
+  total_curtidas: number;
+  resposta_para?: string | null;
+  ativo: boolean;
+  created_at: string;
+  // Joined
+  autor?: { nome: string; foto_url?: string | null };
+}
+
+export const FEED_POST_TIPO_LABELS: Record<FeedPostTipo, { label: string; color: string; icon: string }> = {
+  promocao: { label: 'Promoção', color: 'text-accent2 bg-accent2/10', icon: 'tag' },
+  novidade: { label: 'Novidade', color: 'text-secondary bg-secondary/10', icon: 'sparkles' },
+  evento: { label: 'Evento', color: 'text-primary bg-primary/10', icon: 'calendar' },
+  produto_novo: { label: 'Produto Novo', color: 'text-accent-dark bg-accent/10', icon: 'package' },
+  cupom: { label: 'Cupom', color: 'text-accent-dark bg-accent/10', icon: 'ticket' },
+  geral: { label: 'Geral', color: 'text-foreground-muted bg-background-tertiary', icon: 'message-circle' },
+};
+
 export function calcularPrecoEstimado(tipo: CorridaTipo, distanciaKm?: number, passageiros: number = 1): number {
   const BASE: Record<CorridaTipo, { fixo: number; km: number }> = {
     urbana: { fixo: 15, km: 3.50 },
