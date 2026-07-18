@@ -18,6 +18,7 @@ import {
   X,
   Loader2,
   Video,
+  Flame,
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/components/auth/AuthProvider';
@@ -292,6 +293,7 @@ export default function ParceirosFeedPage() {
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const [copiedCoupon, setCopiedCoupon] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [ordenacao, setOrdenacao] = useState<'recentes' | 'populares'>('recentes');
 
   /* ─── carregar feed ─── */
   const carregarFeed = useCallback(async () => {
@@ -389,9 +391,12 @@ export default function ParceirosFeedPage() {
 
   /* ─── filtros ─── */
   const postsFiltrados = useMemo(() => {
-    if (filtro === 'todos') return posts;
-    return posts.filter((p) => p.tipo === filtro);
-  }, [posts, filtro]);
+    let result = filtro === 'todos' ? [...posts] : posts.filter((p) => p.tipo === filtro);
+    if (ordenacao === 'populares') {
+      result.sort((a, b) => b.total_curtidas - a.total_curtidas);
+    }
+    return result;
+  }, [posts, filtro, ordenacao]);
 
   /* ─── handlers ─── */
   const toggleLike = useCallback(
@@ -547,23 +552,68 @@ export default function ParceirosFeedPage() {
         </motion.div>
 
         {/* ─── Filtros ─── */}
-        <div className="mb-6 flex flex-wrap gap-2">
-          {FILTROS.map((f) => {
-            const active = filtro === f.value;
-            return (
+        {/* ─── Stories / Destaques ─── */}
+        {!loading && posts.length > 0 && (
+          <div className="mb-6 flex gap-3 overflow-x-auto pb-2">
+            {posts.filter(p => p.video_url || (p.imagens && p.imagens.length > 0)).slice(0, 8).map((p) => (
               <button
-                key={f.value}
-                onClick={() => setFiltro(f.value)}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                  active
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'bg-white text-gray-600 hover:bg-gray-100'
-                }`}
+                key={p.id}
+                onClick={() => {
+                  const el = document.getElementById(`post-${p.id}`);
+                  el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }}
+                className="group flex flex-col items-center gap-1.5 shrink-0"
               >
-                {f.label}
+                <div className="rounded-full bg-gradient-to-br from-accent via-accent2 to-primary p-0.5">
+                  <div className="rounded-full border-2 border-white p-0.5">
+                    {p.imagem_url || p.imagens?.[0] ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={p.imagem_url || p.imagens![0]}
+                        alt={p.parceiro?.nome || 'Story'}
+                        className="h-14 w-14 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white">
+                        <Video className="h-5 w-5" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <span className="max-w-[60px] truncate text-[10px] font-medium text-gray-500">
+                  {p.parceiro?.nome?.split(' ')[0] || 'Parceiro'}
+                </span>
               </button>
-            );
-          })}
+            ))}
+          </div>
+        )}
+
+        {/* ─── Filtros + Ordenação ─── */}
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap gap-2">
+            {FILTROS.map((f) => {
+              const active = filtro === f.value;
+              return (
+                <button
+                  key={f.value}
+                  onClick={() => setFiltro(f.value)}
+                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                    active
+                      ? 'bg-primary text-white shadow-sm'
+                      : 'bg-white text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              );
+            })}
+          </div>
+          <button
+            onClick={() => setOrdenacao(prev => prev === 'recentes' ? 'populares' : 'recentes')}
+            className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-2 text-xs font-semibold text-gray-600 shadow-sm transition hover:bg-gray-100"
+          >
+            {ordenacao === 'recentes' ? <><Clock className="h-3.5 w-3.5" /> Recentes</> : <><Flame className="h-3.5 w-3.5" /> Populares</>}
+          </button>
         </div>
 
         {/* ─── Lista de posts ─── */}
@@ -579,6 +629,7 @@ export default function ParceirosFeedPage() {
         ) : (
           <motion.div variants={stagger} initial="hidden" animate="visible" className="space-y-5">
             {postsFiltrados.map((post, idx) => (
+              <div key={post.id} id={`post-${post.id}`}>
               <PostCard
                 key={post.id}
                 post={post}
@@ -604,6 +655,7 @@ export default function ParceirosFeedPage() {
                 profileNome={profile?.nome}
                 profileFoto={profile?.foto_url}
               />
+              </div>
             ))}
           </motion.div>
         )}
